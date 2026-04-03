@@ -107,7 +107,7 @@ That said, for public resources — data that carries no sensitivity even if exp
 ### Why `member_id` is denormalized in `REVENUE_RECOGNITION`
 member_id can be derived through ATTENDANCE, but I included it directly to avoid an extra join on frequent monthly revenue aggregation queries. Slight redundancy, intentional trade-off for query simplicity.
 
-### Why not float for financial data?
+### Why not float for financial data
 Floats use binary representation internally, which cannot precisely express most decimal fractions - leading to rounding errors that compound over repeated calculations.
 
 Instead, I used `Decimal` (PostgreSQL `NUMERIC`), which stores exact decimal values and guarantees precise arithmetic - a standard practice in any financial system.
