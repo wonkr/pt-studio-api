@@ -39,6 +39,7 @@ erDiagram
 		string name  ""  
 		int total_sessions  ""  
 		decimal price  ""  
+		int valid_days
 	}
 
 	MEMBERSHIP {
