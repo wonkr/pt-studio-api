@@ -64,6 +64,7 @@ model SessionPass {
   name          String
   totalSessions Int          @map("total_sessions")
   price         Decimal
+  validDays     Int          @map("valid_days")
   memberships   Membership[]
 
   @@unique([trainerId, name])
