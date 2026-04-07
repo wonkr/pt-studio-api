@@ -6,7 +6,7 @@ http://localhost:3000
 ```
 
 ## Authentication
-All endpoints require JWT token except `/auth/register` and `/auth/login`
+All endpoints require JWT token except `/api/auth/register` and `/api/auth/login`
 ```
 Authorization: Bearer <access_token>
 ```
@@ -17,7 +17,7 @@ Authorization: Bearer <access_token>
 
 ### Auth
 
-#### POST /auth/register
+#### POST /api/auth/register
 Register a new trainer
 
 **Request Body** 
@@ -39,7 +39,7 @@ No Content
 
 ---
 
-#### POST /auth/login
+#### POST /api/auth/login
 Login and receive tokens
 
 **Request Body**
@@ -65,7 +65,7 @@ Cookie (Set by server):
 Set-Cookie: refresh_token=xxx; HttpOnly; Secure; SameSite=Strict
 ```
 ---
-#### POST /auth/refresh
+#### POST /api/auth/refresh
 Reissue access token using refresh token
 
 **Request Header**
@@ -85,7 +85,7 @@ Cookie (Set by server):
 Set-Cookie: refresh_token=xxx; HttpOnly; Secure; SameSite=Strict
 ```
 
-#### POST /auth/logout
+#### POST /api/auth/logout
 Revoke refresh token
 **Request Header**
 ```
@@ -98,7 +98,7 @@ Cookie: refresh_token=<jwt_refresh_token> (HttpOnly, Secure, SameSite=Strict)
 No Content
 ```
 
-#### POST /auth/verify-password
+#### POST /api/auth/verify-password
 Verify current password before changing password
 
 **Headers**
@@ -129,7 +129,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### PATCH /auth/password
+#### PATCH /api/auth/password
 Update password
 
 **Headers**
@@ -173,13 +173,13 @@ No Content
 ```
 ---
 
-#### All endpoints except `/auth/register` and `/auth/login` require a valid JWT access token in the Authorization header.
+#### All endpoints except `/api/auth/register` and `/api/auth/login` require a valid JWT access token in the Authorization header.
 ```
 Authorization: Bearer <jwt_access_token>
 ```
 
 ### Trainer 
-#### Get /trainer
+#### Get /api/trainer
 Get trainer info
 
 **Response** `200`
@@ -191,7 +191,7 @@ Get trainer info
 ```
 
 ### Member
-#### POST /members
+#### POST /api/members
 Register a new member.
 
 **Request Body**
@@ -207,7 +207,7 @@ Register a new member.
 No Content
 ```
 
-#### GET /members
+#### GET /api/members
 Get a member list
 
 **Response** 200
@@ -232,7 +232,7 @@ Get a member list
 ]
 ```
 
-#### POST /members/member-search
+#### POST /api/members/member-search
 **Request Body** 
 ```json
 {
@@ -256,10 +256,6 @@ Get a member list
     ...
 ]
 ```
-
-#### GET /members/<uuid>
-**Response** `200`
-
 
 ## Design Decisions
 
@@ -285,6 +281,12 @@ Rotation is not a perfect defense. If an attacker uses the stolen
 Refresh Token before the legitimate user does, the legitimate user 
 gets logged out. This is an accepted trade-off between security and 
 user experience.
+
+### Choose RSA for JWT module signing key
+RSA (RS256) was chosen over HMAC (HS256) because in enterprise environments, multiple services may need to verify tokens. With RSA, only the Public Key needs to be distributed — Private Key never leaves the auth service. This follows the Principle of Least Privilege.
+
+### Save RSA keys in .env file
+In production, JWT keys should be stored in a Secret Manager (e.g. AWS Secrets Manager, HashiCorp Vault) rather than .env files. `.env` is used here for local development only.
 
 ### Password manage
 - Require Strong Password
