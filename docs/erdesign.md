@@ -20,7 +20,7 @@ erDiagram
 		uuid id PK ""  
 		uuid trainer_id FK ""  
 		string category  "RENT | UTILITY | SUPPLY | OTHER"  
-		int amount  ""  
+		decimal amount  ""  
 		string memo  ""  
 		datetime paid_at  ""  
 	}
