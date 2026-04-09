@@ -16,6 +16,14 @@ erDiagram
 		datetime created_at  ""  
 	}
 
+	REFRESH_TOKEN {
+		uuid id PK
+		uuid trainer_id FK
+		string token
+		datetime created_at
+		datetime expired_at
+	}
+
 	TRAINER_EXPENSE {
 		uuid id PK ""  
 		uuid trainer_id FK ""  
@@ -95,6 +103,8 @@ erDiagram
 	TRAINER||--|{SCHEDULE_MANAGEMENT:"  "
 	TRAINER||--|{ATTENDANCE_MANAGEMENT:"  "
 	TRAINER||--|{REVENUE_RECOGNITION:"  "
+	TRAINER||--|{REFRESH_TOKEN:"  "
+	
 ```
 
 ## Design Decisions
@@ -112,3 +122,21 @@ member_id can be derived through ATTENDANCE, but I included it directly to avoid
 Floats use binary representation internally, which cannot precisely express most decimal fractions - leading to rounding errors that compound over repeated calculations.
 
 Instead, I used `Decimal` (PostgreSQL `NUMERIC`), which stores exact decimal values and guarantees precise arithmetic - a standard practice in any financial system.
+
+### JWT Token Management Strategy
+
+**Access Token** - `no db storage needed in this project`
+- Short-lived (15min) and stateless
+- If the token is compromised, damage is minimal due to short expiry
+- If revocation is required (e.g. account takeover), add to a Redis blacklist with TTL matching token expiry - `will not implement this in this project`
+- Storing in DB causes performance bottlenecks since every API request would require a DB lookup
+
+**Refresh Token** - create a table
+- Long-lived (7~30 days), stored in DB to enable logout and forced invalidation
+- On logout: delete from DB
+- On token refresh: validate against DB before issuing new tokens
+- On suspected compromise: delete from DB to immediately invalidate
+
+**Why this split?**
+- Access token handles authentication on every request → keep it fast and stateless
+- Refresh token handles session lifecycle → needs server-side control for security
