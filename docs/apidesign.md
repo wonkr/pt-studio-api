@@ -31,6 +31,8 @@ Register a new trainer
 ```
 - *Password requirement*
 https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#implement-proper-password-strength-controls 
+- email should be unique.
+- compare password and confirmPassword
 
 **Response** `201`
 ```
@@ -129,7 +131,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### PATCH /api/auth/password
+#### PATCH /api/auth/password-change
 Update password
 
 **Headers**
@@ -284,6 +286,9 @@ user experience.
 
 ### Choose RSA for JWT module signing key
 RSA (RS256) was chosen over HMAC (HS256) because in enterprise environments, multiple services may need to verify tokens. With RSA, only the Public Key needs to be distributed — Private Key never leaves the auth service. This follows the Principle of Least Privilege.
+Separate RSA key pairs are used for Access Token and Refresh Token 
+to prevent a stolen Refresh Token from being used to bypass 
+Access Token validation.
 
 ### Save RSA keys in .env file
 In production, JWT keys should be stored in a Secret Manager (e.g. AWS Secrets Manager, HashiCorp Vault) rather than .env files. `.env` is used here for local development only.
