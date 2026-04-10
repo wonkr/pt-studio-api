@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt'
 import { loginTrainerDto } from './dto/login-trainer.dto';
 import { DatabaseService } from '../database/database.service';
 import * as bcrypt from 'bcrypt'
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 
 @Injectable()
@@ -59,20 +60,22 @@ export class AuthService {
         const payload = await this.JwtService.verifyAsync(refreshToken)
         if (payload.type !== 'refresh'){
             throw new NotFoundException('refresh token is not valid')
-        } else if (payload.sub !== dbToken.trainerId) {
+        } 
+        
+        if (payload.sub !== dbToken.trainerId) {
             throw new NotFoundException('refresh token is not valid')
-        } else {
-            const accessToken = await this.createAccessToken(dbToken.trainerId, dbToken.trainer.email)
-            const refreshToken = await this.createRefreshToken(dbToken.trainerId, dbToken.trainer.email)
-            
-            await this.databaseService.refreshToken.delete({
-                where: {token: refreshToken}
-            })
+        } 
 
-            return {
-                newAccessToken: accessToken,
-                newRefreshToken: refreshToken
-            }
+        const newAccessToken = await this.createAccessToken(dbToken.trainerId, dbToken.trainer.email)
+        const newRefreshToken = await this.createRefreshToken(dbToken.trainerId, dbToken.trainer.email)
+        
+        await this.databaseService.refreshToken.delete({
+            where: {token: refreshToken}
+        })
+
+        return {
+            newAccessToken: newAccessToken,
+            newRefreshToken: newRefreshToken
         }
     }
 
@@ -105,6 +108,35 @@ export class AuthService {
         )
         
         return passwordChangeToken
+    }
+
+    async changePassword(userId: string, passwordChangeToken: string, changePasswordDto:ChangePasswordDto) {
+        const payload = await this.JwtService.verifyAsync(passwordChangeToken)
+        if (payload.type !== 'password-change'){
+            throw new NotFoundException('passwordChangeToken is not valid')
+        } 
+        
+        if (payload.sub !== userId) {
+            throw new NotFoundException('passwordChangeToken is not valid')
+        } 
+
+        if (changePasswordDto.password !== changePasswordDto.confirmPassword){
+            throw new BadRequestException('Passwords do not match.')
+        }
+        
+        const saltOrRounds = 10;
+        const newHashedPassword = await bcrypt.hash(changePasswordDto.password, saltOrRounds)
+
+        await this.databaseService.trainer.update({
+            where: {
+                id: userId
+            },
+            data: {
+                passwordHash: newHashedPassword
+            }
+        })
+        
+        return
     }
 
     async createAccessToken(trainerId:string, trainerEmail:string): Promise<string> {

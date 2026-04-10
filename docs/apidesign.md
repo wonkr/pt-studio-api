@@ -137,6 +137,7 @@ Update password
 **Headers**
 ```
 Authorization: Bearer <access_token>
+Cookie: password_change_token=<short_lived_token> (HttpOnly, Secure, SameSite=Strict)
 ```
 
 **Request Body**

@@ -20,3 +20,5 @@ npm install @nestjs/config
 
 # bcrypt hashing
 https://docs.nestjs.com/security/encryption-and-hashing#hashing 
+
+# install cookie-parser to read cookie from api request
