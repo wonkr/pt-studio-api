@@ -5,6 +5,7 @@ import { TrainersService } from '../trainers/trainers.service';
 import { CreateTrainerDto } from './dto/create-trainer.dto';
 import { loginTrainerDto } from './dto/login-trainer.dto';
 import { AuthGuard } from './auth.guard';
+import { VerifyPasswordDto } from './dto/verify-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,32 +21,55 @@ export class AuthController {
 
     @Post('/login')
     async login(@Body(ValidationPipe) loginTrainerDto:loginTrainerDto, @Res({ passthrough: true }) res: Response){
-        const { access_token, refresh_token } = await this.authService.signIn(loginTrainerDto)
+        const { accessToken, refreshToken } = await this.authService.signIn(loginTrainerDto)
 
-        res.cookie('refresh_token', refresh_token, {
+        res.cookie('refresh_token', refreshToken, {
             httpOnly: true, // prevent XSS
             secure: true, // transfer only in HTTPS
             sameSite: 'strict', // prevent CSRF
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
 
-        return { access_token }
+        return { accessToken }
     }
 
     @Post('/refresh')
-    refresh(){
+    async refresh(@Request() req, @Res({ passthrough: true }) res: Response){
+        const token = req.cookies['refresh_token'];
+        const { newAccessToken, newRefreshToken } = await this.authService.refreshToken(token)
+
+        res.cookie('refresh_token', newRefreshToken, {
+            httpOnly: true, // prevent XSS
+            secure: true, // transfer only in HTTPS
+            sameSite: 'strict', // prevent CSRF
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        })
+
+        return { newAccessToken }
     }
 
     @UseGuards(AuthGuard)
     @Post('/logout')
-    logout(@Request() req){
-        return req.user
+    async logout(@Request() req, @Res({ passthrough: true }) res: Response){
+        const refreshToken = req.cookies['refresh_token'];
+        await this.authService.logout(refreshToken)
+        res.clearCookie('refresh_token');
+        return { message: 'Logged out successfully' }
     }
 
     @UseGuards(AuthGuard)
     @Post('/verify-password')
-    verifyPassword(){
+    async verifyPassword(@Body(ValidationPipe) verifyPasswordDto: VerifyPasswordDto, @Request() req, @Res({ passthrough: true }) res: Response){
+        const passwordChangeToken = await this.authService.verifyPassword(req.user.sub, verifyPasswordDto.currentPassword)
 
+        res.cookie('password_change_token', passwordChangeToken, {
+            httpOnly: true, // prevent XSS
+            secure: true, // transfer only in HTTPS
+            sameSite: 'strict', // prevent CSRF
+            maxAge: 5 * 60 * 1000 // 5 mins
+        })
+
+        return
     }
 
     @UseGuards(AuthGuard)
