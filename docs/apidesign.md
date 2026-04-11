@@ -201,7 +201,12 @@ Register a new member.
 ```json
 {
     "name": "Jay Choi",
-    "phone": "000-0000-0000"
+    "phone": "000-0000-0000",
+    "membershipType": "10-sessions",
+    "membershipPrice": 800000,
+    "membershipExpiryDate": "2026-08-10",
+    "paymentMethod": "card",
+    "paymentStatus": "paid"
 }
 ```
 
@@ -216,32 +221,34 @@ Get a member list
 **Response** 200
 ```json
 [
-    {
-        "id": <uuid>,
-        "name": "Jay Choi",
-        "phone": "000-0000-0000"
+   {
+    "name": "Jay Choi",
+    "phone": "000-0000-0000",
+    "membershipType": "10-sessions",
+    "paymentStatus": "paid",
+    "remainingSessions": 9,
+    "membershipExpiryDate": "2026-08-10"
     },
     {
-        "id": <uuid>,
-        "name": "SJ Choi",
-        "phone": "111-1111-1111"
-    },
-    {
-        "id": <uuid>,
-        "name": "Jay Won",
-        "phone": "222-2222-2222"
+    "name": "Jenna Choi",
+    "phone": "111-1111-1111",
+    "membershipType": "20-sessions",
+    "paymentStatus": "pending",
+    "remainingSessions": 17,
+    "membershipExpiryDate": "2026-10-10"
+    },{
+    "name": "SJ Choi",
+    "phone": "222-2222-2222",
+    "membershipType": "10-sessions",
+    "paymentStatus": "paid",
+    "remainingSessions": 3,
+    "membershipExpiryDate": "2026-06-20"
     },
     ...
 ]
 ```
 
-#### POST /api/members/member-search
-**Request Body** 
-```json
-{
-    "name": "Jay"
-}
-```
+#### Get /api/members/member-search?name="Jay"
 
 **Response Body** `200`
 ```json
@@ -249,15 +256,42 @@ Get a member list
     {
         "id": <uuid>,
         "name": "Jay Choi",
-        "phone": "000-0000-0000"
+        "phone": "000-0000-0000",
+        "membershipType": "10-sessions",
+        "paymentStatus": "paid",
+        "remainingSessions": 9,
+        "membershipExpiryDate": "2026-08-10"
     },
     {
         "id": <uuid>,
         "name": "Jay Won",
-        "phone": "222-2222-2222"
+        "phone": "333-3333-3333",
+        "membershipType": "20-sessions",
+        "paymentStatus": "paid",
+        "remainingSessions": 4,
+        "membershipExpiryDate": "2026-5-05"
     },
     ...
 ]
+```
+
+#### Get /api/members/<memberId>
+
+**Response Body** `200`
+
+```json
+{
+    "id": <uuid>,
+    "name": "Jay Choi",
+    "phone": "000-0000-0000",
+    "membershipType": "10-sessions",
+    "remainingSessions": 9,
+    "Attended sessions": 1,
+    "No-show sessions": 0,
+    "membershipExpiryDate": "2026-08-10",
+    "paymentStatus": "paid",
+    "paymentMethod": "card"
+}
 ```
 
 ## Design Decisions
