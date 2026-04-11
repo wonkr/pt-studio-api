@@ -25,7 +25,6 @@ model Trainer {
   sessionPasses       SessionPass[]
   memberships         Membership[]
   schedules           Schedule[]
-  attendances         Attendance[]
   revenueRecognitions RevenueRecognition[]
 
   @@map("trainers")
@@ -61,7 +60,6 @@ model Member {
   phoneNumber         String               @map("phone_number")
   createdAt           DateTime             @default(now()) @map("created_at")
   memberships         Membership[]
-  attendances         Attendance[]
   schedules           Schedule[]
   revenueRecognitions RevenueRecognition[]
 
@@ -97,56 +95,48 @@ model Membership {
   expiredAt         DateTime?     @map("expired_at")
   remainingSessions Int           @map("remaining_sessions")
   usedSessions      Int           @map("used_sessions")
-  attendances       Attendance[]
+  schedules         Schedule[]
 
   @@map("memberships")
 }
 
-model Attendance {
-  id String @id @default(uuid())
-
+model Schedule {
+  id                 String              @id @default(uuid())
   trainer            Trainer             @relation(fields: [trainerId], references: [id])
   trainerId          String              @map("trainer_id")
   member             Member              @relation(fields: [memberId], references: [id])
   memberId           String              @map("member_id")
   membership         Membership          @relation(fields: [membershipId], references: [id])
   membershipId       String              @map("membership_id")
-  attendedAt         DateTime            @map("attended_at")
+  scheduledAt        DateTime
+  status             ScheduleStatus
+  cancelReason       String?             @map("cancel_reason")
+  createdAt          DateTime
+  updatedAt          DateTime
   revenueRecognition RevenueRecognition?
-
-  @@map("attendances")
-}
-
-model Schedule {
-  id        String         @id @default(uuid())
-  trainer   Trainer        @relation(fields: [trainerId], references: [id])
-  trainerId String         @map("trainer_id")
-  member    Member         @relation(fields: [memberId], references: [id])
-  memberId  String         @map("member_id")
-  time      DateTime
-  status    ScheduleStatus
 
   @@map("schedules")
 }
 
 model RevenueRecognition {
-  id           String     @id @default(uuid())
-  trainer      Trainer    @relation(fields: [trainerId], references: [id])
-  trainerId    String     @map("trainer_id")
-  member       Member     @relation(fields: [memberId], references: [id])
-  memberId     String     @map("member_id")
-  attendance   Attendance @relation(fields: [attendanceId], references: [id])
-  attendanceId String     @unique @map("attendance_id")
+  id           String   @id @default(uuid())
+  trainer      Trainer  @relation(fields: [trainerId], references: [id])
+  trainerId    String   @map("trainer_id")
+  member       Member   @relation(fields: [memberId], references: [id])
+  memberId     String   @map("member_id")
+  schedule     Schedule @relation(fields: [scheduleId], references: [id])
+  scheduleId   String   @unique @map("schedule_id")
   amount       Decimal
-  recognizedAt DateTime   @map("recognized_at")
+  recognizedAt DateTime @map("recognized_at")
 
   @@map("revenue_recognitions")
 }
 
 enum ScheduleStatus {
   SCHEDULED
-  CANCELED
-  COMPLETED
+  ATTENDED
+  CANCELLED
+  NOSHOW
 }
 
 enum ExpenseCategory {

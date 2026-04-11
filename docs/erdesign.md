@@ -64,20 +64,16 @@ erDiagram
 		int used_sessions  ""  
 	}
 
-	ATTENDANCE_MANAGEMENT {
-		uuid id PK ""  
-		uuid trainer_id FK ""  
-		uuid member_id FK ""  
-		uuid membership_id FK ""  
-		datetime attended_at  ""  
-	}
-
 	SCHEDULE_MANAGEMENT {
 		uuid id PK ""  
 		uuid trainer_id FK ""  
 		uuid member_id FK ""  
-		datetime time  ""  
-		string status  "scheduled | canceled | completed"  
+		uuid membership_id FK ""
+		datetime scheduledAt  ""  
+		string status  "scheduled | attended | cancelled | no_show"
+		string cancelReason? 
+		datetime createdAt
+		datetime updatedAt  
 	}
 
 	REVENUE_RECOGNITION {
@@ -140,3 +136,7 @@ Instead, I used `Decimal` (PostgreSQL `NUMERIC`), which stores exact decimal val
 **Why this split?**
 - Access token handles authentication on every request → keep it fast and stateless
 - Refresh token handles session lifecycle → needs server-side control for security
+
+
+### Unify attendance model and schedule model
+Initially considered separate Attendance and Schedule tables, but consolidated into a single entity with a state machine. This reduces data inconsistency risk, simplifies BOLA authorization checks, and better reflects the domain reality where a PT session is a single lifecycle event.
