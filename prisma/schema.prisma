@@ -35,7 +35,7 @@ model RefreshToken {
   token     String   @unique
   trainer   Trainer  @relation(fields: [trainerId], references: [id])
   trainerId String
-  createdAt DateTime
+  createdAt DateTime @default(now()) @map("created_at")
   expiresAt DateTime
 }
 
@@ -111,8 +111,8 @@ model Schedule {
   scheduledAt        DateTime
   status             ScheduleStatus
   cancelReason       String?             @map("cancel_reason")
-  createdAt          DateTime
-  updatedAt          DateTime
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
   revenueRecognition RevenueRecognition?
 
   @@map("schedules")
