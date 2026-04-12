@@ -231,7 +231,7 @@ export type RefreshTokenScalarWhereWithAggregatesInput = {
 export type RefreshTokenCreateInput = {
   id?: string
   token: string
-  createdAt: Date | string
+  createdAt?: Date | string
   expiresAt: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutRefreshTokensInput
 }
@@ -240,7 +240,7 @@ export type RefreshTokenUncheckedCreateInput = {
   id?: string
   token: string
   trainerId: string
-  createdAt: Date | string
+  createdAt?: Date | string
   expiresAt: Date | string
 }
 
@@ -264,7 +264,7 @@ export type RefreshTokenCreateManyInput = {
   id?: string
   token: string
   trainerId: string
-  createdAt: Date | string
+  createdAt?: Date | string
   expiresAt: Date | string
 }
 
@@ -362,14 +362,14 @@ export type RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput = {
 export type RefreshTokenCreateWithoutTrainerInput = {
   id?: string
   token: string
-  createdAt: Date | string
+  createdAt?: Date | string
   expiresAt: Date | string
 }
 
 export type RefreshTokenUncheckedCreateWithoutTrainerInput = {
   id?: string
   token: string
-  createdAt: Date | string
+  createdAt?: Date | string
   expiresAt: Date | string
 }
 
@@ -413,7 +413,7 @@ export type RefreshTokenScalarWhereInput = {
 export type RefreshTokenCreateManyTrainerInput = {
   id?: string
   token: string
-  createdAt: Date | string
+  createdAt?: Date | string
   expiresAt: Date | string
 }
 

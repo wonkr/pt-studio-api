@@ -271,7 +271,7 @@ export type MembershipWhereInput = {
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
   sessionPass?: Prisma.XOR<Prisma.SessionPassScalarRelationFilter, Prisma.SessionPassWhereInput>
-  attendances?: Prisma.AttendanceListRelationFilter
+  schedules?: Prisma.ScheduleListRelationFilter
 }
 
 export type MembershipOrderByWithRelationInput = {
@@ -289,7 +289,7 @@ export type MembershipOrderByWithRelationInput = {
   trainer?: Prisma.TrainerOrderByWithRelationInput
   member?: Prisma.MemberOrderByWithRelationInput
   sessionPass?: Prisma.SessionPassOrderByWithRelationInput
-  attendances?: Prisma.AttendanceOrderByRelationAggregateInput
+  schedules?: Prisma.ScheduleOrderByRelationAggregateInput
 }
 
 export type MembershipWhereUniqueInput = Prisma.AtLeast<{
@@ -310,7 +310,7 @@ export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
   sessionPass?: Prisma.XOR<Prisma.SessionPassScalarRelationFilter, Prisma.SessionPassWhereInput>
-  attendances?: Prisma.AttendanceListRelationFilter
+  schedules?: Prisma.ScheduleListRelationFilter
 }, "id">
 
 export type MembershipOrderByWithAggregationInput = {
@@ -361,7 +361,7 @@ export type MembershipCreateInput = {
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipUncheckedCreateInput = {
@@ -376,7 +376,7 @@ export type MembershipUncheckedCreateInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipUpdateInput = {
@@ -391,7 +391,7 @@ export type MembershipUpdateInput = {
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateInput = {
@@ -406,7 +406,7 @@ export type MembershipUncheckedUpdateInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipCreateManyInput = {
@@ -653,18 +653,18 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type MembershipCreateNestedOneWithoutAttendancesInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutAttendancesInput, Prisma.MembershipUncheckedCreateWithoutAttendancesInput>
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutAttendancesInput
+export type MembershipCreateNestedOneWithoutSchedulesInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutSchedulesInput, Prisma.MembershipUncheckedCreateWithoutSchedulesInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutSchedulesInput
   connect?: Prisma.MembershipWhereUniqueInput
 }
 
-export type MembershipUpdateOneRequiredWithoutAttendancesNestedInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutAttendancesInput, Prisma.MembershipUncheckedCreateWithoutAttendancesInput>
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutAttendancesInput
-  upsert?: Prisma.MembershipUpsertWithoutAttendancesInput
+export type MembershipUpdateOneRequiredWithoutSchedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutSchedulesInput, Prisma.MembershipUncheckedCreateWithoutSchedulesInput>
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutSchedulesInput
+  upsert?: Prisma.MembershipUpsertWithoutSchedulesInput
   connect?: Prisma.MembershipWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutAttendancesInput, Prisma.MembershipUpdateWithoutAttendancesInput>, Prisma.MembershipUncheckedUpdateWithoutAttendancesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutSchedulesInput, Prisma.MembershipUpdateWithoutSchedulesInput>, Prisma.MembershipUncheckedUpdateWithoutSchedulesInput>
 }
 
 export type MembershipCreateWithoutTrainerInput = {
@@ -678,7 +678,7 @@ export type MembershipCreateWithoutTrainerInput = {
   usedSessions: number
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipUncheckedCreateWithoutTrainerInput = {
@@ -692,7 +692,7 @@ export type MembershipUncheckedCreateWithoutTrainerInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipCreateOrConnectWithoutTrainerInput = {
@@ -749,7 +749,7 @@ export type MembershipCreateWithoutMemberInput = {
   usedSessions: number
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipUncheckedCreateWithoutMemberInput = {
@@ -763,7 +763,7 @@ export type MembershipUncheckedCreateWithoutMemberInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipCreateOrConnectWithoutMemberInput = {
@@ -803,7 +803,7 @@ export type MembershipCreateWithoutSessionPassInput = {
   usedSessions: number
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipUncheckedCreateWithoutSessionPassInput = {
@@ -817,7 +817,7 @@ export type MembershipUncheckedCreateWithoutSessionPassInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMembershipInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipCreateOrConnectWithoutSessionPassInput = {
@@ -846,7 +846,7 @@ export type MembershipUpdateManyWithWhereWithoutSessionPassInput = {
   data: Prisma.XOR<Prisma.MembershipUpdateManyMutationInput, Prisma.MembershipUncheckedUpdateManyWithoutSessionPassInput>
 }
 
-export type MembershipCreateWithoutAttendancesInput = {
+export type MembershipCreateWithoutSchedulesInput = {
   id?: string
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
@@ -860,7 +860,7 @@ export type MembershipCreateWithoutAttendancesInput = {
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
 }
 
-export type MembershipUncheckedCreateWithoutAttendancesInput = {
+export type MembershipUncheckedCreateWithoutSchedulesInput = {
   id?: string
   trainerId: string
   memberId: string
@@ -874,23 +874,23 @@ export type MembershipUncheckedCreateWithoutAttendancesInput = {
   usedSessions: number
 }
 
-export type MembershipCreateOrConnectWithoutAttendancesInput = {
+export type MembershipCreateOrConnectWithoutSchedulesInput = {
   where: Prisma.MembershipWhereUniqueInput
-  create: Prisma.XOR<Prisma.MembershipCreateWithoutAttendancesInput, Prisma.MembershipUncheckedCreateWithoutAttendancesInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutSchedulesInput, Prisma.MembershipUncheckedCreateWithoutSchedulesInput>
 }
 
-export type MembershipUpsertWithoutAttendancesInput = {
-  update: Prisma.XOR<Prisma.MembershipUpdateWithoutAttendancesInput, Prisma.MembershipUncheckedUpdateWithoutAttendancesInput>
-  create: Prisma.XOR<Prisma.MembershipCreateWithoutAttendancesInput, Prisma.MembershipUncheckedCreateWithoutAttendancesInput>
+export type MembershipUpsertWithoutSchedulesInput = {
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutSchedulesInput, Prisma.MembershipUncheckedUpdateWithoutSchedulesInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutSchedulesInput, Prisma.MembershipUncheckedCreateWithoutSchedulesInput>
   where?: Prisma.MembershipWhereInput
 }
 
-export type MembershipUpdateToOneWithWhereWithoutAttendancesInput = {
+export type MembershipUpdateToOneWithWhereWithoutSchedulesInput = {
   where?: Prisma.MembershipWhereInput
-  data: Prisma.XOR<Prisma.MembershipUpdateWithoutAttendancesInput, Prisma.MembershipUncheckedUpdateWithoutAttendancesInput>
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutSchedulesInput, Prisma.MembershipUncheckedUpdateWithoutSchedulesInput>
 }
 
-export type MembershipUpdateWithoutAttendancesInput = {
+export type MembershipUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
@@ -904,7 +904,7 @@ export type MembershipUpdateWithoutAttendancesInput = {
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
 }
 
-export type MembershipUncheckedUpdateWithoutAttendancesInput = {
+export type MembershipUncheckedUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -942,7 +942,7 @@ export type MembershipUpdateWithoutTrainerInput = {
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateWithoutTrainerInput = {
@@ -956,7 +956,7 @@ export type MembershipUncheckedUpdateWithoutTrainerInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateManyWithoutTrainerInput = {
@@ -996,7 +996,7 @@ export type MembershipUpdateWithoutMemberInput = {
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateWithoutMemberInput = {
@@ -1010,7 +1010,7 @@ export type MembershipUncheckedUpdateWithoutMemberInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateManyWithoutMemberInput = {
@@ -1050,7 +1050,7 @@ export type MembershipUpdateWithoutSessionPassInput = {
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateWithoutSessionPassInput = {
@@ -1064,7 +1064,7 @@ export type MembershipUncheckedUpdateWithoutSessionPassInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMembershipNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMembershipNestedInput
 }
 
 export type MembershipUncheckedUpdateManyWithoutSessionPassInput = {
@@ -1086,11 +1086,11 @@ export type MembershipUncheckedUpdateManyWithoutSessionPassInput = {
  */
 
 export type MembershipCountOutputType = {
-  attendances: number
+  schedules: number
 }
 
 export type MembershipCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  attendances?: boolean | MembershipCountOutputTypeCountAttendancesArgs
+  schedules?: boolean | MembershipCountOutputTypeCountSchedulesArgs
 }
 
 /**
@@ -1106,8 +1106,8 @@ export type MembershipCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
 /**
  * MembershipCountOutputType without action
  */
-export type MembershipCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AttendanceWhereInput
+export type MembershipCountOutputTypeCountSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduleWhereInput
 }
 
 
@@ -1126,7 +1126,7 @@ export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
-  attendances?: boolean | Prisma.Membership$attendancesArgs<ExtArgs>
+  schedules?: boolean | Prisma.Membership$schedulesArgs<ExtArgs>
   _count?: boolean | Prisma.MembershipCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["membership"]>
 
@@ -1183,7 +1183,7 @@ export type MembershipInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
-  attendances?: boolean | Prisma.Membership$attendancesArgs<ExtArgs>
+  schedules?: boolean | Prisma.Membership$schedulesArgs<ExtArgs>
   _count?: boolean | Prisma.MembershipCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MembershipIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1203,7 +1203,7 @@ export type $MembershipPayload<ExtArgs extends runtime.Types.Extensions.Internal
     trainer: Prisma.$TrainerPayload<ExtArgs>
     member: Prisma.$MemberPayload<ExtArgs>
     sessionPass: Prisma.$SessionPassPayload<ExtArgs>
-    attendances: Prisma.$AttendancePayload<ExtArgs>[]
+    schedules: Prisma.$SchedulePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1614,7 +1614,7 @@ export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends runti
   trainer<T extends Prisma.TrainerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainerDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainerClient<runtime.Types.Result.GetResult<Prisma.$TrainerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   member<T extends Prisma.MemberDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MemberDefaultArgs<ExtArgs>>): Prisma.Prisma__MemberClient<runtime.Types.Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sessionPass<T extends Prisma.SessionPassDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SessionPassDefaultArgs<ExtArgs>>): Prisma.Prisma__SessionPassClient<runtime.Types.Result.GetResult<Prisma.$SessionPassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  attendances<T extends Prisma.Membership$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Membership$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  schedules<T extends Prisma.Membership$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Membership$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2056,27 +2056,27 @@ export type MembershipDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
- * Membership.attendances
+ * Membership.schedules
  */
-export type Membership$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Membership$schedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Attendance
+   * Select specific fields to fetch from the Schedule
    */
-  select?: Prisma.AttendanceSelect<ExtArgs> | null
+  select?: Prisma.ScheduleSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Attendance
+   * Omit specific fields from the Schedule
    */
-  omit?: Prisma.AttendanceOmit<ExtArgs> | null
+  omit?: Prisma.ScheduleOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.AttendanceInclude<ExtArgs> | null
-  where?: Prisma.AttendanceWhereInput
-  orderBy?: Prisma.AttendanceOrderByWithRelationInput | Prisma.AttendanceOrderByWithRelationInput[]
-  cursor?: Prisma.AttendanceWhereUniqueInput
+  include?: Prisma.ScheduleInclude<ExtArgs> | null
+  where?: Prisma.ScheduleWhereInput
+  orderBy?: Prisma.ScheduleOrderByWithRelationInput | Prisma.ScheduleOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
+  distinct?: Prisma.ScheduleScalarFieldEnum | Prisma.ScheduleScalarFieldEnum[]
 }
 
 /**

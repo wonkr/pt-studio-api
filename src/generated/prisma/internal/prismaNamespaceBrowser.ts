@@ -57,7 +57,6 @@ export const ModelName = {
   Member: 'Member',
   SessionPass: 'SessionPass',
   Membership: 'Membership',
-  Attendance: 'Attendance',
   Schedule: 'Schedule',
   RevenueRecognition: 'RevenueRecognition'
 } as const
@@ -153,23 +152,16 @@ export const MembershipScalarFieldEnum = {
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
 
 
-export const AttendanceScalarFieldEnum = {
-  id: 'id',
-  trainerId: 'trainerId',
-  memberId: 'memberId',
-  membershipId: 'membershipId',
-  attendedAt: 'attendedAt'
-} as const
-
-export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
-
-
 export const ScheduleScalarFieldEnum = {
   id: 'id',
   trainerId: 'trainerId',
   memberId: 'memberId',
-  time: 'time',
-  status: 'status'
+  membershipId: 'membershipId',
+  scheduledAt: 'scheduledAt',
+  status: 'status',
+  cancelReason: 'cancelReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typeof ScheduleScalarFieldEnum]
@@ -179,7 +171,7 @@ export const RevenueRecognitionScalarFieldEnum = {
   id: 'id',
   trainerId: 'trainerId',
   memberId: 'memberId',
-  attendanceId: 'attendanceId',
+  scheduleId: 'scheduleId',
   amount: 'amount',
   recognizedAt: 'recognizedAt'
 } as const

@@ -48,11 +48,6 @@ export type SessionPass = Prisma.SessionPassModel
  */
 export type Membership = Prisma.MembershipModel
 /**
- * Model Attendance
- * 
- */
-export type Attendance = Prisma.AttendanceModel
-/**
  * Model Schedule
  * 
  */

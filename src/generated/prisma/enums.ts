@@ -11,8 +11,9 @@
 
 export const ScheduleStatus = {
   SCHEDULED: 'SCHEDULED',
-  CANCELED: 'CANCELED',
-  COMPLETED: 'COMPLETED'
+  ATTENDED: 'ATTENDED',
+  CANCELLED: 'CANCELLED',
+  NOSHOW: 'NOSHOW'
 } as const
 
 export type ScheduleStatus = (typeof ScheduleStatus)[keyof typeof ScheduleStatus]

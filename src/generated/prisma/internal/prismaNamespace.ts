@@ -390,7 +390,6 @@ export const ModelName = {
   Member: 'Member',
   SessionPass: 'SessionPass',
   Membership: 'Membership',
-  Attendance: 'Attendance',
   Schedule: 'Schedule',
   RevenueRecognition: 'RevenueRecognition'
 } as const
@@ -408,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trainer" | "refreshToken" | "trainerExpense" | "member" | "sessionPass" | "membership" | "attendance" | "schedule" | "revenueRecognition"
+    modelProps: "trainer" | "refreshToken" | "trainerExpense" | "member" | "sessionPass" | "membership" | "schedule" | "revenueRecognition"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -856,80 +855,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Attendance: {
-      payload: Prisma.$AttendancePayload<ExtArgs>
-      fields: Prisma.AttendanceFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.AttendanceFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.AttendanceFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>
-        }
-        findFirst: {
-          args: Prisma.AttendanceFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.AttendanceFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>
-        }
-        findMany: {
-          args: Prisma.AttendanceFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>[]
-        }
-        create: {
-          args: Prisma.AttendanceCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>
-        }
-        createMany: {
-          args: Prisma.AttendanceCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.AttendanceCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>[]
-        }
-        delete: {
-          args: Prisma.AttendanceDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>
-        }
-        update: {
-          args: Prisma.AttendanceUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>
-        }
-        deleteMany: {
-          args: Prisma.AttendanceDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.AttendanceUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.AttendanceUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>[]
-        }
-        upsert: {
-          args: Prisma.AttendanceUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttendancePayload>
-        }
-        aggregate: {
-          args: Prisma.AttendanceAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAttendance>
-        }
-        groupBy: {
-          args: Prisma.AttendanceGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AttendanceGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.AttendanceCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AttendanceCountAggregateOutputType> | number
-        }
-      }
-    }
     Schedule: {
       payload: Prisma.$SchedulePayload<ExtArgs>
       fields: Prisma.ScheduleFieldRefs
@@ -1192,23 +1117,16 @@ export const MembershipScalarFieldEnum = {
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
 
 
-export const AttendanceScalarFieldEnum = {
-  id: 'id',
-  trainerId: 'trainerId',
-  memberId: 'memberId',
-  membershipId: 'membershipId',
-  attendedAt: 'attendedAt'
-} as const
-
-export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
-
-
 export const ScheduleScalarFieldEnum = {
   id: 'id',
   trainerId: 'trainerId',
   memberId: 'memberId',
-  time: 'time',
-  status: 'status'
+  membershipId: 'membershipId',
+  scheduledAt: 'scheduledAt',
+  status: 'status',
+  cancelReason: 'cancelReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typeof ScheduleScalarFieldEnum]
@@ -1218,7 +1136,7 @@ export const RevenueRecognitionScalarFieldEnum = {
   id: 'id',
   trainerId: 'trainerId',
   memberId: 'memberId',
-  attendanceId: 'attendanceId',
+  scheduleId: 'scheduleId',
   amount: 'amount',
   recognizedAt: 'recognizedAt'
 } as const
@@ -1482,7 +1400,6 @@ export type GlobalOmitConfig = {
   member?: Prisma.MemberOmit
   sessionPass?: Prisma.SessionPassOmit
   membership?: Prisma.MembershipOmit
-  attendance?: Prisma.AttendanceOmit
   schedule?: Prisma.ScheduleOmit
   revenueRecognition?: Prisma.RevenueRecognitionOmit
 }

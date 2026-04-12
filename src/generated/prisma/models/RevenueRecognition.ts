@@ -38,7 +38,7 @@ export type RevenueRecognitionMinAggregateOutputType = {
   id: string | null
   trainerId: string | null
   memberId: string | null
-  attendanceId: string | null
+  scheduleId: string | null
   amount: runtime.Decimal | null
   recognizedAt: Date | null
 }
@@ -47,7 +47,7 @@ export type RevenueRecognitionMaxAggregateOutputType = {
   id: string | null
   trainerId: string | null
   memberId: string | null
-  attendanceId: string | null
+  scheduleId: string | null
   amount: runtime.Decimal | null
   recognizedAt: Date | null
 }
@@ -56,7 +56,7 @@ export type RevenueRecognitionCountAggregateOutputType = {
   id: number
   trainerId: number
   memberId: number
-  attendanceId: number
+  scheduleId: number
   amount: number
   recognizedAt: number
   _all: number
@@ -75,7 +75,7 @@ export type RevenueRecognitionMinAggregateInputType = {
   id?: true
   trainerId?: true
   memberId?: true
-  attendanceId?: true
+  scheduleId?: true
   amount?: true
   recognizedAt?: true
 }
@@ -84,7 +84,7 @@ export type RevenueRecognitionMaxAggregateInputType = {
   id?: true
   trainerId?: true
   memberId?: true
-  attendanceId?: true
+  scheduleId?: true
   amount?: true
   recognizedAt?: true
 }
@@ -93,7 +93,7 @@ export type RevenueRecognitionCountAggregateInputType = {
   id?: true
   trainerId?: true
   memberId?: true
-  attendanceId?: true
+  scheduleId?: true
   amount?: true
   recognizedAt?: true
   _all?: true
@@ -189,7 +189,7 @@ export type RevenueRecognitionGroupByOutputType = {
   id: string
   trainerId: string
   memberId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal
   recognizedAt: Date
   _count: RevenueRecognitionCountAggregateOutputType | null
@@ -221,29 +221,29 @@ export type RevenueRecognitionWhereInput = {
   id?: Prisma.StringFilter<"RevenueRecognition"> | string
   trainerId?: Prisma.StringFilter<"RevenueRecognition"> | string
   memberId?: Prisma.StringFilter<"RevenueRecognition"> | string
-  attendanceId?: Prisma.StringFilter<"RevenueRecognition"> | string
+  scheduleId?: Prisma.StringFilter<"RevenueRecognition"> | string
   amount?: Prisma.DecimalFilter<"RevenueRecognition"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFilter<"RevenueRecognition"> | Date | string
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
-  attendance?: Prisma.XOR<Prisma.AttendanceScalarRelationFilter, Prisma.AttendanceWhereInput>
+  schedule?: Prisma.XOR<Prisma.ScheduleScalarRelationFilter, Prisma.ScheduleWhereInput>
 }
 
 export type RevenueRecognitionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
-  attendanceId?: Prisma.SortOrder
+  scheduleId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   recognizedAt?: Prisma.SortOrder
   trainer?: Prisma.TrainerOrderByWithRelationInput
   member?: Prisma.MemberOrderByWithRelationInput
-  attendance?: Prisma.AttendanceOrderByWithRelationInput
+  schedule?: Prisma.ScheduleOrderByWithRelationInput
 }
 
 export type RevenueRecognitionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  attendanceId?: string
+  scheduleId?: string
   AND?: Prisma.RevenueRecognitionWhereInput | Prisma.RevenueRecognitionWhereInput[]
   OR?: Prisma.RevenueRecognitionWhereInput[]
   NOT?: Prisma.RevenueRecognitionWhereInput | Prisma.RevenueRecognitionWhereInput[]
@@ -253,14 +253,14 @@ export type RevenueRecognitionWhereUniqueInput = Prisma.AtLeast<{
   recognizedAt?: Prisma.DateTimeFilter<"RevenueRecognition"> | Date | string
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
-  attendance?: Prisma.XOR<Prisma.AttendanceScalarRelationFilter, Prisma.AttendanceWhereInput>
-}, "id" | "attendanceId">
+  schedule?: Prisma.XOR<Prisma.ScheduleScalarRelationFilter, Prisma.ScheduleWhereInput>
+}, "id" | "scheduleId">
 
 export type RevenueRecognitionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
-  attendanceId?: Prisma.SortOrder
+  scheduleId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   recognizedAt?: Prisma.SortOrder
   _count?: Prisma.RevenueRecognitionCountOrderByAggregateInput
@@ -277,7 +277,7 @@ export type RevenueRecognitionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"RevenueRecognition"> | string
   trainerId?: Prisma.StringWithAggregatesFilter<"RevenueRecognition"> | string
   memberId?: Prisma.StringWithAggregatesFilter<"RevenueRecognition"> | string
-  attendanceId?: Prisma.StringWithAggregatesFilter<"RevenueRecognition"> | string
+  scheduleId?: Prisma.StringWithAggregatesFilter<"RevenueRecognition"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"RevenueRecognition"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeWithAggregatesFilter<"RevenueRecognition"> | Date | string
 }
@@ -288,14 +288,14 @@ export type RevenueRecognitionCreateInput = {
   recognizedAt: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutRevenueRecognitionsInput
   member: Prisma.MemberCreateNestedOneWithoutRevenueRecognitionsInput
-  attendance: Prisma.AttendanceCreateNestedOneWithoutRevenueRecognitionInput
+  schedule: Prisma.ScheduleCreateNestedOneWithoutRevenueRecognitionInput
 }
 
 export type RevenueRecognitionUncheckedCreateInput = {
   id?: string
   trainerId: string
   memberId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
 }
@@ -306,14 +306,14 @@ export type RevenueRecognitionUpdateInput = {
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutRevenueRecognitionsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutRevenueRecognitionsNestedInput
-  attendance?: Prisma.AttendanceUpdateOneRequiredWithoutRevenueRecognitionNestedInput
+  schedule?: Prisma.ScheduleUpdateOneRequiredWithoutRevenueRecognitionNestedInput
 }
 
 export type RevenueRecognitionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -322,7 +322,7 @@ export type RevenueRecognitionCreateManyInput = {
   id?: string
   trainerId: string
   memberId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
 }
@@ -337,7 +337,7 @@ export type RevenueRecognitionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -361,7 +361,7 @@ export type RevenueRecognitionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
-  attendanceId?: Prisma.SortOrder
+  scheduleId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   recognizedAt?: Prisma.SortOrder
 }
@@ -374,7 +374,7 @@ export type RevenueRecognitionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
-  attendanceId?: Prisma.SortOrder
+  scheduleId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   recognizedAt?: Prisma.SortOrder
 }
@@ -383,7 +383,7 @@ export type RevenueRecognitionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
-  attendanceId?: Prisma.SortOrder
+  scheduleId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   recognizedAt?: Prisma.SortOrder
 }
@@ -476,36 +476,36 @@ export type RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput = {
   deleteMany?: Prisma.RevenueRecognitionScalarWhereInput | Prisma.RevenueRecognitionScalarWhereInput[]
 }
 
-export type RevenueRecognitionCreateNestedOneWithoutAttendanceInput = {
-  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedCreateWithoutAttendanceInput>
-  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutAttendanceInput
+export type RevenueRecognitionCreateNestedOneWithoutScheduleInput = {
+  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedCreateWithoutScheduleInput>
+  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutScheduleInput
   connect?: Prisma.RevenueRecognitionWhereUniqueInput
 }
 
-export type RevenueRecognitionUncheckedCreateNestedOneWithoutAttendanceInput = {
-  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedCreateWithoutAttendanceInput>
-  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutAttendanceInput
+export type RevenueRecognitionUncheckedCreateNestedOneWithoutScheduleInput = {
+  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedCreateWithoutScheduleInput>
+  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutScheduleInput
   connect?: Prisma.RevenueRecognitionWhereUniqueInput
 }
 
-export type RevenueRecognitionUpdateOneWithoutAttendanceNestedInput = {
-  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedCreateWithoutAttendanceInput>
-  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutAttendanceInput
-  upsert?: Prisma.RevenueRecognitionUpsertWithoutAttendanceInput
+export type RevenueRecognitionUpdateOneWithoutScheduleNestedInput = {
+  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedCreateWithoutScheduleInput>
+  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutScheduleInput
+  upsert?: Prisma.RevenueRecognitionUpsertWithoutScheduleInput
   disconnect?: Prisma.RevenueRecognitionWhereInput | boolean
   delete?: Prisma.RevenueRecognitionWhereInput | boolean
   connect?: Prisma.RevenueRecognitionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.RevenueRecognitionUpdateToOneWithWhereWithoutAttendanceInput, Prisma.RevenueRecognitionUpdateWithoutAttendanceInput>, Prisma.RevenueRecognitionUncheckedUpdateWithoutAttendanceInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RevenueRecognitionUpdateToOneWithWhereWithoutScheduleInput, Prisma.RevenueRecognitionUpdateWithoutScheduleInput>, Prisma.RevenueRecognitionUncheckedUpdateWithoutScheduleInput>
 }
 
-export type RevenueRecognitionUncheckedUpdateOneWithoutAttendanceNestedInput = {
-  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedCreateWithoutAttendanceInput>
-  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutAttendanceInput
-  upsert?: Prisma.RevenueRecognitionUpsertWithoutAttendanceInput
+export type RevenueRecognitionUncheckedUpdateOneWithoutScheduleNestedInput = {
+  create?: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedCreateWithoutScheduleInput>
+  connectOrCreate?: Prisma.RevenueRecognitionCreateOrConnectWithoutScheduleInput
+  upsert?: Prisma.RevenueRecognitionUpsertWithoutScheduleInput
   disconnect?: Prisma.RevenueRecognitionWhereInput | boolean
   delete?: Prisma.RevenueRecognitionWhereInput | boolean
   connect?: Prisma.RevenueRecognitionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.RevenueRecognitionUpdateToOneWithWhereWithoutAttendanceInput, Prisma.RevenueRecognitionUpdateWithoutAttendanceInput>, Prisma.RevenueRecognitionUncheckedUpdateWithoutAttendanceInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RevenueRecognitionUpdateToOneWithWhereWithoutScheduleInput, Prisma.RevenueRecognitionUpdateWithoutScheduleInput>, Prisma.RevenueRecognitionUncheckedUpdateWithoutScheduleInput>
 }
 
 export type RevenueRecognitionCreateWithoutTrainerInput = {
@@ -513,13 +513,13 @@ export type RevenueRecognitionCreateWithoutTrainerInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
   member: Prisma.MemberCreateNestedOneWithoutRevenueRecognitionsInput
-  attendance: Prisma.AttendanceCreateNestedOneWithoutRevenueRecognitionInput
+  schedule: Prisma.ScheduleCreateNestedOneWithoutRevenueRecognitionInput
 }
 
 export type RevenueRecognitionUncheckedCreateWithoutTrainerInput = {
   id?: string
   memberId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
 }
@@ -557,7 +557,7 @@ export type RevenueRecognitionScalarWhereInput = {
   id?: Prisma.StringFilter<"RevenueRecognition"> | string
   trainerId?: Prisma.StringFilter<"RevenueRecognition"> | string
   memberId?: Prisma.StringFilter<"RevenueRecognition"> | string
-  attendanceId?: Prisma.StringFilter<"RevenueRecognition"> | string
+  scheduleId?: Prisma.StringFilter<"RevenueRecognition"> | string
   amount?: Prisma.DecimalFilter<"RevenueRecognition"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFilter<"RevenueRecognition"> | Date | string
 }
@@ -567,13 +567,13 @@ export type RevenueRecognitionCreateWithoutMemberInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutRevenueRecognitionsInput
-  attendance: Prisma.AttendanceCreateNestedOneWithoutRevenueRecognitionInput
+  schedule: Prisma.ScheduleCreateNestedOneWithoutRevenueRecognitionInput
 }
 
 export type RevenueRecognitionUncheckedCreateWithoutMemberInput = {
   id?: string
   trainerId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
 }
@@ -604,7 +604,7 @@ export type RevenueRecognitionUpdateManyWithWhereWithoutMemberInput = {
   data: Prisma.XOR<Prisma.RevenueRecognitionUpdateManyMutationInput, Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberInput>
 }
 
-export type RevenueRecognitionCreateWithoutAttendanceInput = {
+export type RevenueRecognitionCreateWithoutScheduleInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
@@ -612,7 +612,7 @@ export type RevenueRecognitionCreateWithoutAttendanceInput = {
   member: Prisma.MemberCreateNestedOneWithoutRevenueRecognitionsInput
 }
 
-export type RevenueRecognitionUncheckedCreateWithoutAttendanceInput = {
+export type RevenueRecognitionUncheckedCreateWithoutScheduleInput = {
   id?: string
   trainerId: string
   memberId: string
@@ -620,23 +620,23 @@ export type RevenueRecognitionUncheckedCreateWithoutAttendanceInput = {
   recognizedAt: Date | string
 }
 
-export type RevenueRecognitionCreateOrConnectWithoutAttendanceInput = {
+export type RevenueRecognitionCreateOrConnectWithoutScheduleInput = {
   where: Prisma.RevenueRecognitionWhereUniqueInput
-  create: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedCreateWithoutAttendanceInput>
+  create: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedCreateWithoutScheduleInput>
 }
 
-export type RevenueRecognitionUpsertWithoutAttendanceInput = {
-  update: Prisma.XOR<Prisma.RevenueRecognitionUpdateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedUpdateWithoutAttendanceInput>
-  create: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedCreateWithoutAttendanceInput>
+export type RevenueRecognitionUpsertWithoutScheduleInput = {
+  update: Prisma.XOR<Prisma.RevenueRecognitionUpdateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedUpdateWithoutScheduleInput>
+  create: Prisma.XOR<Prisma.RevenueRecognitionCreateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedCreateWithoutScheduleInput>
   where?: Prisma.RevenueRecognitionWhereInput
 }
 
-export type RevenueRecognitionUpdateToOneWithWhereWithoutAttendanceInput = {
+export type RevenueRecognitionUpdateToOneWithWhereWithoutScheduleInput = {
   where?: Prisma.RevenueRecognitionWhereInput
-  data: Prisma.XOR<Prisma.RevenueRecognitionUpdateWithoutAttendanceInput, Prisma.RevenueRecognitionUncheckedUpdateWithoutAttendanceInput>
+  data: Prisma.XOR<Prisma.RevenueRecognitionUpdateWithoutScheduleInput, Prisma.RevenueRecognitionUncheckedUpdateWithoutScheduleInput>
 }
 
-export type RevenueRecognitionUpdateWithoutAttendanceInput = {
+export type RevenueRecognitionUpdateWithoutScheduleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -644,7 +644,7 @@ export type RevenueRecognitionUpdateWithoutAttendanceInput = {
   member?: Prisma.MemberUpdateOneRequiredWithoutRevenueRecognitionsNestedInput
 }
 
-export type RevenueRecognitionUncheckedUpdateWithoutAttendanceInput = {
+export type RevenueRecognitionUncheckedUpdateWithoutScheduleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -655,7 +655,7 @@ export type RevenueRecognitionUncheckedUpdateWithoutAttendanceInput = {
 export type RevenueRecognitionCreateManyTrainerInput = {
   id?: string
   memberId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
 }
@@ -665,13 +665,13 @@ export type RevenueRecognitionUpdateWithoutTrainerInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   member?: Prisma.MemberUpdateOneRequiredWithoutRevenueRecognitionsNestedInput
-  attendance?: Prisma.AttendanceUpdateOneRequiredWithoutRevenueRecognitionNestedInput
+  schedule?: Prisma.ScheduleUpdateOneRequiredWithoutRevenueRecognitionNestedInput
 }
 
 export type RevenueRecognitionUncheckedUpdateWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -679,7 +679,7 @@ export type RevenueRecognitionUncheckedUpdateWithoutTrainerInput = {
 export type RevenueRecognitionUncheckedUpdateManyWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -687,7 +687,7 @@ export type RevenueRecognitionUncheckedUpdateManyWithoutTrainerInput = {
 export type RevenueRecognitionCreateManyMemberInput = {
   id?: string
   trainerId: string
-  attendanceId: string
+  scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt: Date | string
 }
@@ -697,13 +697,13 @@ export type RevenueRecognitionUpdateWithoutMemberInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutRevenueRecognitionsNestedInput
-  attendance?: Prisma.AttendanceUpdateOneRequiredWithoutRevenueRecognitionNestedInput
+  schedule?: Prisma.ScheduleUpdateOneRequiredWithoutRevenueRecognitionNestedInput
 }
 
 export type RevenueRecognitionUncheckedUpdateWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -711,7 +711,7 @@ export type RevenueRecognitionUncheckedUpdateWithoutMemberInput = {
 export type RevenueRecognitionUncheckedUpdateManyWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
-  attendanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recognizedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -722,62 +722,62 @@ export type RevenueRecognitionSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   trainerId?: boolean
   memberId?: boolean
-  attendanceId?: boolean
+  scheduleId?: boolean
   amount?: boolean
   recognizedAt?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
-  attendance?: boolean | Prisma.AttendanceDefaultArgs<ExtArgs>
+  schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["revenueRecognition"]>
 
 export type RevenueRecognitionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   trainerId?: boolean
   memberId?: boolean
-  attendanceId?: boolean
+  scheduleId?: boolean
   amount?: boolean
   recognizedAt?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
-  attendance?: boolean | Prisma.AttendanceDefaultArgs<ExtArgs>
+  schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["revenueRecognition"]>
 
 export type RevenueRecognitionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   trainerId?: boolean
   memberId?: boolean
-  attendanceId?: boolean
+  scheduleId?: boolean
   amount?: boolean
   recognizedAt?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
-  attendance?: boolean | Prisma.AttendanceDefaultArgs<ExtArgs>
+  schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["revenueRecognition"]>
 
 export type RevenueRecognitionSelectScalar = {
   id?: boolean
   trainerId?: boolean
   memberId?: boolean
-  attendanceId?: boolean
+  scheduleId?: boolean
   amount?: boolean
   recognizedAt?: boolean
 }
 
-export type RevenueRecognitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "memberId" | "attendanceId" | "amount" | "recognizedAt", ExtArgs["result"]["revenueRecognition"]>
+export type RevenueRecognitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "memberId" | "scheduleId" | "amount" | "recognizedAt", ExtArgs["result"]["revenueRecognition"]>
 export type RevenueRecognitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
-  attendance?: boolean | Prisma.AttendanceDefaultArgs<ExtArgs>
+  schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }
 export type RevenueRecognitionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
-  attendance?: boolean | Prisma.AttendanceDefaultArgs<ExtArgs>
+  schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }
 export type RevenueRecognitionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
-  attendance?: boolean | Prisma.AttendanceDefaultArgs<ExtArgs>
+  schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }
 
 export type $RevenueRecognitionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -785,13 +785,13 @@ export type $RevenueRecognitionPayload<ExtArgs extends runtime.Types.Extensions.
   objects: {
     trainer: Prisma.$TrainerPayload<ExtArgs>
     member: Prisma.$MemberPayload<ExtArgs>
-    attendance: Prisma.$AttendancePayload<ExtArgs>
+    schedule: Prisma.$SchedulePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     trainerId: string
     memberId: string
-    attendanceId: string
+    scheduleId: string
     amount: runtime.Decimal
     recognizedAt: Date
   }, ExtArgs["result"]["revenueRecognition"]>
@@ -1190,7 +1190,7 @@ export interface Prisma__RevenueRecognitionClient<T, Null = never, ExtArgs exten
   readonly [Symbol.toStringTag]: "PrismaPromise"
   trainer<T extends Prisma.TrainerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainerDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainerClient<runtime.Types.Result.GetResult<Prisma.$TrainerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   member<T extends Prisma.MemberDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MemberDefaultArgs<ExtArgs>>): Prisma.Prisma__MemberClient<runtime.Types.Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  attendance<T extends Prisma.AttendanceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttendanceDefaultArgs<ExtArgs>>): Prisma.Prisma__AttendanceClient<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  schedule<T extends Prisma.ScheduleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScheduleDefaultArgs<ExtArgs>>): Prisma.Prisma__ScheduleClient<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1223,7 +1223,7 @@ export interface RevenueRecognitionFieldRefs {
   readonly id: Prisma.FieldRef<"RevenueRecognition", 'String'>
   readonly trainerId: Prisma.FieldRef<"RevenueRecognition", 'String'>
   readonly memberId: Prisma.FieldRef<"RevenueRecognition", 'String'>
-  readonly attendanceId: Prisma.FieldRef<"RevenueRecognition", 'String'>
+  readonly scheduleId: Prisma.FieldRef<"RevenueRecognition", 'String'>
   readonly amount: Prisma.FieldRef<"RevenueRecognition", 'Decimal'>
   readonly recognizedAt: Prisma.FieldRef<"RevenueRecognition", 'DateTime'>
 }

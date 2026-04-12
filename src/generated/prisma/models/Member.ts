@@ -184,7 +184,6 @@ export type MemberWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
-  attendances?: Prisma.AttendanceListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
 }
@@ -197,13 +196,13 @@ export type MemberOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   trainer?: Prisma.TrainerOrderByWithRelationInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
-  attendances?: Prisma.AttendanceOrderByRelationAggregateInput
   schedules?: Prisma.ScheduleOrderByRelationAggregateInput
   revenueRecognitions?: Prisma.RevenueRecognitionOrderByRelationAggregateInput
 }
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  trainerId_name_phoneNumber?: Prisma.MemberTrainerIdNamePhoneNumberCompoundUniqueInput
   AND?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[]
   OR?: Prisma.MemberWhereInput[]
   NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[]
@@ -213,10 +212,9 @@ export type MemberWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
-  attendances?: Prisma.AttendanceListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
-}, "id">
+}, "id" | "trainerId_name_phoneNumber">
 
 export type MemberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -247,7 +245,6 @@ export type MemberCreateInput = {
   createdAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
 }
@@ -259,7 +256,6 @@ export type MemberUncheckedCreateInput = {
   phoneNumber: string
   createdAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutMemberInput
 }
@@ -271,7 +267,6 @@ export type MemberUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
 }
@@ -283,7 +278,6 @@ export type MemberUncheckedUpdateInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput
 }
@@ -319,6 +313,12 @@ export type MemberListRelationFilter = {
 
 export type MemberOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type MemberTrainerIdNamePhoneNumberCompoundUniqueInput = {
+  trainerId: string
+  name: string
+  phoneNumber: string
 }
 
 export type MemberCountOrderByAggregateInput = {
@@ -406,20 +406,6 @@ export type MemberUpdateOneRequiredWithoutMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutMembershipsInput, Prisma.MemberUpdateWithoutMembershipsInput>, Prisma.MemberUncheckedUpdateWithoutMembershipsInput>
 }
 
-export type MemberCreateNestedOneWithoutAttendancesInput = {
-  create?: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
-  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutAttendancesInput
-  connect?: Prisma.MemberWhereUniqueInput
-}
-
-export type MemberUpdateOneRequiredWithoutAttendancesNestedInput = {
-  create?: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
-  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutAttendancesInput
-  upsert?: Prisma.MemberUpsertWithoutAttendancesInput
-  connect?: Prisma.MemberWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MemberUpdateToOneWithWhereWithoutAttendancesInput, Prisma.MemberUpdateWithoutAttendancesInput>, Prisma.MemberUncheckedUpdateWithoutAttendancesInput>
-}
-
 export type MemberCreateNestedOneWithoutSchedulesInput = {
   create?: Prisma.XOR<Prisma.MemberCreateWithoutSchedulesInput, Prisma.MemberUncheckedCreateWithoutSchedulesInput>
   connectOrCreate?: Prisma.MemberCreateOrConnectWithoutSchedulesInput
@@ -454,7 +440,6 @@ export type MemberCreateWithoutTrainerInput = {
   phoneNumber: string
   createdAt?: Date | string
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
 }
@@ -465,7 +450,6 @@ export type MemberUncheckedCreateWithoutTrainerInput = {
   phoneNumber: string
   createdAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutMemberInput
 }
@@ -513,7 +497,6 @@ export type MemberCreateWithoutMembershipsInput = {
   phoneNumber: string
   createdAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
 }
@@ -524,7 +507,6 @@ export type MemberUncheckedCreateWithoutMembershipsInput = {
   name: string
   phoneNumber: string
   createdAt?: Date | string
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutMemberInput
 }
@@ -551,7 +533,6 @@ export type MemberUpdateWithoutMembershipsInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
 }
@@ -562,67 +543,6 @@ export type MemberUncheckedUpdateWithoutMembershipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMemberNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput
-}
-
-export type MemberCreateWithoutAttendancesInput = {
-  id?: string
-  name: string
-  phoneNumber: string
-  createdAt?: Date | string
-  trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
-}
-
-export type MemberUncheckedCreateWithoutAttendancesInput = {
-  id?: string
-  trainerId: string
-  name: string
-  phoneNumber: string
-  createdAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutMemberInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMemberInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutMemberInput
-}
-
-export type MemberCreateOrConnectWithoutAttendancesInput = {
-  where: Prisma.MemberWhereUniqueInput
-  create: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
-}
-
-export type MemberUpsertWithoutAttendancesInput = {
-  update: Prisma.XOR<Prisma.MemberUpdateWithoutAttendancesInput, Prisma.MemberUncheckedUpdateWithoutAttendancesInput>
-  create: Prisma.XOR<Prisma.MemberCreateWithoutAttendancesInput, Prisma.MemberUncheckedCreateWithoutAttendancesInput>
-  where?: Prisma.MemberWhereInput
-}
-
-export type MemberUpdateToOneWithWhereWithoutAttendancesInput = {
-  where?: Prisma.MemberWhereInput
-  data: Prisma.XOR<Prisma.MemberUpdateWithoutAttendancesInput, Prisma.MemberUncheckedUpdateWithoutAttendancesInput>
-}
-
-export type MemberUpdateWithoutAttendancesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
-}
-
-export type MemberUncheckedUpdateWithoutAttendancesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput
 }
@@ -634,7 +554,6 @@ export type MemberCreateWithoutSchedulesInput = {
   createdAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
 }
 
@@ -645,7 +564,6 @@ export type MemberUncheckedCreateWithoutSchedulesInput = {
   phoneNumber: string
   createdAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutMemberInput
 }
 
@@ -672,7 +590,6 @@ export type MemberUpdateWithoutSchedulesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
 }
 
@@ -683,7 +600,6 @@ export type MemberUncheckedUpdateWithoutSchedulesInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput
 }
 
@@ -694,7 +610,6 @@ export type MemberCreateWithoutRevenueRecognitionsInput = {
   createdAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
 }
 
@@ -705,7 +620,6 @@ export type MemberUncheckedCreateWithoutRevenueRecognitionsInput = {
   phoneNumber: string
   createdAt?: Date | string
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutMemberInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMemberInput
 }
 
@@ -732,7 +646,6 @@ export type MemberUpdateWithoutRevenueRecognitionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
 }
 
@@ -743,7 +656,6 @@ export type MemberUncheckedUpdateWithoutRevenueRecognitionsInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMemberNestedInput
 }
 
@@ -760,7 +672,6 @@ export type MemberUpdateWithoutTrainerInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
 }
@@ -771,7 +682,6 @@ export type MemberUncheckedUpdateWithoutTrainerInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutMemberNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput
 }
@@ -790,14 +700,12 @@ export type MemberUncheckedUpdateManyWithoutTrainerInput = {
 
 export type MemberCountOutputType = {
   memberships: number
-  attendances: number
   schedules: number
   revenueRecognitions: number
 }
 
 export type MemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | MemberCountOutputTypeCountMembershipsArgs
-  attendances?: boolean | MemberCountOutputTypeCountAttendancesArgs
   schedules?: boolean | MemberCountOutputTypeCountSchedulesArgs
   revenueRecognitions?: boolean | MemberCountOutputTypeCountRevenueRecognitionsArgs
 }
@@ -817,13 +725,6 @@ export type MemberCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
  */
 export type MemberCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MembershipWhereInput
-}
-
-/**
- * MemberCountOutputType without action
- */
-export type MemberCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AttendanceWhereInput
 }
 
 /**
@@ -849,7 +750,6 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.Member$membershipsArgs<ExtArgs>
-  attendances?: boolean | Prisma.Member$attendancesArgs<ExtArgs>
   schedules?: boolean | Prisma.Member$schedulesArgs<ExtArgs>
   revenueRecognitions?: boolean | Prisma.Member$revenueRecognitionsArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
@@ -885,7 +785,6 @@ export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.Member$membershipsArgs<ExtArgs>
-  attendances?: boolean | Prisma.Member$attendancesArgs<ExtArgs>
   schedules?: boolean | Prisma.Member$schedulesArgs<ExtArgs>
   revenueRecognitions?: boolean | Prisma.Member$revenueRecognitionsArgs<ExtArgs>
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
@@ -902,7 +801,6 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     trainer: Prisma.$TrainerPayload<ExtArgs>
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
-    attendances: Prisma.$AttendancePayload<ExtArgs>[]
     schedules: Prisma.$SchedulePayload<ExtArgs>[]
     revenueRecognitions: Prisma.$RevenueRecognitionPayload<ExtArgs>[]
   }
@@ -1308,7 +1206,6 @@ export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   trainer<T extends Prisma.TrainerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainerDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainerClient<runtime.Types.Result.GetResult<Prisma.$TrainerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   memberships<T extends Prisma.Member$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  attendances<T extends Prisma.Member$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   schedules<T extends Prisma.Member$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   revenueRecognitions<T extends Prisma.Member$revenueRecognitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$revenueRecognitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RevenueRecognitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1767,30 +1664,6 @@ export type Member$membershipsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
-}
-
-/**
- * Member.attendances
- */
-export type Member$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Attendance
-   */
-  select?: Prisma.AttendanceSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Attendance
-   */
-  omit?: Prisma.AttendanceOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AttendanceInclude<ExtArgs> | null
-  where?: Prisma.AttendanceWhereInput
-  orderBy?: Prisma.AttendanceOrderByWithRelationInput | Prisma.AttendanceOrderByWithRelationInput[]
-  cursor?: Prisma.AttendanceWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
 }
 
 /**

@@ -188,7 +188,6 @@ export type TrainerWhereInput = {
   sessionPasses?: Prisma.SessionPassListRelationFilter
   memberships?: Prisma.MembershipListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
-  attendances?: Prisma.AttendanceListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
 }
 
@@ -204,7 +203,6 @@ export type TrainerOrderByWithRelationInput = {
   sessionPasses?: Prisma.SessionPassOrderByRelationAggregateInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
   schedules?: Prisma.ScheduleOrderByRelationAggregateInput
-  attendances?: Prisma.AttendanceOrderByRelationAggregateInput
   revenueRecognitions?: Prisma.RevenueRecognitionOrderByRelationAggregateInput
 }
 
@@ -223,7 +221,6 @@ export type TrainerWhereUniqueInput = Prisma.AtLeast<{
   sessionPasses?: Prisma.SessionPassListRelationFilter
   memberships?: Prisma.MembershipListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
-  attendances?: Prisma.AttendanceListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
 }, "id" | "email">
 
@@ -261,7 +258,6 @@ export type TrainerCreateInput = {
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -277,7 +273,6 @@ export type TrainerUncheckedCreateInput = {
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -293,7 +288,6 @@ export type TrainerUpdateInput = {
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -309,7 +303,6 @@ export type TrainerUncheckedUpdateInput = {
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
@@ -444,20 +437,6 @@ export type TrainerUpdateOneRequiredWithoutMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutMembershipsInput, Prisma.TrainerUpdateWithoutMembershipsInput>, Prisma.TrainerUncheckedUpdateWithoutMembershipsInput>
 }
 
-export type TrainerCreateNestedOneWithoutAttendancesInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutAttendancesInput, Prisma.TrainerUncheckedCreateWithoutAttendancesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutAttendancesInput
-  connect?: Prisma.TrainerWhereUniqueInput
-}
-
-export type TrainerUpdateOneRequiredWithoutAttendancesNestedInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutAttendancesInput, Prisma.TrainerUncheckedCreateWithoutAttendancesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutAttendancesInput
-  upsert?: Prisma.TrainerUpsertWithoutAttendancesInput
-  connect?: Prisma.TrainerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutAttendancesInput, Prisma.TrainerUpdateWithoutAttendancesInput>, Prisma.TrainerUncheckedUpdateWithoutAttendancesInput>
-}
-
 export type TrainerCreateNestedOneWithoutSchedulesInput = {
   create?: Prisma.XOR<Prisma.TrainerCreateWithoutSchedulesInput, Prisma.TrainerUncheckedCreateWithoutSchedulesInput>
   connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutSchedulesInput
@@ -497,7 +476,6 @@ export type TrainerCreateWithoutRefreshTokensInput = {
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -512,7 +490,6 @@ export type TrainerUncheckedCreateWithoutRefreshTokensInput = {
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -543,7 +520,6 @@ export type TrainerUpdateWithoutRefreshTokensInput = {
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -558,7 +534,6 @@ export type TrainerUncheckedUpdateWithoutRefreshTokensInput = {
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
@@ -573,7 +548,6 @@ export type TrainerCreateWithoutTrainerExpensesInput = {
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -588,7 +562,6 @@ export type TrainerUncheckedCreateWithoutTrainerExpensesInput = {
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -619,7 +592,6 @@ export type TrainerUpdateWithoutTrainerExpensesInput = {
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -634,7 +606,6 @@ export type TrainerUncheckedUpdateWithoutTrainerExpensesInput = {
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
@@ -649,7 +620,6 @@ export type TrainerCreateWithoutMembersInput = {
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -664,7 +634,6 @@ export type TrainerUncheckedCreateWithoutMembersInput = {
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -695,7 +664,6 @@ export type TrainerUpdateWithoutMembersInput = {
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -710,7 +678,6 @@ export type TrainerUncheckedUpdateWithoutMembersInput = {
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
@@ -725,7 +692,6 @@ export type TrainerCreateWithoutSessionPassesInput = {
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -740,7 +706,6 @@ export type TrainerUncheckedCreateWithoutSessionPassesInput = {
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -771,7 +736,6 @@ export type TrainerUpdateWithoutSessionPassesInput = {
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -786,7 +750,6 @@ export type TrainerUncheckedUpdateWithoutSessionPassesInput = {
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
@@ -801,7 +764,6 @@ export type TrainerCreateWithoutMembershipsInput = {
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -816,7 +778,6 @@ export type TrainerUncheckedCreateWithoutMembershipsInput = {
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -847,7 +808,6 @@ export type TrainerUpdateWithoutMembershipsInput = {
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -861,83 +821,6 @@ export type TrainerUncheckedUpdateWithoutMembershipsInput = {
   trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
-}
-
-export type TrainerCreateWithoutAttendancesInput = {
-  id?: string
-  name: string
-  email: string
-  passwordHash: string
-  createdAt?: Date | string
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
-  members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
-}
-
-export type TrainerUncheckedCreateWithoutAttendancesInput = {
-  id?: string
-  name: string
-  email: string
-  passwordHash: string
-  createdAt?: Date | string
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
-}
-
-export type TrainerCreateOrConnectWithoutAttendancesInput = {
-  where: Prisma.TrainerWhereUniqueInput
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutAttendancesInput, Prisma.TrainerUncheckedCreateWithoutAttendancesInput>
-}
-
-export type TrainerUpsertWithoutAttendancesInput = {
-  update: Prisma.XOR<Prisma.TrainerUpdateWithoutAttendancesInput, Prisma.TrainerUncheckedUpdateWithoutAttendancesInput>
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutAttendancesInput, Prisma.TrainerUncheckedCreateWithoutAttendancesInput>
-  where?: Prisma.TrainerWhereInput
-}
-
-export type TrainerUpdateToOneWithWhereWithoutAttendancesInput = {
-  where?: Prisma.TrainerWhereInput
-  data: Prisma.XOR<Prisma.TrainerUpdateWithoutAttendancesInput, Prisma.TrainerUncheckedUpdateWithoutAttendancesInput>
-}
-
-export type TrainerUpdateWithoutAttendancesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
-  members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
-}
-
-export type TrainerUncheckedUpdateWithoutAttendancesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
@@ -953,7 +836,6 @@ export type TrainerCreateWithoutSchedulesInput = {
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
 }
 
@@ -968,7 +850,6 @@ export type TrainerUncheckedCreateWithoutSchedulesInput = {
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
 }
 
@@ -999,7 +880,6 @@ export type TrainerUpdateWithoutSchedulesInput = {
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
 }
 
@@ -1014,7 +894,6 @@ export type TrainerUncheckedUpdateWithoutSchedulesInput = {
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
@@ -1030,7 +909,6 @@ export type TrainerCreateWithoutRevenueRecognitionsInput = {
   sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceCreateNestedManyWithoutTrainerInput
 }
 
 export type TrainerUncheckedCreateWithoutRevenueRecognitionsInput = {
@@ -1045,7 +923,6 @@ export type TrainerUncheckedCreateWithoutRevenueRecognitionsInput = {
   sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTrainerInput
 }
 
 export type TrainerCreateOrConnectWithoutRevenueRecognitionsInput = {
@@ -1076,7 +953,6 @@ export type TrainerUpdateWithoutRevenueRecognitionsInput = {
   sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUpdateManyWithoutTrainerNestedInput
 }
 
 export type TrainerUncheckedUpdateWithoutRevenueRecognitionsInput = {
@@ -1091,7 +967,6 @@ export type TrainerUncheckedUpdateWithoutRevenueRecognitionsInput = {
   sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTrainerNestedInput
 }
 
 
@@ -1106,7 +981,6 @@ export type TrainerCountOutputType = {
   sessionPasses: number
   memberships: number
   schedules: number
-  attendances: number
   revenueRecognitions: number
 }
 
@@ -1117,7 +991,6 @@ export type TrainerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   sessionPasses?: boolean | TrainerCountOutputTypeCountSessionPassesArgs
   memberships?: boolean | TrainerCountOutputTypeCountMembershipsArgs
   schedules?: boolean | TrainerCountOutputTypeCountSchedulesArgs
-  attendances?: boolean | TrainerCountOutputTypeCountAttendancesArgs
   revenueRecognitions?: boolean | TrainerCountOutputTypeCountRevenueRecognitionsArgs
 }
 
@@ -1176,13 +1049,6 @@ export type TrainerCountOutputTypeCountSchedulesArgs<ExtArgs extends runtime.Typ
 /**
  * TrainerCountOutputType without action
  */
-export type TrainerCountOutputTypeCountAttendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AttendanceWhereInput
-}
-
-/**
- * TrainerCountOutputType without action
- */
 export type TrainerCountOutputTypeCountRevenueRecognitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.RevenueRecognitionWhereInput
 }
@@ -1200,7 +1066,6 @@ export type TrainerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   sessionPasses?: boolean | Prisma.Trainer$sessionPassesArgs<ExtArgs>
   memberships?: boolean | Prisma.Trainer$membershipsArgs<ExtArgs>
   schedules?: boolean | Prisma.Trainer$schedulesArgs<ExtArgs>
-  attendances?: boolean | Prisma.Trainer$attendancesArgs<ExtArgs>
   revenueRecognitions?: boolean | Prisma.Trainer$revenueRecognitionsArgs<ExtArgs>
   _count?: boolean | Prisma.TrainerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trainer"]>
@@ -1237,7 +1102,6 @@ export type TrainerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   sessionPasses?: boolean | Prisma.Trainer$sessionPassesArgs<ExtArgs>
   memberships?: boolean | Prisma.Trainer$membershipsArgs<ExtArgs>
   schedules?: boolean | Prisma.Trainer$schedulesArgs<ExtArgs>
-  attendances?: boolean | Prisma.Trainer$attendancesArgs<ExtArgs>
   revenueRecognitions?: boolean | Prisma.Trainer$revenueRecognitionsArgs<ExtArgs>
   _count?: boolean | Prisma.TrainerCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1253,7 +1117,6 @@ export type $TrainerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     sessionPasses: Prisma.$SessionPassPayload<ExtArgs>[]
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
     schedules: Prisma.$SchedulePayload<ExtArgs>[]
-    attendances: Prisma.$AttendancePayload<ExtArgs>[]
     revenueRecognitions: Prisma.$RevenueRecognitionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1662,7 +1525,6 @@ export interface Prisma__TrainerClient<T, Null = never, ExtArgs extends runtime.
   sessionPasses<T extends Prisma.Trainer$sessionPassesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$sessionPassesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memberships<T extends Prisma.Trainer$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   schedules<T extends Prisma.Trainer$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  attendances<T extends Prisma.Trainer$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   revenueRecognitions<T extends Prisma.Trainer$revenueRecognitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$revenueRecognitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RevenueRecognitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2232,30 +2094,6 @@ export type Trainer$schedulesArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.ScheduleScalarFieldEnum | Prisma.ScheduleScalarFieldEnum[]
-}
-
-/**
- * Trainer.attendances
- */
-export type Trainer$attendancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Attendance
-   */
-  select?: Prisma.AttendanceSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Attendance
-   */
-  omit?: Prisma.AttendanceOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AttendanceInclude<ExtArgs> | null
-  where?: Prisma.AttendanceWhereInput
-  orderBy?: Prisma.AttendanceOrderByWithRelationInput | Prisma.AttendanceOrderByWithRelationInput[]
-  cursor?: Prisma.AttendanceWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
 }
 
 /**
