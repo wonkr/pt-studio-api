@@ -194,7 +194,7 @@ Get trainer info
 ```
 
 ### Member
-#### POST /api/members
+#### POST /api/members/register
 Register a new member.
 
 **Request Body**
@@ -202,11 +202,12 @@ Register a new member.
 {
     "name": "Jay Choi",
     "phone": "000-0000-0000",
-    "membershipType": "10-sessions",
-    "membershipPrice": 800000,
-    "membershipExpiryDate": "2026-08-10",
-    "paymentMethod": "card",
-    "paymentStatus": "paid"
+    "sessionPassName": "PT 30회권", 
+    "sessionPassTotalSessions": 30, 
+    "sessionPassPrice": 1500000, 
+    "sessionPassValidDays": 90, 
+    "paymentType": "CARD", 
+    "paymentStatus": "PAID" 
 }
 ```
 
@@ -224,7 +225,7 @@ Get a member list
    {
     "name": "Jay Choi",
     "phone": "000-0000-0000",
-    "membershipType": "10-sessions",
+    "sessionPassName": "10-sessions",
     "paymentStatus": "paid",
     "remainingSessions": 9,
     "membershipExpiryDate": "2026-08-10"
@@ -232,14 +233,14 @@ Get a member list
     {
     "name": "Jenna Choi",
     "phone": "111-1111-1111",
-    "membershipType": "20-sessions",
+    "sessionPassName": "20-sessions",
     "paymentStatus": "pending",
     "remainingSessions": 17,
     "membershipExpiryDate": "2026-10-10"
     },{
     "name": "SJ Choi",
     "phone": "222-2222-2222",
-    "membershipType": "10-sessions",
+    "sessionPassName": "10-sessions",
     "paymentStatus": "paid",
     "remainingSessions": 3,
     "membershipExpiryDate": "2026-06-20"
@@ -248,7 +249,7 @@ Get a member list
 ]
 ```
 
-#### Get /api/members/member-search?name="Jay"
+#### Get /api/members?name="Jay"
 
 **Response Body** `200`
 ```json
@@ -257,7 +258,7 @@ Get a member list
         "id": <uuid>,
         "name": "Jay Choi",
         "phone": "000-0000-0000",
-        "membershipType": "10-sessions",
+        "sessionPassName": "10-sessions",
         "paymentStatus": "paid",
         "remainingSessions": 9,
         "membershipExpiryDate": "2026-08-10"
@@ -266,7 +267,7 @@ Get a member list
         "id": <uuid>,
         "name": "Jay Won",
         "phone": "333-3333-3333",
-        "membershipType": "20-sessions",
+        "sessionPassName": "20-sessions",
         "paymentStatus": "paid",
         "remainingSessions": 4,
         "membershipExpiryDate": "2026-5-05"
@@ -284,10 +285,10 @@ Get a member list
     "id": <uuid>,
     "name": "Jay Choi",
     "phone": "000-0000-0000",
-    "membershipType": "10-sessions",
+    "sessionPassName": "10-sessions",
     "remainingSessions": 9,
-    "Attended sessions": 1,
-    "No-show sessions": 0,
+    "AttendedSessions": 1,
+    "NoShowSessions": 0,
     "membershipExpiryDate": "2026-08-10",
     "paymentStatus": "paid",
     "paymentMethod": "card"
