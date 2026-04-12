@@ -30,6 +30,9 @@ export class MembersService {
             createMemberDto.sessionPassId = createdSessionPass.id
         }
 
+
+        const paidAt = (createMemberDto.paymentStatus === "PAID" && !createMemberDto.paidAt)? new Date(): createMemberDto.paidAt
+        
         await this.databaseService.membership.create({
             data: {
                 trainerId: trainerId,
@@ -37,12 +40,88 @@ export class MembersService {
                 sessionPassId: createMemberDto.sessionPassId,
                 paymentType: createMemberDto.paymentType,
                 paymentStatus: createMemberDto.paymentStatus,
-                paidAt: createMemberDto.paidAt,
+                ... (paidAt && { paidAt: paidAt }),
                 startedAt: createMemberDto.membershipStartedAt,
                 expiredAt: createMemberDto.membershipExpiredAt,
                 remainingSessions: createMemberDto.sessionPassTotalSessions,
                 usedSessions: 0
             }
         })
+    }
+
+    async findAll(trainerId:string, name?: string){
+        const members =  await this.databaseService.member.findMany({
+            where: {
+                trainerId: trainerId,
+                ...( name && {
+                        name: {
+                        contains: name,
+                        mode: 'insensitive'
+                    }
+                })
+            },
+            select: {
+                id: true,
+                name: true,
+                phoneNumber: true,
+                memberships: {
+                    select: {
+                        sessionPass: {
+                            select: {
+                                name: true
+                            }
+                        },
+                        paymentStatus: true,
+                        remainingSessions: true,
+                        expiredAt: true
+                    }
+                }
+            }
+        })
+
+        return members.map(m => this.flattenMember(m))
+    }
+
+    async getMemberDetails(trainerId: string, memberId: string){
+        const member =  await this.databaseService.member.findUnique({
+            where: {
+                trainerId: trainerId,
+                id:memberId,
+            },
+            select: {
+                id: true,
+                name: true,
+                phoneNumber: true,
+                memberships: {
+                    select: {
+                        sessionPass: {
+                            select: {
+                                name: true
+                                
+                            }
+                        },
+                        remainingSessions: true,
+                        expiredAt: true,
+                        paymentStatus: true,
+                        paymentType: true
+                    }
+                }
+            }
+        })
+
+        return member
+    }
+
+    private flattenMember(member: any){
+        const membership = member.memberships?.[0];
+        return {
+            id: member.id,
+            name: member.name,
+            phoneNumber: member.phoneNumber,
+            sessionPassName: membership?.sessionPass?.name ?? null,
+            paymentStatus: membership?.paymentStatus ?? null,
+            remainingSessions: membership?.remainingSessions ?? null,
+            expiredAt: membership?.expiredAt ?? null
+        };
     }
 }
