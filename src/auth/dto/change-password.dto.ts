@@ -8,7 +8,7 @@ export class ChangePasswordDto {
             minNumbers: 1,
             minSymbols: 1,
         })
-    password!: string; 
+    newPassword!: string; 
     @IsString()
     @IsNotEmpty()
     confirmPassword!: string;   

@@ -23,6 +23,7 @@ import { TrainersModule } from '../trainers/trainers.module';
     DatabaseModule
   ],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
+  exports: [JwtModule]
 })
 export class AuthModule {}

@@ -35,10 +35,6 @@ export class AuthService {
         const accessToken = await this.createAccessToken(trainer.id, trainer.email)
         const refreshToken = await this.createRefreshToken(trainer.id, trainer.email)
 
-        await this.databaseService.refreshToken.deleteMany({
-            where: { trainerId: trainer.id },
-        });
-
         return {
             accessToken: accessToken,
             refreshToken: refreshToken
@@ -68,10 +64,6 @@ export class AuthService {
 
         const newAccessToken = await this.createAccessToken(dbToken.trainerId, dbToken.trainer.email)
         const newRefreshToken = await this.createRefreshToken(dbToken.trainerId, dbToken.trainer.email)
-        
-        await this.databaseService.refreshToken.delete({
-            where: {token: refreshToken}
-        })
 
         return {
             newAccessToken: newAccessToken,
@@ -79,9 +71,9 @@ export class AuthService {
         }
     }
 
-    async logout(refreshToken: string) {
-        await this.databaseService.refreshToken.delete({
-            where: {token: refreshToken}
+    async logout(trainerId: string) {
+        await this.databaseService.refreshToken.deleteMany({
+            where: {trainerId: trainerId}
         })
     }
 
@@ -120,12 +112,12 @@ export class AuthService {
             throw new NotFoundException('passwordChangeToken is not valid')
         } 
 
-        if (changePasswordDto.password !== changePasswordDto.confirmPassword){
+        if (changePasswordDto.newPassword !== changePasswordDto.confirmPassword){
             throw new BadRequestException('Passwords do not match.')
         }
         
         const saltOrRounds = 10;
-        const newHashedPassword = await bcrypt.hash(changePasswordDto.password, saltOrRounds)
+        const newHashedPassword = await bcrypt.hash(changePasswordDto.newPassword, saltOrRounds)
 
         await this.databaseService.trainer.update({
             where: {
@@ -153,6 +145,10 @@ export class AuthService {
                 refreshPayload, { expiresIn: '7d' })
         
         const decoded = this.JwtService.decode(refreshToken)
+
+        await this.databaseService.refreshToken.deleteMany({
+            where: { trainerId: trainerId },
+        });
 
         await this.databaseService.refreshToken.create({
             data: {
