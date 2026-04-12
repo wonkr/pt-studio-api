@@ -63,6 +63,7 @@ model Member {
   schedules           Schedule[]
   revenueRecognitions RevenueRecognition[]
 
+  @@unique([trainerId, name, phoneNumber])
   @@map("members")
 }
 
