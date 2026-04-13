@@ -19,21 +19,18 @@ export class CreateMemberDto {
 
     @IsNotEmpty()
     @IsInt()
-    @IsPositive()
     @Min(0)
     @Max(100)
     sessionPassTotalSessions!: number;
     
     @IsNotEmpty()
     @IsInt()
-    @IsPositive()
     @Min(0)
     @Max(10_000_000)
     sessionPassPrice!: number;
     
     @IsNotEmpty()
     @IsInt()
-    @IsPositive()
     @Min(0)
     @Max(365)
     sessionPassValidDays!: number;
