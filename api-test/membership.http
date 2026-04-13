@@ -1,0 +1,66 @@
+### ===========================
+### Membership API Tests
+### ===========================
+
+@baseUrl = http://localhost:3000/api/membership
+@accessToken = {{login.response.body.accessToken}}
+@memberId = 4bf78c65-1009-4f72-ba26-bd41a5c00234
+
+### -----------------------------------------------
+### Login first (to get accessToken)
+### -----------------------------------------------
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "Password123!"
+}
+
+### -----------------------------------------------
+### 1. Create Membership
+### -----------------------------------------------
+# @name createMembership
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "memberId": "4bf78c65-1009-4f72-ba26-bd41a5c00234",
+    "sessionPassName": "PT 30회권",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1500000,
+    "sessionPassValidDays": 90,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID",
+    "paidAt": "2026-04-12T00:00:00.000Z",
+    "membershipStartedAt": "2026-04-12T00:00:00.000Z",
+    "membershipExpiredAt": "2026-07-12T00:00:00.000Z"
+}
+
+### -----------------------------------------------
+### 2. Get Membership by ID
+### -----------------------------------------------
+@membershipId = {{createMembership.response.body.id}}
+
+GET {{baseUrl}}/{{membershipId}}
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 3. Update Membership
+### -----------------------------------------------
+PATCH {{baseUrl}}/{{membershipId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "paymentStatus": "REFUNDED",
+    "remainingSessions": 20
+}
+
+### -----------------------------------------------
+### 4. Delete Membership
+### -----------------------------------------------
+DELETE {{baseUrl}}/{{membershipId}}
+Authorization: Bearer {{accessToken}}

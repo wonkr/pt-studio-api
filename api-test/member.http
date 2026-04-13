@@ -78,7 +78,7 @@ Authorization: Bearer {{login.response.body.accessToken}}
 ### -----------------------------------------------
 ### 3. Search Members by Name
 ### -----------------------------------------------
-GET http://localhost:3000/api/members?name=Jay
+GET http://localhost:3000/api/members?name=jay
 Authorization: Bearer {{login.response.body.accessToken}}
 
 ### -----------------------------------------------

@@ -1,0 +1,66 @@
+### ===========================
+### Session Pass API Tests
+### ===========================
+
+@baseUrl = http://localhost:3000/api/session-pass
+@accessToken = {{login.response.body.accessToken}}
+
+
+### -----------------------------------------------
+### Login first (to get accessToken)
+### -----------------------------------------------
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "Password456!"
+}
+
+### -----------------------------------------------
+### 1. Create Session Pass
+### -----------------------------------------------
+# @name createSessionPass
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "PT 30회권",
+    "totalSessions": 30,
+    "price": 1500000,
+    "validDays": 90
+}
+
+### -----------------------------------------------
+### 2. Get All Session Passes
+### -----------------------------------------------
+GET {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 3. Get Session Pass by ID
+### -----------------------------------------------
+@sessionPassId = {{createSessionPass.response.body.id}}
+
+GET {{baseUrl}}/{{sessionPassId}}
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 4. Update Session Pass
+### -----------------------------------------------
+PATCH {{baseUrl}}/{{sessionPassId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "PT 30회권 (할인)",
+    "price": 1200000
+}
+
+### -----------------------------------------------
+### 5. Delete Session Pass
+### -----------------------------------------------
+DELETE {{baseUrl}}/{{sessionPassId}}
+Authorization: Bearer {{accessToken}}
