@@ -295,6 +295,326 @@ Get a member list
 }
 ```
 
+### SessionPass
+
+#### POST /api/session-pass
+Create a new session pass template
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body**
+```json
+{
+    "name": "30-sessions",
+    "totalSessions": 30,
+    "price": 1500000,
+    "validDays": 90
+}
+```
+
+**Response** `201`
+```json
+{
+    "id": "uuid",
+    "name": "30-sessions",
+    "totalSessions": 30,
+    "price": 1500000,
+    "validDays": 90,
+    "createdAt": "2026-04-12T00:00:00.000Z",
+    "updatedAt": "2026-04-12T00:00:00.000Z"
+}
+```
+
+---
+
+#### GET /api/session-pass
+Get all session passes
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response** `200`
+```json
+[
+    {
+        "id": "uuid-1",
+        "name": "PT 10회권",
+        "totalSessions": 10,
+        "price": 600000,
+        "validDays": 30
+    },
+    {
+        "id": "uuid-2",
+        "name": "PT 30회권",
+        "totalSessions": 30,
+        "price": 1500000,
+        "validDays": 90
+    }
+]
+```
+
+---
+
+#### GET /api/session-pass/:id
+Get a session pass by ID
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response** `200`
+```json
+{
+    "id": "uuid",
+    "name": "PT 30회권",
+    "totalSessions": 30,
+    "price": 1500000,
+    "validDays": 90,
+    "createdAt": "2026-04-12T00:00:00.000Z",
+    "updatedAt": "2026-04-12T00:00:00.000Z"
+}
+```
+
+**Response** `404`
+```json
+{
+    "message": "Session pass not found"
+}
+```
+
+---
+
+#### PATCH /api/session-pass/:id
+Update a session pass (partial update)
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body** (all fields optional)
+```json
+{
+    "name": "PT 30회권 (할인)",
+    "totalSessions": 30,
+    "price": 1200000,
+    "validDays": 120
+}
+```
+
+**Response** `200`
+```json
+{
+    "id": "uuid",
+    "name": "PT 30회권 (할인)",
+    "totalSessions": 30,
+    "price": 1200000,
+    "validDays": 120,
+    "createdAt": "2026-04-12T00:00:00.000Z",
+    "updatedAt": "2026-04-12T01:00:00.000Z"
+}
+```
+
+**Response** `404`
+```json
+{
+    "message": "Session pass not found"
+}
+```
+
+---
+
+#### DELETE /api/session-pass/:id
+Delete a session pass
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response** `204`
+```
+No Content
+```
+
+**Response** `404`
+```json
+{
+    "message": "Session pass not found"
+}
+```
+
+---
+
+### Membership
+
+#### POST /api/membership
+Create a new membership for a member
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body**
+```json
+{
+    "memberId": "member-uuid",
+    "sessionPassId": "session-pass-uuid",
+    "sessionPassName": "PT 30회권",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1500000,
+    "sessionPassValidDays": 90,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID",
+    "paidAt": "2026-04-12T00:00:00.000Z",
+    "membershipStartedAt": "2026-04-12T00:00:00.000Z",
+    "membershipExpiredAt": "2026-07-12T00:00:00.000Z"
+}
+```
+
+- `sessionPassId` is optional (can create membership without predefined session pass)
+- `paidAt`, `membershipStartedAt`, `membershipExpiredAt` are optional
+- `remainingSessions` defaults to `sessionPassTotalSessions`
+- `usedSession` defaults to `0`
+
+**Response** `201`
+```json
+{
+    "id": "uuid",
+    "memberId": "member-uuid",
+    "sessionPassId": "session-pass-uuid",
+    "sessionPassName": "PT 30회권",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1500000,
+    "sessionPassValidDays": 90,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID",
+    "paidAt": "2026-04-12T00:00:00.000Z",
+    "membershipStartedAt": "2026-04-12T00:00:00.000Z",
+    "membershipExpiredAt": "2026-07-12T00:00:00.000Z",
+    "remainingSessions": 30,
+    "usedSession": 0,
+    "createdAt": "2026-04-12T00:00:00.000Z",
+    "updatedAt": "2026-04-12T00:00:00.000Z"
+}
+```
+
+---
+
+#### GET /api/membership/:id
+Get a membership by ID
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response** `200`
+```json
+{
+    "id": "uuid",
+    "memberId": "member-uuid",
+    "sessionPassId": "session-pass-uuid",
+    "sessionPassName": "PT 30회권",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1500000,
+    "sessionPassValidDays": 90,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID",
+    "paidAt": "2026-04-12T00:00:00.000Z",
+    "membershipStartedAt": "2026-04-12T00:00:00.000Z",
+    "membershipExpiredAt": "2026-07-12T00:00:00.000Z",
+    "remainingSessions": 25,
+    "usedSession": 5,
+    "createdAt": "2026-04-12T00:00:00.000Z",
+    "updatedAt": "2026-04-15T00:00:00.000Z"
+}
+```
+
+**Response** `404`
+```json
+{
+    "message": "Membership not found"
+}
+```
+
+---
+
+#### PATCH /api/membership/:id
+Update a membership (partial update)
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body** (all fields optional)
+```json
+{
+    "paymentStatus": "REFUNDED",
+    "remainingSessions": 20,
+    "membershipExpiredAt": "2026-08-12T00:00:00.000Z"
+}
+```
+
+**Response** `200`
+```json
+{
+    "id": "uuid",
+    "memberId": "member-uuid",
+    "sessionPassId": "session-pass-uuid",
+    "sessionPassName": "PT 30회권",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1500000,
+    "sessionPassValidDays": 90,
+    "paymentType": "CARD",
+    "paymentStatus": "REFUNDED",
+    "paidAt": "2026-04-12T00:00:00.000Z",
+    "membershipStartedAt": "2026-04-12T00:00:00.000Z",
+    "membershipExpiredAt": "2026-08-12T00:00:00.000Z",
+    "remainingSessions": 20,
+    "usedSession": 5,
+    "createdAt": "2026-04-12T00:00:00.000Z",
+    "updatedAt": "2026-04-16T00:00:00.000Z"
+}
+```
+
+**Response** `404`
+```json
+{
+    "message": "Membership not found"
+}
+```
+
+---
+
+#### DELETE /api/membership/:id
+Delete a membership
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response** `204`
+```
+No Content
+```
+
+**Response** `404`
+```json
+{
+    "message": "Membership not found"
+}
+```
+
 ## Design Decisions
 
 ### Why JWT?
