@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
-import { CreateMemberDto } from './dto/createMember.dto';
+import { CreateMemberDto } from './dto/create-member.dto';
 import { MembersService } from './members.service';
 import { AuthGuard } from '../auth/auth.guard';
 

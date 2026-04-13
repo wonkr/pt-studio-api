@@ -1,0 +1,88 @@
+### ===========================
+### Member API Tests
+### ===========================
+
+### Login first to get accessToken
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "Password456!"
+}
+
+### -----------------------------------------------
+### 1. Register Member
+### -----------------------------------------------
+POST http://localhost:3000/api/members/register
+Authorization: Bearer {{login.response.body.accessToken}}
+Content-Type: application/json
+
+{
+    "name": "Jay Choi",
+    "phone": "01012345678",
+    "sessionPassName": "30-sessions",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1500000,
+    "sessionPassValidDays": 90,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID"
+}
+
+### -----------------------------------------------
+### 1-b. Register Member (with optional fields)
+### -----------------------------------------------
+POST http://localhost:3000/api/members/register
+Authorization: Bearer {{login.response.body.accessToken}}
+Content-Type: application/json
+
+{
+    "name": "SJ Choi",
+    "phone": "01055556666",
+    "sessionPassName": "10-sessions",
+    "sessionPassTotalSessions": 10,
+    "sessionPassPrice": 600000,
+    "sessionPassValidDays": 60,
+    "paymentType": "CASH",
+    "paymentStatus": "PAID",
+    "paidAt": "2026-04-11T00:00:00.000Z",
+    "membershipStartedAt": "2026-04-11T00:00:00.000Z",
+    "membershipExpiredAt": "2026-06-10T00:00:00.000Z"
+}
+
+### -----------------------------------------------
+### 1-c. Register Member (Second)
+### -----------------------------------------------
+POST http://localhost:3000/api/members/register
+Authorization: Bearer {{login.response.body.accessToken}}
+Content-Type: application/json
+
+{
+    "name": "Jenna Choi",
+    "phone": "01098765432",
+    "sessionPassName": "20-sessions",
+    "sessionPassTotalSessions": 20,
+    "sessionPassPrice": 1200000,
+    "sessionPassValidDays": 120,
+    "paymentType": "TRANSFER",
+    "paymentStatus": "PENDING"
+}
+
+### -----------------------------------------------
+### 2. Get All Members
+### -----------------------------------------------
+GET http://localhost:3000/api/members
+Authorization: Bearer {{login.response.body.accessToken}}
+
+### -----------------------------------------------
+### 3. Search Members by Name
+### -----------------------------------------------
+GET http://localhost:3000/api/members?name=Jay
+Authorization: Bearer {{login.response.body.accessToken}}
+
+### -----------------------------------------------
+### 4. Get Member by ID
+### -----------------------------------------------
+GET http://localhost:3000/api/members/여기에_memberId_붙여넣기
+Authorization: Bearer {{login.response.body.accessToken}}

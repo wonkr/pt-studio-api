@@ -1,0 +1,70 @@
+### ===========================
+### Auth API Tests
+### ===========================
+ 
+@baseUrl = http://localhost:3000/api/auth
+ 
+ 
+### -----------------------------------------------
+### 1. Register
+### -----------------------------------------------
+POST {{baseUrl}}/register
+Content-Type: application/json
+ 
+{
+    "name": "Kyu Won",
+    "email": "user@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+}
+ 
+### -----------------------------------------------
+### 2. Login
+### -----------------------------------------------
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+ 
+{
+    "email": "user@example.com",
+    "password": "Password456!"
+}
+ 
+### -----------------------------------------------
+### 3. Refresh Token
+### -----------------------------------------------
+POST {{baseUrl}}/refresh
+Cookie: refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyYzY2YWI4OC05ODE3LTRiZWYtYmI2MC0yNDQ5OWQ5YWZlYWIiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc3NTk2MjAxNiwiZXhwIjoxNzc2NTY2ODE2fQ.rdkD--kAf0ONPuQBynVCOXE0ENydiE2TV2SLlRyk7fcRtaqckIAZr_dIfBiIG0zCIxPMVIj3WeckrWqsUW_EC9FiXq2GqAqeTx8qkTQdlGnf0Hl3S7Y2psscFQ5gXphhL-Vg1ljjx-BKMtXHTKHdxK1U-Xjy4agmn36go7Ey9jnJIXtvNbI7NoR8OLReU1j8hcKjnOiE3jqYzj8TQLYQdFcuKxwL8tOZwFFvewAtxXeLGk_aOQ8Z2Dr_06uzG_ZkUkbx-Plj_g5CexsQyZXB7arXrRgXKBBs1FJ_aW03zyTetYgfm_iIKObbhFtL7ZEtp58U9snwrueMWtqs5iYVJQ;
+
+### -----------------------------------------------
+### 4. Logout
+### -----------------------------------------------
+# @name logout
+POST {{baseUrl}}/logout
+Authorization: Bearer {{login.response.body.accessToken}}
+ 
+### -----------------------------------------------
+### 5. Verify Password
+### -----------------------------------------------
+# @name verifyPassword
+POST {{baseUrl}}/verify-password
+Authorization: Bearer {{login.response.body.accessToken}}
+Content-Type: application/json
+ 
+{
+    "currentPassword": "Password123!"
+}
+ 
+### -----------------------------------------------
+### 6. Change Password
+### -----------------------------------------------
+PATCH {{baseUrl}}/change-password
+Authorization: Bearer {{login.response.body.accessToken}}
+Cookie: password_change_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyYzY2YWI4OC05ODE3LTRiZWYtYmI2MC0yNDQ5OWQ5YWZlYWIiLCJ0eXBlIjoicGFzc3dvcmQtY2hhbmdlIiwiaWF0IjoxNzc1OTYyMzg3LCJleHAiOjE3NzU5NjI2ODd9.bYkOxe6HqSWyIZgo6iIIluGzjkjE4gEEjzw3m6ZMOtVG0KcNcNHRdLb1soIjqLgMW9adenqPpylQbSrZd103TZYQAu2MlgDmoRKS9-wdKWkyl3mb96VqGPn7ra44JifuwME0va-hI5hN7IVCcBXzCjTLQl1dy-d48h9qunwlIFvj73klddjBgPyWlSEAsY56esZAz1YgSZGheMEpJ8wDBLM4sPdPBHfU83sLlm5e35-6hyfCyR6gajsZUlSqwMB7HWV-k1vcrU9OksnvVd_CatnirTfMQjagcPw-gc3TcpDouERFOTHMjTSxRkDZGlayPhOfaBAxugftwK5V6Xy8FA
+Content-Type: application/json
+ 
+{
+    "newPassword": "Password456!",
+    "confirmPassword": "Password456!"
+}
+ 
