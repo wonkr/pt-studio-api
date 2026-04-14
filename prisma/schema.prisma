@@ -130,7 +130,7 @@ model RevenueRecognition {
   schedule     Schedule @relation(fields: [scheduleId], references: [id])
   scheduleId   String   @unique @map("schedule_id")
   amount       Decimal
-  recognizedAt DateTime @map("recognized_at")
+  recognizedAt DateTime @default(now()) @map("recognized_at")
 
   @@map("revenue_recognitions")
 }

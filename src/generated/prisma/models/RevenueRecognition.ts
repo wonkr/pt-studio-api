@@ -285,7 +285,7 @@ export type RevenueRecognitionScalarWhereWithAggregatesInput = {
 export type RevenueRecognitionCreateInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutRevenueRecognitionsInput
   member: Prisma.MemberCreateNestedOneWithoutRevenueRecognitionsInput
   schedule: Prisma.ScheduleCreateNestedOneWithoutRevenueRecognitionInput
@@ -297,7 +297,7 @@ export type RevenueRecognitionUncheckedCreateInput = {
   memberId: string
   scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionUpdateInput = {
@@ -324,7 +324,7 @@ export type RevenueRecognitionCreateManyInput = {
   memberId: string
   scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionUpdateManyMutationInput = {
@@ -511,7 +511,7 @@ export type RevenueRecognitionUncheckedUpdateOneWithoutScheduleNestedInput = {
 export type RevenueRecognitionCreateWithoutTrainerInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
   member: Prisma.MemberCreateNestedOneWithoutRevenueRecognitionsInput
   schedule: Prisma.ScheduleCreateNestedOneWithoutRevenueRecognitionInput
 }
@@ -521,7 +521,7 @@ export type RevenueRecognitionUncheckedCreateWithoutTrainerInput = {
   memberId: string
   scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionCreateOrConnectWithoutTrainerInput = {
@@ -565,7 +565,7 @@ export type RevenueRecognitionScalarWhereInput = {
 export type RevenueRecognitionCreateWithoutMemberInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutRevenueRecognitionsInput
   schedule: Prisma.ScheduleCreateNestedOneWithoutRevenueRecognitionInput
 }
@@ -575,7 +575,7 @@ export type RevenueRecognitionUncheckedCreateWithoutMemberInput = {
   trainerId: string
   scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionCreateOrConnectWithoutMemberInput = {
@@ -607,7 +607,7 @@ export type RevenueRecognitionUpdateManyWithWhereWithoutMemberInput = {
 export type RevenueRecognitionCreateWithoutScheduleInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
   trainer: Prisma.TrainerCreateNestedOneWithoutRevenueRecognitionsInput
   member: Prisma.MemberCreateNestedOneWithoutRevenueRecognitionsInput
 }
@@ -617,7 +617,7 @@ export type RevenueRecognitionUncheckedCreateWithoutScheduleInput = {
   trainerId: string
   memberId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionCreateOrConnectWithoutScheduleInput = {
@@ -657,7 +657,7 @@ export type RevenueRecognitionCreateManyTrainerInput = {
   memberId: string
   scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionUpdateWithoutTrainerInput = {
@@ -689,7 +689,7 @@ export type RevenueRecognitionCreateManyMemberInput = {
   trainerId: string
   scheduleId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  recognizedAt: Date | string
+  recognizedAt?: Date | string
 }
 
 export type RevenueRecognitionUpdateWithoutMemberInput = {
