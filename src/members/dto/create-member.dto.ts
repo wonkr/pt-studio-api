@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPhoneNumber, IsPositive, IsString, Max, Min } from "class-validator"
+import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Max, Min } from "class-validator"
 
 export class CreateMemberDto {
     @IsNotEmpty()
