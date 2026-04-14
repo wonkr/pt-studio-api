@@ -34,9 +34,11 @@ model RefreshToken {
   id        String   @id @default(uuid())
   token     String   @unique
   trainer   Trainer  @relation(fields: [trainerId], references: [id])
-  trainerId String
+  trainerId String   @map("trainer_id")
   createdAt DateTime @default(now()) @map("created_at")
-  expiresAt DateTime
+  expiresAt DateTime @map("expires_at")
+
+  @@map("refresh_token")
 }
 
 model TrainerExpense {
@@ -109,7 +111,7 @@ model Schedule {
   memberId           String              @map("member_id")
   membership         Membership          @relation(fields: [membershipId], references: [id])
   membershipId       String              @map("membership_id")
-  scheduledAt        DateTime
+  scheduledAt        DateTime            @map("scheduled_at")
   status             ScheduleStatus
   cancelReason       String?             @map("cancel_reason")
   createdAt          DateTime            @default(now()) @map("created_at")
