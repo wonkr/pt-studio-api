@@ -112,6 +112,7 @@ model Schedule {
   membership         Membership          @relation(fields: [membershipId], references: [id])
   membershipId       String              @map("membership_id")
   scheduledAt        DateTime            @map("scheduled_at")
+  sessionDuration    Decimal             @map("session_duration")
   status             ScheduleStatus
   cancelReason       String?             @map("cancel_reason")
   createdAt          DateTime            @default(now()) @map("created_at")

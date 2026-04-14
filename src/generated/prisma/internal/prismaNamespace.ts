@@ -1123,6 +1123,7 @@ export const ScheduleScalarFieldEnum = {
   memberId: 'memberId',
   membershipId: 'membershipId',
   scheduledAt: 'scheduledAt',
+  sessionDuration: 'sessionDuration',
   status: 'status',
   cancelReason: 'cancelReason',
   createdAt: 'createdAt',

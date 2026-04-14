@@ -20,8 +20,18 @@ export type ScheduleModel = runtime.Types.Result.DefaultSelection<Prisma.$Schedu
 
 export type AggregateSchedule = {
   _count: ScheduleCountAggregateOutputType | null
+  _avg: ScheduleAvgAggregateOutputType | null
+  _sum: ScheduleSumAggregateOutputType | null
   _min: ScheduleMinAggregateOutputType | null
   _max: ScheduleMaxAggregateOutputType | null
+}
+
+export type ScheduleAvgAggregateOutputType = {
+  sessionDuration: runtime.Decimal | null
+}
+
+export type ScheduleSumAggregateOutputType = {
+  sessionDuration: runtime.Decimal | null
 }
 
 export type ScheduleMinAggregateOutputType = {
@@ -30,6 +40,7 @@ export type ScheduleMinAggregateOutputType = {
   memberId: string | null
   membershipId: string | null
   scheduledAt: Date | null
+  sessionDuration: runtime.Decimal | null
   status: $Enums.ScheduleStatus | null
   cancelReason: string | null
   createdAt: Date | null
@@ -42,6 +53,7 @@ export type ScheduleMaxAggregateOutputType = {
   memberId: string | null
   membershipId: string | null
   scheduledAt: Date | null
+  sessionDuration: runtime.Decimal | null
   status: $Enums.ScheduleStatus | null
   cancelReason: string | null
   createdAt: Date | null
@@ -54,6 +66,7 @@ export type ScheduleCountAggregateOutputType = {
   memberId: number
   membershipId: number
   scheduledAt: number
+  sessionDuration: number
   status: number
   cancelReason: number
   createdAt: number
@@ -62,12 +75,21 @@ export type ScheduleCountAggregateOutputType = {
 }
 
 
+export type ScheduleAvgAggregateInputType = {
+  sessionDuration?: true
+}
+
+export type ScheduleSumAggregateInputType = {
+  sessionDuration?: true
+}
+
 export type ScheduleMinAggregateInputType = {
   id?: true
   trainerId?: true
   memberId?: true
   membershipId?: true
   scheduledAt?: true
+  sessionDuration?: true
   status?: true
   cancelReason?: true
   createdAt?: true
@@ -80,6 +102,7 @@ export type ScheduleMaxAggregateInputType = {
   memberId?: true
   membershipId?: true
   scheduledAt?: true
+  sessionDuration?: true
   status?: true
   cancelReason?: true
   createdAt?: true
@@ -92,6 +115,7 @@ export type ScheduleCountAggregateInputType = {
   memberId?: true
   membershipId?: true
   scheduledAt?: true
+  sessionDuration?: true
   status?: true
   cancelReason?: true
   createdAt?: true
@@ -137,6 +161,18 @@ export type ScheduleAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ScheduleAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ScheduleSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ScheduleMinAggregateInputType
@@ -167,6 +203,8 @@ export type ScheduleGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: ScheduleCountAggregateInputType | true
+  _avg?: ScheduleAvgAggregateInputType
+  _sum?: ScheduleSumAggregateInputType
   _min?: ScheduleMinAggregateInputType
   _max?: ScheduleMaxAggregateInputType
 }
@@ -177,11 +215,14 @@ export type ScheduleGroupByOutputType = {
   memberId: string
   membershipId: string
   scheduledAt: Date
+  sessionDuration: runtime.Decimal
   status: $Enums.ScheduleStatus
   cancelReason: string | null
   createdAt: Date
   updatedAt: Date
   _count: ScheduleCountAggregateOutputType | null
+  _avg: ScheduleAvgAggregateOutputType | null
+  _sum: ScheduleSumAggregateOutputType | null
   _min: ScheduleMinAggregateOutputType | null
   _max: ScheduleMaxAggregateOutputType | null
 }
@@ -210,6 +251,7 @@ export type ScheduleWhereInput = {
   memberId?: Prisma.StringFilter<"Schedule"> | string
   membershipId?: Prisma.StringFilter<"Schedule"> | string
   scheduledAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
+  sessionDuration?: Prisma.DecimalFilter<"Schedule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFilter<"Schedule"> | $Enums.ScheduleStatus
   cancelReason?: Prisma.StringNullableFilter<"Schedule"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
@@ -226,6 +268,7 @@ export type ScheduleOrderByWithRelationInput = {
   memberId?: Prisma.SortOrder
   membershipId?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
+  sessionDuration?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -245,6 +288,7 @@ export type ScheduleWhereUniqueInput = Prisma.AtLeast<{
   memberId?: Prisma.StringFilter<"Schedule"> | string
   membershipId?: Prisma.StringFilter<"Schedule"> | string
   scheduledAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
+  sessionDuration?: Prisma.DecimalFilter<"Schedule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFilter<"Schedule"> | $Enums.ScheduleStatus
   cancelReason?: Prisma.StringNullableFilter<"Schedule"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
@@ -261,13 +305,16 @@ export type ScheduleOrderByWithAggregationInput = {
   memberId?: Prisma.SortOrder
   membershipId?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
+  sessionDuration?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ScheduleCountOrderByAggregateInput
+  _avg?: Prisma.ScheduleAvgOrderByAggregateInput
   _max?: Prisma.ScheduleMaxOrderByAggregateInput
   _min?: Prisma.ScheduleMinOrderByAggregateInput
+  _sum?: Prisma.ScheduleSumOrderByAggregateInput
 }
 
 export type ScheduleScalarWhereWithAggregatesInput = {
@@ -279,6 +326,7 @@ export type ScheduleScalarWhereWithAggregatesInput = {
   memberId?: Prisma.StringWithAggregatesFilter<"Schedule"> | string
   membershipId?: Prisma.StringWithAggregatesFilter<"Schedule"> | string
   scheduledAt?: Prisma.DateTimeWithAggregatesFilter<"Schedule"> | Date | string
+  sessionDuration?: Prisma.DecimalWithAggregatesFilter<"Schedule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusWithAggregatesFilter<"Schedule"> | $Enums.ScheduleStatus
   cancelReason?: Prisma.StringNullableWithAggregatesFilter<"Schedule"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Schedule"> | Date | string
@@ -288,6 +336,7 @@ export type ScheduleScalarWhereWithAggregatesInput = {
 export type ScheduleCreateInput = {
   id?: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -304,6 +353,7 @@ export type ScheduleUncheckedCreateInput = {
   memberId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -314,6 +364,7 @@ export type ScheduleUncheckedCreateInput = {
 export type ScheduleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -330,6 +381,7 @@ export type ScheduleUncheckedUpdateInput = {
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -343,6 +395,7 @@ export type ScheduleCreateManyInput = {
   memberId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -352,6 +405,7 @@ export type ScheduleCreateManyInput = {
 export type ScheduleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -364,6 +418,7 @@ export type ScheduleUncheckedUpdateManyInput = {
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -386,10 +441,15 @@ export type ScheduleCountOrderByAggregateInput = {
   memberId?: Prisma.SortOrder
   membershipId?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
+  sessionDuration?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ScheduleAvgOrderByAggregateInput = {
+  sessionDuration?: Prisma.SortOrder
 }
 
 export type ScheduleMaxOrderByAggregateInput = {
@@ -398,6 +458,7 @@ export type ScheduleMaxOrderByAggregateInput = {
   memberId?: Prisma.SortOrder
   membershipId?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
+  sessionDuration?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -410,10 +471,15 @@ export type ScheduleMinOrderByAggregateInput = {
   memberId?: Prisma.SortOrder
   membershipId?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
+  sessionDuration?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ScheduleSumOrderByAggregateInput = {
+  sessionDuration?: Prisma.SortOrder
 }
 
 export type ScheduleScalarRelationFilter = {
@@ -568,6 +634,7 @@ export type ScheduleUpdateOneRequiredWithoutRevenueRecognitionNestedInput = {
 export type ScheduleCreateWithoutTrainerInput = {
   id?: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -582,6 +649,7 @@ export type ScheduleUncheckedCreateWithoutTrainerInput = {
   memberId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -624,6 +692,7 @@ export type ScheduleScalarWhereInput = {
   memberId?: Prisma.StringFilter<"Schedule"> | string
   membershipId?: Prisma.StringFilter<"Schedule"> | string
   scheduledAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
+  sessionDuration?: Prisma.DecimalFilter<"Schedule"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFilter<"Schedule"> | $Enums.ScheduleStatus
   cancelReason?: Prisma.StringNullableFilter<"Schedule"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
@@ -633,6 +702,7 @@ export type ScheduleScalarWhereInput = {
 export type ScheduleCreateWithoutMemberInput = {
   id?: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -647,6 +717,7 @@ export type ScheduleUncheckedCreateWithoutMemberInput = {
   trainerId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -683,6 +754,7 @@ export type ScheduleUpdateManyWithWhereWithoutMemberInput = {
 export type ScheduleCreateWithoutMembershipInput = {
   id?: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -697,6 +769,7 @@ export type ScheduleUncheckedCreateWithoutMembershipInput = {
   trainerId: string
   memberId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -733,6 +806,7 @@ export type ScheduleUpdateManyWithWhereWithoutMembershipInput = {
 export type ScheduleCreateWithoutRevenueRecognitionInput = {
   id?: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -748,6 +822,7 @@ export type ScheduleUncheckedCreateWithoutRevenueRecognitionInput = {
   memberId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -773,6 +848,7 @@ export type ScheduleUpdateToOneWithWhereWithoutRevenueRecognitionInput = {
 export type ScheduleUpdateWithoutRevenueRecognitionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -788,6 +864,7 @@ export type ScheduleUncheckedUpdateWithoutRevenueRecognitionInput = {
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -799,6 +876,7 @@ export type ScheduleCreateManyTrainerInput = {
   memberId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -808,6 +886,7 @@ export type ScheduleCreateManyTrainerInput = {
 export type ScheduleUpdateWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -822,6 +901,7 @@ export type ScheduleUncheckedUpdateWithoutTrainerInput = {
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -834,6 +914,7 @@ export type ScheduleUncheckedUpdateManyWithoutTrainerInput = {
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -845,6 +926,7 @@ export type ScheduleCreateManyMemberInput = {
   trainerId: string
   membershipId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -854,6 +936,7 @@ export type ScheduleCreateManyMemberInput = {
 export type ScheduleUpdateWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -868,6 +951,7 @@ export type ScheduleUncheckedUpdateWithoutMemberInput = {
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -880,6 +964,7 @@ export type ScheduleUncheckedUpdateManyWithoutMemberInput = {
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   membershipId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -891,6 +976,7 @@ export type ScheduleCreateManyMembershipInput = {
   trainerId: string
   memberId: string
   scheduledAt: Date | string
+  sessionDuration: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.ScheduleStatus
   cancelReason?: string | null
   createdAt?: Date | string
@@ -900,6 +986,7 @@ export type ScheduleCreateManyMembershipInput = {
 export type ScheduleUpdateWithoutMembershipInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -914,6 +1001,7 @@ export type ScheduleUncheckedUpdateWithoutMembershipInput = {
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -926,6 +1014,7 @@ export type ScheduleUncheckedUpdateManyWithoutMembershipInput = {
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   scheduledAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessionDuration?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumScheduleStatusFieldUpdateOperationsInput | $Enums.ScheduleStatus
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -940,6 +1029,7 @@ export type ScheduleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   memberId?: boolean
   membershipId?: boolean
   scheduledAt?: boolean
+  sessionDuration?: boolean
   status?: boolean
   cancelReason?: boolean
   createdAt?: boolean
@@ -956,6 +1046,7 @@ export type ScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   memberId?: boolean
   membershipId?: boolean
   scheduledAt?: boolean
+  sessionDuration?: boolean
   status?: boolean
   cancelReason?: boolean
   createdAt?: boolean
@@ -971,6 +1062,7 @@ export type ScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   memberId?: boolean
   membershipId?: boolean
   scheduledAt?: boolean
+  sessionDuration?: boolean
   status?: boolean
   cancelReason?: boolean
   createdAt?: boolean
@@ -986,13 +1078,14 @@ export type ScheduleSelectScalar = {
   memberId?: boolean
   membershipId?: boolean
   scheduledAt?: boolean
+  sessionDuration?: boolean
   status?: boolean
   cancelReason?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "memberId" | "membershipId" | "scheduledAt" | "status" | "cancelReason" | "createdAt" | "updatedAt", ExtArgs["result"]["schedule"]>
+export type ScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "memberId" | "membershipId" | "scheduledAt" | "sessionDuration" | "status" | "cancelReason" | "createdAt" | "updatedAt", ExtArgs["result"]["schedule"]>
 export type ScheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
@@ -1024,6 +1117,7 @@ export type $SchedulePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     memberId: string
     membershipId: string
     scheduledAt: Date
+    sessionDuration: runtime.Decimal
     status: $Enums.ScheduleStatus
     cancelReason: string | null
     createdAt: Date
@@ -1460,6 +1554,7 @@ export interface ScheduleFieldRefs {
   readonly memberId: Prisma.FieldRef<"Schedule", 'String'>
   readonly membershipId: Prisma.FieldRef<"Schedule", 'String'>
   readonly scheduledAt: Prisma.FieldRef<"Schedule", 'DateTime'>
+  readonly sessionDuration: Prisma.FieldRef<"Schedule", 'Decimal'>
   readonly status: Prisma.FieldRef<"Schedule", 'ScheduleStatus'>
   readonly cancelReason: Prisma.FieldRef<"Schedule", 'String'>
   readonly createdAt: Prisma.FieldRef<"Schedule", 'DateTime'>
