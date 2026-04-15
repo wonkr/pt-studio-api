@@ -8,12 +8,13 @@ import { TrainersModule } from './trainers/trainers.module';
 import { MembersModule } from './members/members.module';
 import { SessionPassModule } from './session-pass/session-pass.module';
 import { MembershipModule } from './membership/membership.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule, 
-    AuthModule, TrainersModule, MembersModule, SessionPassModule, MembershipModule],
+    AuthModule, TrainersModule, MembersModule, SessionPassModule, MembershipModule, ScheduleModule],
   controllers: [AppController],
   providers: [AppService],
 })

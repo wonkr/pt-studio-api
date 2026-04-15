@@ -1,31 +1,93 @@
-// src/filters/prisma-exception.filter.ts
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { Prisma } from '../generated/prisma/client'
+import {
+  ArgumentsHost,
+  Catch,
+  ConflictException,
+  ExceptionFilter,
+  ForbiddenException,
+  HttpException,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Response } from 'express';
 
-@Catch(Prisma.PrismaClientKnownRequestError)
+@Catch()
 export class PrismaExceptionFilter implements ExceptionFilter {
-  catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
-    const response = host.switchToHttp().getResponse<Response>();
+  private readonly logger = new Logger(PrismaExceptionFilter.name);
 
-    switch (exception.code) {
-      case 'P2002':  // Unique Violation
-        response.status(409).json({
-          statusCode: 409,
-          message: 'Resource already exists',
-        });
-        break;
-      case 'P2025':  // No Record
-        response.status(404).json({
-          statusCode: 404,
-          message: 'Resource not found',
-        });
-        break;
-      default:
-        response.status(500).json({
-          statusCode: 500,
-          message: 'Internal server error',
-        });
+  catch(exception: any, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
+
+    this.logger.error(
+      `Prisma error: ${exception.message}`,
+      exception.stack,
+    );
+
+    const httpException = this.mapToHttpException(exception);
+    const status = httpException.getStatus();
+
+    response.status(status).json({
+      statusCode: status,
+      message: httpException.message,
+    });
+  }
+
+  private mapToHttpException(exception: any): HttpException {
+    
+    const combinedMessage = [
+      exception.message,
+      exception.cause?.message,
+      exception.cause?.originalMessage,
+      exception.meta?.cause,
+    ]
+      .filter(Boolean)
+      .join(' | ');
+
+    // ─── DB-level Constraint Mapping ───
+
+    if (combinedMessage.includes('no_schedule_overlap')) {
+      return new ConflictException('Schedule conflicts with existing session');
     }
+
+    if (combinedMessage.includes('remaining_sessions_non_negative')) {
+      return new ForbiddenException('No remaining sessions available');
+    }
+
+    if (combinedMessage.includes('session_count_balance')) {
+      return new ForbiddenException('Session count mismatch');
+    }
+
+    if (combinedMessage.includes('used_sessions_non_negative')) {
+      return new ForbiddenException('Invalid session state');
+    }
+
+    // fallback based on PostgreSQL error code 
+    const pgCode = exception.cause?.code ?? exception.cause?.originalCode;
+    if (pgCode === '23P01') {
+      // Exclusion constraint violation
+      return new ConflictException('Resource conflict detected');
+    }
+    if (pgCode === '23514') {
+      // Check constraint violation
+      return new ForbiddenException('Operation violates business rules');
+    }
+
+    // ─── Prisma error code mapping ───
+    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+      switch (exception.code) {
+        case 'P2002':
+          return new ConflictException('Duplicate value');
+        case 'P2025':
+          return new NotFoundException('Resource not found');
+        case 'P2003':
+          return new ConflictException('Related resource not found');
+        default:
+          return new InternalServerErrorException();
+      }
+    }
+
+    return new InternalServerErrorException();
   }
 }
