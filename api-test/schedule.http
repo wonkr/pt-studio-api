@@ -1,0 +1,135 @@
+### ===========================
+### Schedule API Tests
+### Includes happy-path + security/constraint violation scenarios
+### ===========================
+
+@baseUrl = http://localhost:3000/api/schedule
+@accessToken = {{login.response.body.accessToken}}
+@memberId = 7a3a3f00-6830-4037-a818-b3525899131c
+@membershipId = fdb2da27-a80b-4de8-9787-b92d3f598cbb
+
+
+### -----------------------------------------------
+### Login (prerequisite for accessToken)
+### -----------------------------------------------
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "Password456!"
+}
+
+
+### ===========================
+### HAPPY PATH
+### ===========================
+
+### 1. Create Schedule (SCHEDULED)
+# @name createSchedule
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "memberId": "{{memberId}}",
+    "membershipId": "{{membershipId}}",
+    "scheduledAt": "2026-04-20T10:00:00.000Z",
+    "sessionDuration": 60,
+    "status": "SCHEDULED"
+}
+
+### 2. Create Schedule directly as ATTENDED
+### → Triggers remainingSessions decrement + RevenueRecognition creation
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "memberId": "{{memberId}}",
+    "membershipId": "{{membershipId}}",
+    "scheduledAt": "2026-04-21T10:00:00.000Z",
+    "sessionDuration": 60,
+    "status": "ATTENDED"
+}
+
+### 3. Get All Schedules
+GET {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+
+### 4. Get Schedules filtered by member
+GET {{baseUrl}}?member-id={{memberId}}
+Authorization: Bearer {{accessToken}}
+
+### 5. Get Schedule by ID
+@scheduleId = {{createSchedule.response.body.id}}
+
+GET {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+
+
+### ===========================
+### STATE TRANSITIONS (Idempotency Tests)
+### ===========================
+
+### 6. Reschedule (SCHEDULED → SCHEDULED, time change only)
+### → No financial side effect
+PATCH {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "scheduledAt": "2026-04-20T14:00:00.000Z",
+    "sessionDuration": 60
+}
+
+### 7. Check-in (SCHEDULED → ATTENDED)
+### → Decrement remainingSessions + create RevenueRecognition
+PATCH {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "status": "ATTENDED"
+}
+
+### 8. Idempotency check: PATCH unrelated field while ATTENDED
+### → Expected: NO duplicate revenue record created
+###   (wasAttended && willBeAttended → no-op on side effects)
+PATCH {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "scheduledAt": "2026-04-20T15:00:00.000Z"
+}
+
+### 9. Revert to SCHEDULED (ATTENDED → SCHEDULED)
+### → Increment remainingSessions + delete RevenueRecognition
+PATCH {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "status": "SCHEDULED"
+}
+
+### 10. Cancel schedule (SCHEDULED → CANCELLED)
+PATCH {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "status": "CANCELLED",
+    "cancelReason": "Member requested cancellation"
+}
+
+### 11. Mark as no-show (SCHEDULED → NO_SHOW)
+PATCH {{baseUrl}}/{{scheduleId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "status": "NOSHOW"
+}

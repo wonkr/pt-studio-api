@@ -28,8 +28,8 @@ Content-Type: application/json
 
 {
     "memberId": "4bf78c65-1009-4f72-ba26-bd41a5c00234",
-    "sessionPassName": "PT 30회권",
-    "sessionPassTotalSessions": 30,
+    "sessionPassName": "PT 10회권",
+    "sessionPassTotalSessions": 10,
     "sessionPassPrice": 1500000,
     "sessionPassValidDays": 90,
     "paymentType": "CARD",
