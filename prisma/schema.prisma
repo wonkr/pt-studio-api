@@ -113,6 +113,7 @@ model Schedule {
   membershipId       String              @map("membership_id")
   scheduledAt        DateTime            @map("scheduled_at")
   sessionDuration    Decimal             @map("session_duration")
+  endsAt             DateTime            @map("ends_at")
   status             ScheduleStatus
   cancelReason       String?             @map("cancel_reason")
   createdAt          DateTime            @default(now()) @map("created_at")
