@@ -69,17 +69,19 @@ erDiagram
 		uuid trainer_id FK ""  
 		uuid member_id FK ""  
 		uuid membership_id FK ""
-		datetime scheduledAt  ""  
+		datetime scheduled_at  ""  
+		datetime ends_at
+		int session_duration ""
 		string status  "scheduled | attended | cancelled | no_show"
-		string cancelReason? 
-		datetime createdAt
-		datetime updatedAt  
+		string cancel_reason? 
+		datetime created_at
+		datetime updated_at  
 	}
 
 	REVENUE_RECOGNITION {
 		uuid id PK ""  
 		uuid trainer_id FK ""  
-		uuid attendance_id FK ""  
+		uuid schedule_id FK ""  
 		uuid member_id FK ""  
 		decimal amount  ""  
 		datetime recognized_at  ""  

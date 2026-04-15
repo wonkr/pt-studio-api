@@ -615,6 +615,192 @@ No Content
 }
 ```
 
+### Schedule
+
+All endpoints require a valid JWT access token in the Authorization header.
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+---
+
+#### POST /api/schedule
+Create a new PT session schedule.
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body**
+```json
+{
+    "memberId": "member-uuid",
+    "membershipId": "membership-uuid",
+    "scheduledAt": "2026-04-20T10:00:00.000Z",
+    "sessionDuration": 60,
+    "status": "SCHEDULED",
+    "cancelReason": null
+}
+```
+
+**Business rules**
+- Verifies that `membershipId` belongs to the authenticated trainer (BOLA defense).
+- Rejects if the membership has no remaining sessions.
+- Database-level Exclusion Constraint rejects overlapping schedules for the same trainer.
+- If `status === "ATTENDED"`, atomically decrements `remainingSessions` and creates a `RevenueRecognition` record in the same transaction.
+
+**Response** `201`
+```json
+{
+    "id": "schedule-uuid",
+    "trainerId": "trainer-uuid",
+    "memberId": "member-uuid",
+    "membershipId": "membership-uuid",
+    "scheduledAt": "2026-04-20T10:00:00.000Z",
+    "sessionDuration": 60,
+    "endsAt": "2026-04-20T11:00:00.000Z",
+    "status": "SCHEDULED",
+    "cancelReason": null,
+    "createdAt": "2026-04-14T00:00:00.000Z",
+    "updatedAt": "2026-04-14T00:00:00.000Z"
+}
+```
+
+**Response** `403`
+```json
+{ "message": "Invalid or depleted membership" }
+```
+
+**Response** `409`
+```json
+{ "message": "Schedule conflicts with existing session" }
+```
+
+---
+
+#### GET /api/schedule
+List all schedules for the authenticated trainer. Optionally filter by member.
+
+**Query Parameters**
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `member-id` | string (uuid) | No | Filter schedules for a specific member |
+
+**Example**
+```
+GET /api/schedule
+GET /api/schedule?member-id=member-uuid
+```
+
+**Response** `200`
+```json
+[
+    {
+        "id": "schedule-uuid-1",
+        "member": {
+            "id": "member-uuid",
+            "name": "김민수",
+            "phoneNumber": "01012345678"
+        },
+        "membership": {
+            "id": "membership-uuid",
+            "remainingSessions": 25
+        },
+        "scheduledAt": "2026-04-20T10:00:00.000Z",
+        "sessionDuration": 60,
+        "status": "SCHEDULED",
+        "cancelReason": null
+    }
+]
+```
+
+---
+
+#### GET /api/schedule/:id
+Get detailed information about a single schedule.
+
+**Response** `200`
+```json
+{
+    "id": "schedule-uuid",
+    "member": {
+        "id": "member-uuid",
+        "name": "김민수",
+        "phoneNumber": "01012345678"
+    },
+    "membership": {
+        "id": "membership-uuid",
+        "remainingSessions": 25,
+        "usedSessions": 5,
+        "expiredAt": "2026-07-20T00:00:00.000Z"
+    },
+    "scheduledAt": "2026-04-20T10:00:00.000Z",
+    "sessionDuration": 60,
+    "status": "SCHEDULED",
+    "cancelReason": null
+}
+```
+
+**Response** `404`
+```json
+{ "message": "Schedule not found" }
+```
+
+---
+
+#### PATCH /api/schedule/:id
+Update a schedule (partial update). Used for rescheduling, status changes (check-in, cancellation, no-show).
+
+**Request Body** (all fields optional)
+```json
+{
+    "scheduledAt": "2026-04-20T14:00:00.000Z",
+    "sessionDuration": 90,
+    "status": "ATTENDED",
+    "cancelReason": null
+}
+```
+
+**Business rules**
+- `endsAt` is automatically recalculated when `scheduledAt` or `sessionDuration` changes.
+- Status transition to `ATTENDED` decrements `remainingSessions` and records revenue atomically.
+- Database-level Exclusion Constraint re-validates on time changes.
+
+**Response** `200` — returns updated schedule
+
+**Response** `404`
+```json
+{ "message": "Schedule not found" }
+```
+
+**Response** `409`
+```json
+{ "message": "Schedule conflicts with existing session" }
+```
+
+---
+
+#### DELETE /api/schedule/:id
+Delete a schedule.
+
+**Response** `204` No Content
+
+**Response** `404`
+```json
+{ "message": "Schedule not found" }
+```
+
+---
+
+### Schedule Status Enum
+| Value | Meaning |
+|-------|---------|
+| `SCHEDULED` | Booked, pending |
+| `ATTENDED` | Session completed (triggers session decrement + revenue recognition) |
+| `NO_SHOW` | Member did not attend |
+| `CANCELLED` | Cancelled before session time |
+
 ## Design Decisions
 
 ### Why JWT?
@@ -662,3 +848,43 @@ Cookie: refresh_token=xxx (HttpOnly, Secure, SameSite=Strict)
 ```
 - prevent XSS (Not allow access through Javascript)
 - Only transfer through HTTPS
+
+### Schedule Overlap Prevention
+
+A trainer cannot be double-booked — enforced via a PostgreSQL
+**Exclusion Constraint** on the `Schedule` table:
+
+```sql
+EXCLUDE USING gist (
+  "trainer_id" WITH =,
+  tsrange("scheduled_at", "ends_at", '[)') WITH &&
+) WHERE (status IN ('SCHEDULED', 'ATTENDED'));
+```
+
+**Why at the DB layer?**
+Checking conflicts in the service layer (`findFirst` → `create`) creates
+a TOCTOU race condition — concurrent requests can slip through the gap
+and produce double-bookings. The Exclusion Constraint makes the check
+atomic at the storage level.
+
+**Defense in Depth:** DTO validation → service transaction → DB constraint.
+Even if application code is bypassed, the invariant holds.
+
+### Idempotent State Transition Handling
+
+Schedule status changes trigger financial side-effects (revenue
+recognition, session decrement). To prevent abuse via redundant PATCH
+requests, transitions are detected by comparing *existing* and *new*
+states, not just the current state:
+
+```typescript
+const wasAttended = existing.status === "ATTENDED";
+const willBeAttended = newStatus === "ATTENDED";
+
+if (!wasAttended && willBeAttended) await onAttended(tx, ...);
+if (wasAttended && !willBeAttended) await onDeAttended(tx, ...);
+// ATTENDED → ATTENDED or non → non: no-op
+```
+
+This guarantees that each state transition fires exactly once,
+eliminating the "repeated PATCH inflates revenue" business logic abuse.
