@@ -793,13 +793,167 @@ Delete a schedule.
 
 ---
 
-### Schedule Status Enum
+#### Schedule Status Enum
 | Value | Meaning |
 |-------|---------|
 | `SCHEDULED` | Booked, pending |
 | `ATTENDED` | Session completed (triggers session decrement + revenue recognition) |
 | `NO_SHOW` | Member did not attend |
 | `CANCELLED` | Cancelled before session time |
+
+### TrainerExpense
+
+All endpoints require a valid JWT access token and operate only on the
+authenticated trainer's expenses (BOLA defense enforced via `trainerId` filter).
+
+---
+
+#### POST /api/trainer-expense
+Create a new expense record.
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body**
+```json
+{
+    "category": "RENT",
+    "amount": 2000000,
+    "memo": "April studio rent",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
+```
+
+**Field constraints**
+- `category`: enum — `"RENT" | "UTILITY" | "SUPPLY" | "OTHER"`
+- `amount`: integer, `0 <= amount <= 100,000,000` (stored in KRW as integer to avoid floating-point errors)
+- `memo`: string, max 500 chars
+- `paidAt`: ISO 8601 datetime
+
+**Response** `201`
+```json
+{
+    "id": "expense-uuid",
+    "trainerId": "trainer-uuid",
+    "category": "RENT",
+    "amount": 2000000,
+    "memo": "April studio rent",
+    "paidAt": "2026-04-01T00:00:00.000Z",
+    "createdAt": "2026-04-15T00:00:00.000Z",
+    "updatedAt": "2026-04-15T00:00:00.000Z"
+}
+```
+
+**Response** `400` — Validation error (invalid category, negative amount, etc.)
+
+---
+
+#### GET /api/trainer-expense
+List all expense records for the authenticated trainer.
+
+**Query Parameters** (all optional)
+| Name | Type | Description |
+|------|------|-------------|
+| `category` | enum | Filter by category |
+| `start-date` | ISO 8601 | Inclusive lower bound on `paidAt` |
+| `end-date` | ISO 8601 | Inclusive upper bound on `paidAt` |
+
+**Example**
+```
+GET /api/trainer-expense
+GET /api/trainer-expense?category=RENT
+GET /api/trainer-expense?start-date=2026-04-01&end-date=2026-04-30
+```
+
+**Response** `200`
+```json
+[
+    {
+        "id": "expense-uuid-1",
+        "category": "RENT",
+        "amount": 2000000,
+        "memo": "April studio rent",
+        "paidAt": "2026-04-01T00:00:00.000Z"
+    },
+    {
+        "id": "expense-uuid-2",
+        "category": "SUPPLY",
+        "amount": 150000,
+        "memo": "Resistance bands",
+        "paidAt": "2026-04-05T00:00:00.000Z"
+    }
+]
+```
+
+---
+
+#### GET /api/trainer-expense/:id
+Get a single expense record by ID.
+
+**Response** `200`
+```json
+{
+    "id": "expense-uuid",
+    "trainerId": "trainer-uuid",
+    "category": "RENT",
+    "amount": 2000000,
+    "memo": "April studio rent",
+    "paidAt": "2026-04-01T00:00:00.000Z",
+    "createdAt": "2026-04-15T00:00:00.000Z",
+    "updatedAt": "2026-04-15T00:00:00.000Z"
+}
+```
+
+**Response** `404`
+```json
+{ "message": "Trainer expense not found" }
+```
+
+> **Security note:** A `404` is returned whether the ID does not exist OR it belongs to another trainer. This prevents attackers from enumerating other trainers' expense IDs (BOLA defense + information leakage prevention).
+
+---
+
+#### PATCH /api/trainer-expense/:id
+Update an expense record (partial update).
+
+**Request Body** (all fields optional)
+```json
+{
+    "amount": 1950000,
+    "memo": "April studio rent (discount applied)"
+}
+```
+
+**Response** `200` — returns the updated expense record.
+
+**Response** `404`
+```json
+{ "message": "Trainer expense not found" }
+```
+
+---
+
+#### DELETE /api/trainer-expense/:id
+Delete an expense record.
+
+**Response** `204` No Content
+
+**Response** `404`
+```json
+{ "message": "Trainer expense not found" }
+```
+
+---
+
+#### Expense Category Enum
+| Value | Meaning |
+|-------|---------|
+| `RENT` | Studio rent |
+| `UTILITY` | Electricity, water, internet |
+| `SUPPLY` | Training equipment, consumables |
+| `OTHER` | Miscellaneous expenses |
 
 ## Design Decisions
 
@@ -888,3 +1042,18 @@ if (wasAttended && !willBeAttended) await onDeAttended(tx, ...);
 
 This guarantees that each state transition fires exactly once,
 eliminating the "repeated PATCH inflates revenue" business logic abuse.
+
+### Expense Amount Stored as Integer
+
+All monetary values (`amount`, `sessionPassPrice`) are stored as `Int` in KRW.
+
+**Rationale**
+- JavaScript numbers use IEEE 754 floats → arithmetic drift (`0.1 + 0.2 !== 0.3`)
+- Over time, rounding errors accumulate in financial summaries
+- Attackers can exploit rounding behavior (classic *Salami Attack* pattern)
+
+**Defense in Depth**
+- DTO layer: `@IsInt()` rejects string/float inputs
+- DTO layer: `@Min(0)` prevents negative amounts (refund abuse)
+- DTO layer: `@Max(100_000_000)` caps absurd values (integer overflow / DoS)s
+- DB layer: Prisma schema enforces `Int` type

@@ -1,0 +1,178 @@
+### ===========================
+### Trainer Expense API Tests
+### ===========================
+
+@baseUrl = http://localhost:3000/api/trainer-expense
+@accessToken = {{login.response.body.accessToken}}
+
+
+### -----------------------------------------------
+### Login first (to obtain accessToken)
+### -----------------------------------------------
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "kyu@example.com",
+    "password": "Password123!"
+}
+
+### -----------------------------------------------
+### 1. Create Expense - Rent
+### -----------------------------------------------
+# @name createExpense
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "RENT",
+    "amount": 2000000,
+    "memo": "April studio rent",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
+
+### -----------------------------------------------
+### 2. Create Expense - Supply
+### -----------------------------------------------
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "SUPPLY",
+    "amount": 150000,
+    "memo": "Resistance bands and foam rollers",
+    "paidAt": "2026-04-05T00:00:00.000Z"
+}
+
+### -----------------------------------------------
+### 3. Create Expense - Utility
+### -----------------------------------------------
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "UTILITY",
+    "amount": 120000,
+    "memo": "Electricity and internet bill",
+    "paidAt": "2026-04-10T00:00:00.000Z"
+}
+
+### -----------------------------------------------
+### 4. Get All Expenses
+### -----------------------------------------------
+GET {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 5. Filter by Category
+### -----------------------------------------------
+GET {{baseUrl}}?category=RENT
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 6. Filter by Date Range
+### -----------------------------------------------
+GET {{baseUrl}}?start-date=2026-04-01T00:00:00.000Z&end-date=2026-04-30T23:59:59.999Z
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 7. Get Expense by ID
+### -----------------------------------------------
+@expenseId = {{createExpense.response.body.id}}
+
+GET {{baseUrl}}/{{expenseId}}
+Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 8. Update Expense
+### -----------------------------------------------
+PATCH {{baseUrl}}/{{expenseId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "amount": 1950000,
+    "memo": "April studio rent (discount applied)"
+}
+
+### -----------------------------------------------
+### 9. Delete Expense
+### -----------------------------------------------
+DELETE {{baseUrl}}/{{expenseId}}
+Authorization: Bearer {{accessToken}}
+
+
+### ===========================
+### Security Test Cases
+### ===========================
+
+### 10. [AuthN] Reject unauthenticated request -> 401
+GET {{baseUrl}}
+
+### 11. [Input Validation] Reject negative amount -> 400
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "RENT",
+    "amount": -1000,
+    "memo": "Negative amount test",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
+
+### 12. [Input Validation] Reject amount above cap -> 400
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "RENT",
+    "amount": 999999999999,
+    "memo": "Integer overflow test",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
+
+### 13. [Input Validation] Reject invalid category -> 400
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "INVALID_CATEGORY",
+    "amount": 10000,
+    "memo": "Enum injection test",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
+
+### 14. [Input Validation] Reject non-integer amount (type confusion) -> 400
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "RENT",
+    "amount": 1000.999,
+    "memo": "Float rounding attack test",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
+
+### 15. [BOLA] Accessing another trainer's expense returns 404
+GET {{baseUrl}}/4176f0df-d796-44aa-9a07-ebdf3b85ef93
+Authorization: Bearer {{accessToken}}
+
+### 16. [Input Validation] Reject string amount -> 400
+POST {{baseUrl}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "category": "RENT",
+    "amount": "2000000",
+    "memo": "String-to-number coercion test",
+    "paidAt": "2026-04-01T00:00:00.000Z"
+}
