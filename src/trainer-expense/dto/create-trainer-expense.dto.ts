@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsPositive, IsString, Max, MaxLength, Min } from "class-validator"
+import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString, Max, MaxLength, Min } from "class-validator"
 
 export class CreateTrainerExpenseDto {
     @IsNotEmpty()

@@ -10,12 +10,13 @@ import { SessionPassModule } from './session-pass/session-pass.module';
 import { MembershipModule } from './membership/membership.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { TrainerExpenseModule } from './trainer-expense/trainer-expense.module';
+import { RevenueSummaryModule } from './revenue-summary/revenue-summary.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule, 
-    AuthModule, TrainersModule, MembersModule, SessionPassModule, MembershipModule, ScheduleModule, TrainerExpenseModule],
+    AuthModule, TrainersModule, MembersModule, SessionPassModule, MembershipModule, ScheduleModule, TrainerExpenseModule, RevenueSummaryModule],
   controllers: [AppController],
   providers: [AppService],
 })

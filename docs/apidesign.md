@@ -615,6 +615,31 @@ No Content
 }
 ```
 
+#### GET /api/membership/summary
+Get a membership by ID
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response** `200`
+```json
+{
+    "id": "uuid",
+    "memberId": "member-uuid",
+    "memberName": "member-name",
+    "sessionPassId": "session-pass-uuid",
+    "sessionPassName": "PT 30회권",
+    "sessionPassTotalSessions": 30,
+    "remainingSessions": 25,
+    "usedThisMonth": 3,
+    "usedSession": 5,
+    "membershipExpiredAt": "2026-07-12T00:00:00.000Z",
+    "progress": "16%"
+}
+```
+
 ### Schedule
 
 All endpoints require a valid JWT access token in the Authorization header.
@@ -954,6 +979,76 @@ Delete an expense record.
 | `UTILITY` | Electricity, water, internet |
 | `SUPPLY` | Training equipment, consumables |
 | `OTHER` | Miscellaneous expenses |
+
+### RevenueSummary
+
+All endpoints require a valid JWT access token and operate only on the
+authenticated trainer's expenses (BOLA defense enforced via `trainerId` filter).
+
+---
+
+#### GET /api/revenue-summary
+Get monthly or yearly financial summary for the authenticated trainer.
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters**
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `year` | integer | Yes | Year to query (e.g., 2026) |
+| `month` | integer | No | Month to query (1-12). If omitted, returns full year summary. |
+
+**Example**
+```
+GET /api/revenue-summary?year=2026&month=4
+GET /api/revenue-summary?year=2026
+```
+
+**Response** `200` (monthly)
+```json
+{
+    "year": 2026,
+    "month": 4,
+    "totalSales": 3670000,
+    "earnedRevenue": 2209000,
+    "unearnedRevenue": 1461000,
+    "totalExpenses": 1221000,
+    "netProfit": 988000
+}
+```
+
+**Response** `200` (yearly)
+```json
+{
+    "year": 2026,
+    "month": null,
+    "totalSales": 42000000,
+    "earnedRevenue": 31500000,
+    "unearnedRevenue": 10500000,
+    "totalExpenses": 15800000,
+    "netProfit": 15700000
+}
+```
+
+**Response** `400`
+```json
+{ "message": "year is required" }
+```
+
+**Field definitions**
+| Field | Description |
+|-------|-------------|
+| `totalSales` | Total session pass sales (sum of sessionPassPrice from new memberships) |
+| `earnedRevenue` | Revenue from attended sessions (price per session × attended count) |
+| `unearnedRevenue` | `totalSales - earnedRevenue` (prepaid but not yet delivered) |
+| `totalExpenses` | Sum of all trainer expenses for the period |
+| `netProfit` | `earnedRevenue - totalExpenses` |
+
+> **Security note:** All calculations are scoped to the authenticated trainer's data via `trainerId` filter (BOLA defense). Monetary values are stored and returned as integers in KRW to prevent floating-point arithmetic errors.
+
 
 ## Design Decisions
 

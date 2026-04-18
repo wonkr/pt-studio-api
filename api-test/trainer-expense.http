@@ -76,7 +76,7 @@ Authorization: Bearer {{accessToken}}
 ### -----------------------------------------------
 ### 6. Filter by Date Range
 ### -----------------------------------------------
-GET {{baseUrl}}?start-date=2026-04-01T00:00:00.000Z&end-date=2026-04-30T23:59:59.999Z
+GET {{baseUrl}}?start-date=2026-04-01T00:00:00.000Z&end-date=2026-04-05T23:59:59.999Z
 Authorization: Bearer {{accessToken}}
 
 ### -----------------------------------------------

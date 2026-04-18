@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 @Module({
   imports: [DatabaseModule, AuthModule],
   providers: [MembershipService],
-  controllers: [MembershipController]
+  controllers: [MembershipController],
+  exports: [MembershipService]
 })
 export class MembershipModule {}

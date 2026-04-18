@@ -3,6 +3,7 @@ import { TrainerExpenseService } from './trainer-expense.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CreateTrainerExpenseDto } from './dto/create-trainer-expense.dto';
 import { UpdateTrainerExpenseDto } from './dto/update-trainer-expense.dto';
+import { TrainerExpenseSummaryQueryDto } from './dto/trainer-expense-summary.dto';
 
 @Controller('trainer-expense')
 export class TrainerExpenseController {
@@ -39,4 +40,11 @@ export class TrainerExpenseController {
     async remove(@Request() req, @Param('id') id: string){
         return this.trainerExpenseService.remove(req.user.sub, id)
     }
+
+    @UseGuards(AuthGuard)
+    @Get('/summary')
+    async getExpenseSummary(@Request() req, @Query(ValidationPipe) query: TrainerExpenseSummaryQueryDto){
+        return this.trainerExpenseService.getExpenseSummary(req.user.sub, query.year, query.month)
+    }
+    
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
 import { UpdateMembershipDto } from './dto/update-membership.dto';
+import { start } from 'node:repl';
 
 @Injectable()
 export class MembershipService {
@@ -142,6 +143,150 @@ export class MembershipService {
             where: {
                 trainerId: trainerId,
                 id: id
+            }
+        })
+    }
+    
+    async getTotalSales(trainerId: string, year: number, month: number){
+        const startDate = new Date(year, month? month-1:0, 1)
+        const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
+
+        const memberships = await this.databaseService.membership.findMany({
+            where: {
+                trainerId: trainerId,
+                paidAt: {
+                    gte: startDate,
+                    lt: endDate
+                }, 
+                paymentStatus: 'PAID'
+            },
+            select:{
+                sessionPass: {
+                    select: {
+                        price: true
+                    }
+                }
+            }
+        })
+
+        const totalSales = memberships.reduce(
+            (sum, m) => sum + (m.sessionPass?.price.toNumber() ?? 0), 0
+        )
+
+        return totalSales
+    }
+
+    async getTotalSalesOnValidMembership(trainerId: string){
+        const memberships = await this.databaseService.membership.findMany({
+            where: {
+                trainerId: trainerId, 
+                expiredAt: {
+                    lt: new Date()
+                }
+            },
+            select: {
+                sessionPass: {
+                    select: {
+                        price: true
+                    }
+                }
+            }
+        })
+
+        const totalSales = memberships.reduce(
+            (sum, m) => sum + (m.sessionPass?.price.toNumber() ?? 0), 0
+        )
+
+        return totalSales
+    }
+
+    async getMembershipSummary(trainerId: string, year:number, month: number){
+        const startDate = new Date(year, month? month-1:0, 1)
+        const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
+
+        const summary = await this.databaseService.membership.findMany({
+            where: {
+                trainerId: trainerId
+            },
+            select: {
+                id: true,
+                member:{
+                    select: {
+                        id: true, 
+                        name: true
+                    }
+                },
+                sessionPass: {
+                    select: {
+                        id: true,
+                        name: true,
+                        totalSessions: true
+                    }
+                },
+                remainingSessions: true,
+                usedSessions: true,
+                expiredAt: true,
+            }
+        })
+
+        const flattenSummary = summary.map(async (s) => {
+            const usedThisMonthCount = await this.databaseService.revenueRecognition.count({
+                where: {
+                    trainerId: trainerId,
+                    memberId: s.member.id,
+                    recognizedAt: {
+                        gte: startDate,
+                        lt: endDate
+                    }
+                }
+            })
+            return {
+                membershipId: s.id,
+                memberId: s.member.id,
+                name: s.member.name,
+                sessionPassId: s.sessionPass.id,
+                sessionPassName: s.sessionPass.name,
+                totalSession: s.sessionPass.totalSessions,
+                remainingSessions: s.remainingSessions,
+                usedSession: s.usedSessions,
+                usedThisMonth: usedThisMonthCount,
+                expiredAt: s.expiredAt,
+                progress: Math.round(s.usedSessions/s.sessionPass.totalSessions)
+            };
+        })
+
+        return flattenSummary
+    }
+
+    async getMembershipTransaction(trainerId: string, year: number, month: number){
+        const startDate = new Date(year, month? month-1:0, 1)
+        const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
+
+        return await this.databaseService.membership.findMany({
+            where: {
+                trainerId: trainerId,
+                paidAt: {
+                    gte: startDate,
+                    lt: endDate
+                }
+            },
+            select: {
+                id: true, 
+                member: {
+                    select: {
+                        id: true, 
+                        name: true
+                    }
+                },
+                sessionPass: {
+                    select: {
+                        name: true,
+                        price: true
+                    }
+                }, 
+                paymentType: true,
+                paidAt: true,
+                paymentStatus: true
             }
         })
     }

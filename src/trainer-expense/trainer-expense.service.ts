@@ -4,6 +4,7 @@ import { CreateTrainerExpenseDto } from './dto/create-trainer-expense.dto';
 import { UpdateTrainerExpenseDto } from './dto/update-trainer-expense.dto';
 import { NOTFOUND } from 'node:dns/promises';
 import { start } from 'node:repl';
+import e from 'express';
 
 @Injectable()
 export class TrainerExpenseService {
@@ -73,5 +74,54 @@ export class TrainerExpenseService {
         })
 
         return
+    }
+
+    async getTotalExpense(trainerId: string, year: number, month: number){
+        const startDate = new Date(year, month? month-1:0, 1)
+        const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
+
+        const expenseSum = await this.databaseService.trainerExpense.aggregate({
+            where:{
+                trainerId: trainerId,
+                paidAt: {
+                    gte: startDate,
+                    lt: endDate
+                }
+            },
+            _sum:{
+                amount: true
+            }
+        })
+        
+        return expenseSum._sum.amount?.toNumber()??0
+    }
+
+    async getExpenseSummary(trainerId: string, year: number, month: number){
+        const startDate = new Date(year, month? month-1:0, 1)
+        const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
+
+        const expenseByCategory = await this.databaseService.trainerExpense.groupBy({
+            by: ['category'],
+            where: {
+                trainerId: trainerId,
+                paidAt: {
+                    gte: startDate,
+                    lt: endDate,
+                },
+            },
+            _sum: { amount: true },
+        })
+
+        const flattenExpenseSummary = expenseByCategory.map(c => ({
+            category: c.category,
+            amount: c._sum.amount?.toNumber() ?? 0
+        }))
+        
+        const total = flattenExpenseSummary.reduce((sum, e) => sum + e.amount, 0)
+
+        return {
+            totalExpenses: total, 
+            byCategory: flattenExpenseSummary
+        }
     }
 }

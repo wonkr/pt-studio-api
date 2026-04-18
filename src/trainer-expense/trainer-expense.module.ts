@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 @Module({
   imports: [DatabaseModule, AuthModule],
   providers: [TrainerExpenseService],
-  controllers: [TrainerExpenseController]
+  controllers: [TrainerExpenseController],
+  exports:[TrainerExpenseService]
 })
 export class TrainerExpenseModule {}
