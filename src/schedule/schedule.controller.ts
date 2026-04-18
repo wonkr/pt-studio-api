@@ -3,9 +3,6 @@ import { ScheduleService } from './schedule.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
-import { stringify } from 'querystring';
-import { MembershipModule } from '../membership/membership.module';
-
 
 @Controller('schedule')
 export class ScheduleController {

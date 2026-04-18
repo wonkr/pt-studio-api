@@ -24,6 +24,12 @@ export class TrainerExpenseController {
     }
 
     @UseGuards(AuthGuard)
+    @Get('/summary')
+    async getExpenseSummary(@Request() req, @Query(ValidationPipe) query: TrainerExpenseSummaryQueryDto){
+        return this.trainerExpenseService.getExpenseSummary(req.user.sub, query.year, query.month)
+    }
+    
+    @UseGuards(AuthGuard)
     @Get(':id')
     async findOne(@Request() req, @Param('id') id: string){
         return this.trainerExpenseService.findOne(req.user.sub, id)
@@ -39,12 +45,6 @@ export class TrainerExpenseController {
     @Delete(':id')
     async remove(@Request() req, @Param('id') id: string){
         return this.trainerExpenseService.remove(req.user.sub, id)
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('/summary')
-    async getExpenseSummary(@Request() req, @Query(ValidationPipe) query: TrainerExpenseSummaryQueryDto){
-        return this.trainerExpenseService.getExpenseSummary(req.user.sub, query.year, query.month)
     }
     
 }

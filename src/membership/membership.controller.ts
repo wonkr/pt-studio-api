@@ -19,6 +19,18 @@ export class MembershipController {
     }
 
     @UseGuards(AuthGuard)
+    @Get('/summary')
+    async getMembershipSummary(@Request() req, @Param(ValidationPipe) query: MembershipSummaryQueryDto){
+        return this.membershipService.getMembershipSummary(req.user.sub, query.year, query.month)
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/membership-transaction')
+    async getMembershipTransaction(@Request() req, @Param(ValidationPipe) query: MembershipSummaryQueryDto){
+        return this.membershipService.getMembershipTransaction(req.user.sub, query.year, query.month)
+    }
+
+    @UseGuards(AuthGuard)
     @Get(':id')
     async findOne(@Request() req, @Param('id') id: string) {
         return this.membershipService.findOne(req.user.sub, id)
@@ -34,18 +46,6 @@ export class MembershipController {
     @Delete(':id')
     async remove(@Request() req, @Param('id') id: string){
         return this.membershipService.remove(req.user.sub, id)
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('/summary')
-    async getMembershipSummary(@Request() req, @Param(ValidationPipe) query: MembershipSummaryQueryDto){
-        return this.membershipService.getMembershipSummary(req.user.sub, query.year, query.month)
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('/membership-transaction')
-    async getMembershipTransaction(@Request() req, @Param(ValidationPipe) query: MembershipSummaryQueryDto){
-        return this.membershipService.getMembershipTransaction(req.user.sub, query.year, query.month)
     }
 }
 
