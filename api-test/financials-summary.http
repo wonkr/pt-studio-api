@@ -1,0 +1,61 @@
+### ===========================
+### Financials Summary API Tests
+### ===========================
+
+@accessToken = {{login.response.body.accessToken}}
+
+
+### -----------------------------------------------
+### Login first (to obtain accessToken)
+### -----------------------------------------------
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "Password456!"
+}
+
+
+### ===========================
+### Revenue Summary
+### ===========================
+
+### 1. Get Monthly Revenue Summary
+GET http://localhost:3000/api/revenue-summary?year=2026&month=4
+Authorization: Bearer {{accessToken}}
+
+### 2. Get Yearly Revenue Summary
+GET http://localhost:3000/api/revenue-summary?year=2026
+Authorization: Bearer {{accessToken}}
+
+### 3. [Validation] Missing year -> 400
+GET http://localhost:3000/api/revenue-summary
+Authorization: Bearer {{accessToken}}
+
+
+### ===========================
+### Membership Summary
+### ===========================
+
+### 4. Get Membership Summary (monthly)
+GET http://localhost:3000/api/membership/summary?year=2026&month=4
+Authorization: Bearer {{accessToken}}
+
+### 5. Get Membership Transaction (monthly)
+GET http://localhost:3000/api/membership/membership-transaction?year=2026&month=4
+Authorization: Bearer {{accessToken}}
+
+
+### ===========================
+### Trainer Expense Summary
+### ===========================
+
+### 6. Get Expense Summary (monthly)
+GET http://localhost:3000/api/trainer-expense/summary?year=2026&month=4
+Authorization: Bearer {{accessToken}}
+
+### 7. Get Expense Summary (yearly)
+GET http://localhost:3000/api/trainer-expense/summary?year=2026
+Authorization: Bearer {{accessToken}}
