@@ -79,7 +79,7 @@ Cookie: refresh_token=<jwt_refresh_token> (HttpOnly, Secure, SameSite=Strict)
 Body: 
 ```json
 {
-    "accessToken": "new_jwt_access_token"
+    "newAccessToken": "new_jwt_access_token"
 }
 ```
 Cookie (Set by server):
@@ -95,9 +95,11 @@ Authorization: Bearer <jwt_access_token>
 Cookie: refresh_token=<jwt_refresh_token> (HttpOnly, Secure, SameSite=Strict)
 ```
 
-**Response** `204`
-```
-No Content
+**Response** `200`
+```json
+{
+  "message": "Logged out successfully"
+}
 ```
 
 #### POST /api/auth/verify-password
@@ -116,10 +118,12 @@ Authorization: Bearer <access_token>
 ```
 
 **Response** `200`
-```json
-{
-  "passwordChangeToken": "short_lived_token"
-}
+```
+No Content
+```
+Cookie (Set by server):
+```
+Set-Cookie: password_change_token=xxx; HttpOnly; Secure; SameSite=Strict; Max-Age=300; Path=/auth/password-change
 ```
 
 **Response** `401`
@@ -131,7 +135,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-#### PATCH /api/auth/password-change
+#### PATCH /api/auth/change-password
 Update password
 
 **Headers**
@@ -143,15 +147,16 @@ Cookie: password_change_token=<short_lived_token> (HttpOnly, Secure, SameSite=St
 **Request Body**
 ```json
 {
-  "passwordChangeToken": "short_lived_token",
   "newPassword": "newpassword456",
   "confirmPassword": "newpassword456"
 }
 ```
 
-**Response** `204`
-```
-No Content
+**Response** `200`
+```json
+{
+  "message": "Password is changed successfully"
+}
 ```
 
 **Response** `400`
@@ -181,8 +186,10 @@ No Content
 Authorization: Bearer <jwt_access_token>
 ```
 
-### Trainer 
-#### Get /api/trainer
+### Trainer
+> **Note:** Not yet implemented. TrainersController is currently empty.
+
+#### GET /api/trainer
 Get trainer info
 
 **Response** `200`
@@ -616,12 +623,18 @@ No Content
 ```
 
 #### GET /api/membership/summary
-Get a membership by ID
+Get membership summary aggregated by period (monthly or yearly).
 
 **Headers**
 ```
 Authorization: Bearer <access_token>
 ```
+
+**Query Parameters**
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `year` | integer | Yes | Year to query (e.g., 2026) |
+| `month` | integer | Yes | Month to query (1-12) |
 
 **Response** `200`
 ```json
@@ -638,6 +651,37 @@ Authorization: Bearer <access_token>
     "membershipExpiredAt": "2026-07-12T00:00:00.000Z",
     "progress": "16%"
 }
+```
+
+---
+
+#### GET /api/membership/membership-transaction
+Get membership payment transactions aggregated by period.
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters**
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `year` | integer | Yes | Year to query (e.g., 2026) |
+| `month` | integer | Yes | Month to query (1-12) |
+
+**Response** `200`
+```json
+[
+    {
+        "memberId": "member-uuid",
+        "memberName": "member-name",
+        "sessionPassName": "PT 30회권",
+        "sessionPassPrice": 1500000,
+        "paymentType": "CARD",
+        "paymentStatus": "PAID",
+        "paidAt": "2026-04-12T00:00:00.000Z"
+    }
+]
 ```
 
 ### Schedule
@@ -823,7 +867,7 @@ Delete a schedule.
 |-------|---------|
 | `SCHEDULED` | Booked, pending |
 | `ATTENDED` | Session completed (triggers session decrement + revenue recognition) |
-| `NO_SHOW` | Member did not attend |
+| `NOSHOW` | Member did not attend |
 | `CANCELLED` | Cancelled before session time |
 
 ### TrainerExpense
@@ -968,6 +1012,43 @@ Delete an expense record.
 **Response** `404`
 ```json
 { "message": "Trainer expense not found" }
+```
+
+---
+
+#### GET /api/trainer-expense/summary
+Get expense summary aggregated by period.
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters**
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `year` | integer | Yes | Year to query (e.g., 2026) |
+| `month` | integer | No | Month to query (1-12). If omitted, returns full year summary. |
+
+**Example**
+```
+GET /api/trainer-expense/summary?year=2026&month=4
+GET /api/trainer-expense/summary?year=2026
+```
+
+**Response** `200`
+```json
+{
+    "year": 2026,
+    "month": 4,
+    "totalExpenses": 2270000,
+    "breakdown": {
+        "RENT": 2000000,
+        "UTILITY": 120000,
+        "SUPPLY": 150000,
+        "OTHER": 0
+    }
+}
 ```
 
 ---
