@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
 import { MembershipService } from './membership.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CreateMembershipDto } from './dto/create-membership.dto';
@@ -20,13 +20,13 @@ export class MembershipController {
 
     @UseGuards(AuthGuard)
     @Get('/summary')
-    async getMembershipSummary(@Request() req, @Param(ValidationPipe) query: MembershipSummaryQueryDto){
+    async getMembershipSummary(@Request() req, @Query(ValidationPipe) query: MembershipSummaryQueryDto){
         return this.membershipService.getMembershipSummary(req.user.sub, query.year, query.month)
     }
 
     @UseGuards(AuthGuard)
     @Get('/membership-transaction')
-    async getMembershipTransaction(@Request() req, @Param(ValidationPipe) query: MembershipSummaryQueryDto){
+    async getMembershipTransaction(@Request() req, @Query(ValidationPipe) query: MembershipSummaryQueryDto){
         return this.membershipService.getMembershipTransaction(req.user.sub, query.year, query.month)
     }
 

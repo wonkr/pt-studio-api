@@ -228,8 +228,8 @@ export class MembershipService {
                 expiredAt: true,
             }
         })
-
-        const flattenSummary = summary.map(async (s) => {
+        
+        const flattenSummary = await Promise.all(summary.map(async (s) => {
             const usedThisMonthCount = await this.databaseService.revenueRecognition.count({
                 where: {
                     trainerId: trainerId,
@@ -253,7 +253,7 @@ export class MembershipService {
                 expiredAt: s.expiredAt,
                 progress: Math.round(s.usedSessions/s.sessionPass.totalSessions)
             };
-        })
+        }))
 
         return flattenSummary
     }
