@@ -1233,3 +1233,13 @@ All monetary values (`amount`, `sessionPassPrice`) are stored as `Int` in KRW.
 - DTO layer: `@Min(0)` prevents negative amounts (refund abuse)
 - DTO layer: `@Max(100_000_000)` caps absurd values (integer overflow / DoS)s
 - DB layer: Prisma schema enforces `Int` type
+
+### Apply `Helmet`
+Helmet is a middleware that automatically sets `security-related HTTP response headers` to protect your API from common web vulnerabilities.
+
+**X-Frame-Options** — Prevents your site from being embedded in an <iframe>. Blocks clickjacking attacks where attackers overlay invisible frames to trick users into clicking malicious buttons.
+**X-Content-Type-Options** — Tells the browser to trust the declared Content-Type and not guess (sniff) it. Prevents attackers from disguising a malicious script as an image or other harmless file type.
+**Content-Security-Policy (CSP)** — Controls which sources (domains) the browser is allowed to load scripts, styles, and images from. Blocks XSS attacks by rejecting inline scripts or scripts from unauthorized origins.
+**Strict-Transport-Security (HSTS)** — Tells the browser to only connect via HTTPS. Even if a user types http://, the browser automatically upgrades to https://, preventing man-in-the-middle attacks.
+
+It requires just one line (app.use(helmet())) and follows OWASP security headers best practices.
