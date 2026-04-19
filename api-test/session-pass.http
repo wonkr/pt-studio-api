@@ -27,9 +27,9 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "name": "PT 30회권",
+    "name": "PT 30회권-할인",
     "totalSessions": 30,
-    "price": 1500000,
+    "price": 1300000,
     "validDays": 90
 }
 

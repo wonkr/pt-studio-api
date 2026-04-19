@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
     "name": "Jay Choi",
-    "phone": "01011112222",
+    "phone": "01012345678",
     "sessionPassName": "30-sessions",
     "sessionPassTotalSessions": 30,
     "sessionPassPrice": 1500000,
@@ -84,5 +84,5 @@ Authorization: Bearer {{login.response.body.accessToken}}
 ### -----------------------------------------------
 ### 4. Get Member by ID
 ### -----------------------------------------------
-GET http://localhost:3000/api/members/여기에_memberId_붙여넣기
+GET http://localhost:3000/api/members/888b8831-8a91-4899-bd15-5b567eee6ddb
 Authorization: Bearer {{login.response.body.accessToken}}

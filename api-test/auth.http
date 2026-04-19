@@ -34,7 +34,7 @@ Content-Type: application/json
 ### 3. Refresh Token
 ### -----------------------------------------------
 POST {{baseUrl}}/refresh
-Cookie: refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyYzY2YWI4OC05ODE3LTRiZWYtYmI2MC0yNDQ5OWQ5YWZlYWIiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc3NTk2MjAxNiwiZXhwIjoxNzc2NTY2ODE2fQ.rdkD--kAf0ONPuQBynVCOXE0ENydiE2TV2SLlRyk7fcRtaqckIAZr_dIfBiIG0zCIxPMVIj3WeckrWqsUW_EC9FiXq2GqAqeTx8qkTQdlGnf0Hl3S7Y2psscFQ5gXphhL-Vg1ljjx-BKMtXHTKHdxK1U-Xjy4agmn36go7Ey9jnJIXtvNbI7NoR8OLReU1j8hcKjnOiE3jqYzj8TQLYQdFcuKxwL8tOZwFFvewAtxXeLGk_aOQ8Z2Dr_06uzG_ZkUkbx-Plj_g5CexsQyZXB7arXrRgXKBBs1FJ_aW03zyTetYgfm_iIKObbhFtL7ZEtp58U9snwrueMWtqs5iYVJQ;
+Cookie: refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyYzY2YWI4OC05ODE3LTRiZWYtYmI2MC0yNDQ5OWQ5YWZlYWIiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTc3NjU2MzQ5OSwiZXhwIjoxNzc3MTY4Mjk5fQ.oolNHcaGtW5dc1VfhTp_zUG5vfrDQgqPku8T9c6ZXTsHEeX9dS3LwLBO108cGHqw879vv5JvUXJ8P_MH-6rM6hllFW1kDskJ1e8Mz5vtxVskEAdvTB6Qn0LUrcWLDI8t4jtOKzVES7op8rPqGxu7XfycC49CxnPIUc9fx4PhSpt6n4v2oGrsgP8dGggy2amj2MJAv8cnQpVsyWKuDjmZ2UjY7kBFoRO6lmA17DP9bnqslmuApsgMMvTt10Hgs0xq3NcQuUJAkwlOAlN-eHMMp0_y9_cnIez2cVhr_-2vjXSe5SGfzu-5fN0RZzonMOoVqI0pygz4b6HdbBsn4vQuVg;
 
 ### -----------------------------------------------
 ### 4. Logout
@@ -52,7 +52,7 @@ Authorization: Bearer {{login.response.body.accessToken}}
 Content-Type: application/json
  
 {
-    "currentPassword": "Password123!"
+    "currentPassword": "Password456!"
 }
  
 ### -----------------------------------------------
@@ -60,11 +60,11 @@ Content-Type: application/json
 ### -----------------------------------------------
 PATCH {{baseUrl}}/change-password
 Authorization: Bearer {{login.response.body.accessToken}}
-Cookie: password_change_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyYzY2YWI4OC05ODE3LTRiZWYtYmI2MC0yNDQ5OWQ5YWZlYWIiLCJ0eXBlIjoicGFzc3dvcmQtY2hhbmdlIiwiaWF0IjoxNzc1OTYyMzg3LCJleHAiOjE3NzU5NjI2ODd9.bYkOxe6HqSWyIZgo6iIIluGzjkjE4gEEjzw3m6ZMOtVG0KcNcNHRdLb1soIjqLgMW9adenqPpylQbSrZd103TZYQAu2MlgDmoRKS9-wdKWkyl3mb96VqGPn7ra44JifuwME0va-hI5hN7IVCcBXzCjTLQl1dy-d48h9qunwlIFvj73klddjBgPyWlSEAsY56esZAz1YgSZGheMEpJ8wDBLM4sPdPBHfU83sLlm5e35-6hyfCyR6gajsZUlSqwMB7HWV-k1vcrU9OksnvVd_CatnirTfMQjagcPw-gc3TcpDouERFOTHMjTSxRkDZGlayPhOfaBAxugftwK5V6Xy8FA
+Cookie: password_change_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyYzY2YWI4OC05ODE3LTRiZWYtYmI2MC0yNDQ5OWQ5YWZlYWIiLCJ0eXBlIjoicGFzc3dvcmQtY2hhbmdlIiwiaWF0IjoxNzc2NTYzNTUyLCJleHAiOjE3NzY1NjM4NTJ9.R48AHNx-P2xlZM0_66nSdNT-ra0jEV5IMYNkE_PJYXCCD6JEh3hU7zTNs8In9PTPbGz-gxhb_pzu9yhKS119ikzQZcDH-odPor6rBetuumB0fvDOYhQSJ9xCzJJjq5fVAlvP4ZmWbAh4_aUYq-8y4zMsjFGtcGMgdLNeVovRz9Q5bReOjKh16f52UIYETuOT1q5Np3LXNIwxyrYPQSTNwV1fTgD5dMSf5zO0YbyBNm2h9iKcDkG0O6UL_0ntd_DInqGafru2MPvCgiYR1O8oV5CGSRDw-89GjI6BWNlEolgdIASKxwPHrvdfbc7640UGpJgY_z7Mh6dx1Jp4RgYz0Q
 Content-Type: application/json
  
 {
-    "newPassword": "Password456!",
-    "confirmPassword": "Password456!"
+    "newPassword": "Password123!",
+    "confirmPassword": "Password123!"
 }
  
