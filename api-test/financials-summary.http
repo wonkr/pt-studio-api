@@ -40,7 +40,7 @@ Authorization: Bearer {{accessToken}}
 ### ===========================
 
 ### 4. Get Membership Summary (monthly)
-GET http://localhost:3000/api/membership/summary?year=2026&month=4
+GET http://localhost:3000/api/membership/summary?year=2026&month=2
 Authorization: Bearer {{accessToken}}
 
 ### 5. Get Membership Transaction (monthly)

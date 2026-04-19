@@ -146,7 +146,7 @@ export class ScheduleService {
         const newStatus = updateScheduleDto.status ?? existingSchedule.status
 
         
-        const result = await this.databaseService.$transaction(async (tx) => {
+        await this.databaseService.$transaction(async (tx) => {
             const schedule = await tx.schedule.update({
                 where: {
                     trainerId: trainerId,
@@ -169,7 +169,34 @@ export class ScheduleService {
         })
 
 
-        return result
+        return await this.databaseService.schedule.findFirst({
+            where: {
+                trainerId: trainerId,
+                id: id
+            },
+            select: {
+                id: true,
+                member:{
+                    select:{
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
+                membership: {
+                    select:{
+                        id: true,
+                        remainingSessions: true,
+                        usedSessions: true,
+                        expiredAt: true
+                    }
+                },
+                scheduledAt: true,
+                sessionDuration: true,
+                status: true,
+                cancelReason: true
+            }
+        })
         
     }
 

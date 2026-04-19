@@ -8,8 +8,8 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "user@example.com",
-    "password": "Password456!"
+    "email": "kyu@example.com",
+    "password": "Password123!"
 }
 
 ### -----------------------------------------------
@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
     "name": "Jay Choi",
-    "phone": "01012345678",
+    "phone": "01011112222",
     "sessionPassName": "30-sessions",
     "sessionPassTotalSessions": 30,
     "sessionPassPrice": 1500000,

@@ -1,6 +1,7 @@
 import { Prisma } from '../generated/prisma/client'
 import {
   ArgumentsHost,
+  BadRequestException,
   Catch,
   ConflictException,
   ExceptionFilter,
@@ -27,19 +28,27 @@ export class PrismaExceptionFilter implements ExceptionFilter {
 
     const httpException = this.mapToHttpException(exception);
     const status = httpException.getStatus();
+    const exceptionResponse = httpException.getResponse();
 
-    response.status(status).json({
-      statusCode: status,
-      message: httpException.message,
-    });
+    response.status(status).json(
+      typeof exceptionResponse === 'string'
+        ? { statusCode: status, message: exceptionResponse }
+        : exceptionResponse
+    );
   }
 
   private mapToHttpException(exception: any): HttpException {
-    
+    if (exception instanceof HttpException) {
+      return exception;
+    }
+
+    if (exception instanceof Prisma.PrismaClientValidationError) {
+      return new BadRequestException('Invalid request data');
+    }
+
     const combinedMessage = [
       exception.message,
       exception.cause?.message,
-      exception.cause?.originalMessage,
       exception.meta?.cause,
     ]
       .filter(Boolean)
