@@ -64,8 +64,9 @@ model Member {
   memberships         Membership[]
   schedules           Schedule[]
   revenueRecognitions RevenueRecognition[]
+  deletedAt           DateTime?            @map("deleted_at")
 
-  @@unique([trainerId, name, phoneNumber])
+  @@unique([trainerId, name, phoneNumber, deletedAt])
   @@map("members")
 }
 

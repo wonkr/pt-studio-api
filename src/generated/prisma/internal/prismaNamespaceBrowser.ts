@@ -117,7 +117,8 @@ export const MemberScalarFieldEnum = {
   trainerId: 'trainerId',
   name: 'name',
   phoneNumber: 'phoneNumber',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
