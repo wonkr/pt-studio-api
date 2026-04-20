@@ -64,3 +64,25 @@ Content-Type: application/json
 ### -----------------------------------------------
 DELETE {{baseUrl}}/{{sessionPassId}}
 Authorization: Bearer {{accessToken}}
+
+### -----------------------------------------------
+### 6. Activate Session Pass
+### -----------------------------------------------
+PATCH {{baseUrl}}/activate/{{sessionPassId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "isActivated": true
+}
+
+### -----------------------------------------------
+### 7. Deactivate Session Pass
+### -----------------------------------------------
+PATCH {{baseUrl}}/activate/{{sessionPassId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "isActivated": false
+}

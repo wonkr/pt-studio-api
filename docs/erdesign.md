@@ -48,6 +48,7 @@ erDiagram
 		int total_sessions  ""  
 		decimal price  ""  
 		int valid_days
+		boolean is_activated
 	}
 
 	MEMBERSHIP {
@@ -142,3 +143,38 @@ Instead, I used `Decimal` (PostgreSQL `NUMERIC`), which stores exact decimal val
 
 ### Unify attendance model and schedule model
 Initially considered separate Attendance and Schedule tables, but consolidated into a single entity with a state machine. This reduces data inconsistency risk, simplifies BOLA authorization checks, and better reflects the domain reality where a PT session is a single lifecycle event.
+
+### Soft Delete Strategy for Members
+
+Members are never hard-deleted. Instead, a `deletedAt` timestamp is set
+to preserve historical data (revenue records, attendance history).
+
+- If the member has an active (non-expired) membership, deletion is
+  blocked with a `409 Conflict` response.
+- Once all memberships are expired, the trainer can soft-delete the member.
+- Soft-deleted members are excluded from all queries via
+  `WHERE deletedAt IS NULL`.
+
+**Rationale:** Hard-deleting a member would cascade to revenue recognition
+records, breaking financial reporting integrity.
+
+### Soft Delete & Deactivation Strategy for Session Passes
+
+Session passes follow the same soft delete strategy as members, using a
+`deletedAt` timestamp. Additionally, an `isActive` flag controls whether
+the session pass can be referenced by new memberships.
+
+- If any active (non-expired) membership references the session pass,
+  deletion is blocked with a `409 Conflict` response.
+- Once no active memberships reference it, the trainer can soft-delete
+  the session pass (`deletedAt` is set).
+- The `isActive` flag can be set to `false` independently of deletion,
+  allowing trainers to stop offering a session pass while keeping it
+  visible in existing memberships.
+- Soft-deleted and deactivated session passes are excluded from selection
+  when creating new memberships, but existing memberships that reference
+  them remain unaffected.
+
+**Rationale:** Deleting a session pass would break FK references from
+existing memberships and corrupt historical pricing data used in revenue
+calculations.

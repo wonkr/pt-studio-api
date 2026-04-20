@@ -283,13 +283,13 @@ Get a member list
 ]
 ```
 
-#### Get /api/members/<memberId>
+#### GET /api/members/:id
 
 **Response Body** `200`
 
 ```json
 {
-    "id": <uuid>,
+    "id": "<uuid>",
     "name": "Jay Choi",
     "phone": "000-0000-0000",
     "sessionPassName": "10-sessions",
@@ -301,6 +301,28 @@ Get a member list
     "paymentMethod": "card"
 }
 ```
+
+**Response** `404`
+```json
+{ "message": "Member not found" }
+```
+
+---
+
+#### DELETE /api/members/:id
+Delete a member.
+
+**Response** `200`
+```
+No Content
+```
+
+**Response** `404`
+```json
+{ "message": "Member not found" }
+```
+
+---
 
 ### SessionPass
 
@@ -449,6 +471,32 @@ Authorization: Bearer <access_token>
 ```
 No Content
 ```
+
+**Response** `404`
+```json
+{
+    "message": "Session pass not found"
+}
+```
+
+---
+
+#### PATCH /api/session-pass/activate/:id
+Activate or deactivate a session pass.
+
+**Headers**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request Body**
+```json
+{
+    "isActivated": true
+}
+```
+
+**Response** `200` — returns updated session pass
 
 **Response** `404`
 ```json

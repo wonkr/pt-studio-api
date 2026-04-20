@@ -84,5 +84,14 @@ Authorization: Bearer {{login.response.body.accessToken}}
 ### -----------------------------------------------
 ### 4. Get Member by ID
 ### -----------------------------------------------
+# @name getMember
 GET http://localhost:3000/api/members/888b8831-8a91-4899-bd15-5b567eee6ddb
+Authorization: Bearer {{login.response.body.accessToken}}
+
+### -----------------------------------------------
+### 5. Delete Member
+### -----------------------------------------------
+@memberId = {{getMember.response.body.id}}
+
+DELETE http://localhost:3000/api/members/{{memberId}}
 Authorization: Bearer {{login.response.body.accessToken}}

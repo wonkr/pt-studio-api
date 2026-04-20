@@ -79,6 +79,7 @@ model SessionPass {
   price         Decimal
   validDays     Int          @map("valid_days")
   isActivated   Boolean      @default(true) @map("is_activated")
+  deletedAt     DateTime?    @map("deleted_at")
   memberships   Membership[]
 
   @@unique([trainerId, name])
