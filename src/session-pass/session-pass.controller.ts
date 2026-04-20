@@ -3,6 +3,7 @@ import { SessionPassService } from './session-pass.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CreateSessionPassDto } from './dto/create-session-pass.dto';
 import { UpdateSessionPassDto } from './dto/update-session-pass.dto';
+import { ActivateSessionPassDto } from './dto/activate-session-pass.dto';
 
 @Controller('session-pass')
 export class SessionPassController {
@@ -39,4 +40,12 @@ export class SessionPassController {
     async remove(@Request() req, @Param('id') id: string){
         return this.sessionPassService.remove(req.user.sub, id)
     }
+
+    @UseGuards(AuthGuard)
+    @Patch('/activate/:id')
+    async activate(@Request() req, @Param('id') id: string, @Body(ValidationPipe) activateSessionPassDto: ActivateSessionPassDto){
+        return this.sessionPassService.activate(req.user.sub, id, activateSessionPassDto)
+    }
+
+
 }

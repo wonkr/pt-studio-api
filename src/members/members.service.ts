@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { DatabaseService } from '../database/database.service';
 
@@ -58,7 +58,8 @@ export class MembersService {
                         contains: name,
                         mode: 'insensitive'
                     }
-                })
+                }),
+                deletedAt: null
             },
             select: {
                 id: true,
@@ -87,6 +88,7 @@ export class MembersService {
             where: {
                 trainerId: trainerId,
                 id:memberId,
+                deletedAt: null
             },
             select: {
                 id: true,
@@ -110,6 +112,33 @@ export class MembersService {
         })
 
         return member
+    }
+
+    async remove(trainerId:string, id:string){
+        const activeMembership = await this.databaseService.membership.findFirst({
+            where: {
+                trainerId: trainerId,
+                id: id,
+                OR: [
+                    { expiredAt: {gte: new Date()}},
+                    { remainingSessions: { gte: 0 } }
+                ]
+            }
+        })
+
+        if (activeMembership) {
+            throw new ConflictException('Cannot delete: member has active membership')
+        }
+
+        await this.databaseService.member.update({
+            where: {
+                trainerId:trainerId,
+                id: id
+            },
+            data: {
+                deletedAt: new Date()
+            }
+        })
     }
 
     private flattenMember(member: any){

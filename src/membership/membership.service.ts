@@ -180,9 +180,11 @@ export class MembershipService {
         const memberships = await this.databaseService.membership.findMany({
             where: {
                 trainerId: trainerId, 
-                expiredAt: {
-                    lt: new Date()
-                }
+                OR: [
+                    { expiredAt: { lt: new Date() } },
+                    { expiredAt: null }
+                ],
+                paymentStatus: "PAID"
             },
             select: {
                 sessionPass: {
@@ -265,10 +267,15 @@ export class MembershipService {
         return await this.databaseService.membership.findMany({
             where: {
                 trainerId: trainerId,
-                paidAt: {
-                    gte: startDate,
-                    lt: endDate
-                }
+                OR : [ 
+                    {
+                        paidAt: {
+                            gte: startDate,
+                            lt: endDate
+                        }
+                    },
+                    { paidAt: null }
+                ]
             },
             select: {
                 id: true, 

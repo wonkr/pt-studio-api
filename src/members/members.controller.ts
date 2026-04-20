@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { MembersService } from './members.service';
 import { AuthGuard } from '../auth/auth.guard';
@@ -26,4 +26,10 @@ export class MembersController {
     async getMemberDetails(@Request() req, @Param('id') id: string){
         return this.memberService.getMemberDetails(req.user.sub, id)
     }
+
+    @UseGuards(AuthGuard)
+    @Delete(':id')
+    async remove(@Request() req, @Param('id') id: string){
+        return this.memberService.remove(req.user.sub, id)
+    } 
 }

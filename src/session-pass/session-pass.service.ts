@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateSessionPassDto } from './dto/create-session-pass.dto';
 import { DatabaseService } from '../database/database.service';
 import { UpdateSessionPassDto } from './dto/update-session-pass.dto';
+import { ActivateSessionPassDto } from './dto/activate-session-pass.dto';
 
 @Injectable()
 export class SessionPassService {
@@ -24,7 +25,8 @@ export class SessionPassService {
     async findAll(trainerId:string){
         return await this.databaseService.sessionPass.findMany({
             where: {
-                trainerId: trainerId
+                trainerId: trainerId,
+                deletedAt: null
             }
         })
     }
@@ -33,7 +35,8 @@ export class SessionPassService {
         return await this.databaseService.sessionPass.findUnique({
             where: {
                 trainerId: trainerId,
-                id: id
+                id: id,
+                deletedAt: null
             }
         })
     }
@@ -42,21 +45,56 @@ export class SessionPassService {
         return await this.databaseService.sessionPass.update({
             where: {
                 trainerId: trainerId,
-                id: id
+                id: id,
+                deletedAt: null
             },
             data: updateSessionPassDto
         })
     }
 
     async remove(trainerId: string, id:string){
-        await this.databaseService.sessionPass.delete({
+        const activeMembership = await this.databaseService.membership.findFirst({
             where: {
                 trainerId: trainerId,
-                id: id
+                id: id,
+                OR: [
+                    { expiredAt: {gte: new Date()}},
+                    { remainingSessions: { gte: 0 } }
+                ]
+            }
+        })
+        
+        if (activeMembership) {
+            throw new ConflictException('Cannot delete: there is an active membership that references the session pass')
+        }
+
+        await this.databaseService.sessionPass.update({
+            where: {
+                trainerId: trainerId,
+                id: id,
+                deletedAt: null
+            },
+            data: {
+                deletedAt: new Date()
             }
         })
 
         return
+    }
+
+    async activate(trainerId: string, id: string, activateSessionPassDto: ActivateSessionPassDto){
+        const result = await this.databaseService.sessionPass.update({
+            where: {
+                trainerId: trainerId,
+                id: id,
+                deletedAt: null
+            },
+            data: {
+                isActivated: activateSessionPassDto.isActivated
+            }
+        })
+
+        return result
     }
 
     

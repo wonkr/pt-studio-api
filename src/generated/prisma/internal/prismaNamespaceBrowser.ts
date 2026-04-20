@@ -131,7 +131,8 @@ export const SessionPassScalarFieldEnum = {
   totalSessions: 'totalSessions',
   price: 'price',
   validDays: 'validDays',
-  isActivated: 'isActivated'
+  isActivated: 'isActivated',
+  deletedAt: 'deletedAt'
 } as const
 
 export type SessionPassScalarFieldEnum = (typeof SessionPassScalarFieldEnum)[keyof typeof SessionPassScalarFieldEnum]
