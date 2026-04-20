@@ -1082,7 +1082,8 @@ export const MemberScalarFieldEnum = {
   trainerId: 'trainerId',
   name: 'name',
   phoneNumber: 'phoneNumber',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
@@ -1094,7 +1095,8 @@ export const SessionPassScalarFieldEnum = {
   name: 'name',
   totalSessions: 'totalSessions',
   price: 'price',
-  validDays: 'validDays'
+  validDays: 'validDays',
+  isActivated: 'isActivated'
 } as const
 
 export type SessionPassScalarFieldEnum = (typeof SessionPassScalarFieldEnum)[keyof typeof SessionPassScalarFieldEnum]
@@ -1243,6 +1245,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

@@ -45,6 +45,7 @@ export type SessionPassMinAggregateOutputType = {
   totalSessions: number | null
   price: runtime.Decimal | null
   validDays: number | null
+  isActivated: boolean | null
 }
 
 export type SessionPassMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type SessionPassMaxAggregateOutputType = {
   totalSessions: number | null
   price: runtime.Decimal | null
   validDays: number | null
+  isActivated: boolean | null
 }
 
 export type SessionPassCountAggregateOutputType = {
@@ -63,6 +65,7 @@ export type SessionPassCountAggregateOutputType = {
   totalSessions: number
   price: number
   validDays: number
+  isActivated: number
   _all: number
 }
 
@@ -86,6 +89,7 @@ export type SessionPassMinAggregateInputType = {
   totalSessions?: true
   price?: true
   validDays?: true
+  isActivated?: true
 }
 
 export type SessionPassMaxAggregateInputType = {
@@ -95,6 +99,7 @@ export type SessionPassMaxAggregateInputType = {
   totalSessions?: true
   price?: true
   validDays?: true
+  isActivated?: true
 }
 
 export type SessionPassCountAggregateInputType = {
@@ -104,6 +109,7 @@ export type SessionPassCountAggregateInputType = {
   totalSessions?: true
   price?: true
   validDays?: true
+  isActivated?: true
   _all?: true
 }
 
@@ -200,6 +206,7 @@ export type SessionPassGroupByOutputType = {
   totalSessions: number
   price: runtime.Decimal
   validDays: number
+  isActivated: boolean
   _count: SessionPassCountAggregateOutputType | null
   _avg: SessionPassAvgAggregateOutputType | null
   _sum: SessionPassSumAggregateOutputType | null
@@ -232,6 +239,7 @@ export type SessionPassWhereInput = {
   totalSessions?: Prisma.IntFilter<"SessionPass"> | number
   price?: Prisma.DecimalFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFilter<"SessionPass"> | number
+  isActivated?: Prisma.BoolFilter<"SessionPass"> | boolean
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
 }
@@ -243,6 +251,7 @@ export type SessionPassOrderByWithRelationInput = {
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
   validDays?: Prisma.SortOrder
+  isActivated?: Prisma.SortOrder
   trainer?: Prisma.TrainerOrderByWithRelationInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
 }
@@ -258,6 +267,7 @@ export type SessionPassWhereUniqueInput = Prisma.AtLeast<{
   totalSessions?: Prisma.IntFilter<"SessionPass"> | number
   price?: Prisma.DecimalFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFilter<"SessionPass"> | number
+  isActivated?: Prisma.BoolFilter<"SessionPass"> | boolean
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
 }, "id" | "trainerId_name">
@@ -269,6 +279,7 @@ export type SessionPassOrderByWithAggregationInput = {
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
   validDays?: Prisma.SortOrder
+  isActivated?: Prisma.SortOrder
   _count?: Prisma.SessionPassCountOrderByAggregateInput
   _avg?: Prisma.SessionPassAvgOrderByAggregateInput
   _max?: Prisma.SessionPassMaxOrderByAggregateInput
@@ -286,6 +297,7 @@ export type SessionPassScalarWhereWithAggregatesInput = {
   totalSessions?: Prisma.IntWithAggregatesFilter<"SessionPass"> | number
   price?: Prisma.DecimalWithAggregatesFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntWithAggregatesFilter<"SessionPass"> | number
+  isActivated?: Prisma.BoolWithAggregatesFilter<"SessionPass"> | boolean
 }
 
 export type SessionPassCreateInput = {
@@ -294,6 +306,7 @@ export type SessionPassCreateInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
   trainer: Prisma.TrainerCreateNestedOneWithoutSessionPassesInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutSessionPassInput
 }
@@ -305,6 +318,7 @@ export type SessionPassUncheckedCreateInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutSessionPassInput
 }
 
@@ -314,6 +328,7 @@ export type SessionPassUpdateInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutSessionPassesNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutSessionPassNestedInput
 }
@@ -325,6 +340,7 @@ export type SessionPassUncheckedUpdateInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutSessionPassNestedInput
 }
 
@@ -335,6 +351,7 @@ export type SessionPassCreateManyInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
 }
 
 export type SessionPassUpdateManyMutationInput = {
@@ -343,6 +360,7 @@ export type SessionPassUpdateManyMutationInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type SessionPassUncheckedUpdateManyInput = {
@@ -352,6 +370,7 @@ export type SessionPassUncheckedUpdateManyInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type SessionPassListRelationFilter = {
@@ -376,6 +395,7 @@ export type SessionPassCountOrderByAggregateInput = {
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
   validDays?: Prisma.SortOrder
+  isActivated?: Prisma.SortOrder
 }
 
 export type SessionPassAvgOrderByAggregateInput = {
@@ -391,6 +411,7 @@ export type SessionPassMaxOrderByAggregateInput = {
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
   validDays?: Prisma.SortOrder
+  isActivated?: Prisma.SortOrder
 }
 
 export type SessionPassMinOrderByAggregateInput = {
@@ -400,6 +421,7 @@ export type SessionPassMinOrderByAggregateInput = {
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
   validDays?: Prisma.SortOrder
+  isActivated?: Prisma.SortOrder
 }
 
 export type SessionPassSumOrderByAggregateInput = {
@@ -463,6 +485,10 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type SessionPassCreateNestedOneWithoutMembershipsInput = {
   create?: Prisma.XOR<Prisma.SessionPassCreateWithoutMembershipsInput, Prisma.SessionPassUncheckedCreateWithoutMembershipsInput>
   connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutMembershipsInput
@@ -483,6 +509,7 @@ export type SessionPassCreateWithoutTrainerInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
   memberships?: Prisma.MembershipCreateNestedManyWithoutSessionPassInput
 }
 
@@ -492,6 +519,7 @@ export type SessionPassUncheckedCreateWithoutTrainerInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutSessionPassInput
 }
 
@@ -531,6 +559,7 @@ export type SessionPassScalarWhereInput = {
   totalSessions?: Prisma.IntFilter<"SessionPass"> | number
   price?: Prisma.DecimalFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFilter<"SessionPass"> | number
+  isActivated?: Prisma.BoolFilter<"SessionPass"> | boolean
 }
 
 export type SessionPassCreateWithoutMembershipsInput = {
@@ -539,6 +568,7 @@ export type SessionPassCreateWithoutMembershipsInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
   trainer: Prisma.TrainerCreateNestedOneWithoutSessionPassesInput
 }
 
@@ -549,6 +579,7 @@ export type SessionPassUncheckedCreateWithoutMembershipsInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
 }
 
 export type SessionPassCreateOrConnectWithoutMembershipsInput = {
@@ -573,6 +604,7 @@ export type SessionPassUpdateWithoutMembershipsInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutSessionPassesNestedInput
 }
 
@@ -583,6 +615,7 @@ export type SessionPassUncheckedUpdateWithoutMembershipsInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type SessionPassCreateManyTrainerInput = {
@@ -591,6 +624,7 @@ export type SessionPassCreateManyTrainerInput = {
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays: number
+  isActivated?: boolean
 }
 
 export type SessionPassUpdateWithoutTrainerInput = {
@@ -599,6 +633,7 @@ export type SessionPassUpdateWithoutTrainerInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   memberships?: Prisma.MembershipUpdateManyWithoutSessionPassNestedInput
 }
 
@@ -608,6 +643,7 @@ export type SessionPassUncheckedUpdateWithoutTrainerInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutSessionPassNestedInput
 }
 
@@ -617,6 +653,7 @@ export type SessionPassUncheckedUpdateManyWithoutTrainerInput = {
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
+  isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -657,6 +694,7 @@ export type SessionPassSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
+  isActivated?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.SessionPass$membershipsArgs<ExtArgs>
   _count?: boolean | Prisma.SessionPassCountOutputTypeDefaultArgs<ExtArgs>
@@ -669,6 +707,7 @@ export type SessionPassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
+  isActivated?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionPass"]>
 
@@ -679,6 +718,7 @@ export type SessionPassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
+  isActivated?: boolean
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionPass"]>
 
@@ -689,9 +729,10 @@ export type SessionPassSelectScalar = {
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
+  isActivated?: boolean
 }
 
-export type SessionPassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "name" | "totalSessions" | "price" | "validDays", ExtArgs["result"]["sessionPass"]>
+export type SessionPassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "name" | "totalSessions" | "price" | "validDays" | "isActivated", ExtArgs["result"]["sessionPass"]>
 export type SessionPassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.SessionPass$membershipsArgs<ExtArgs>
@@ -717,6 +758,7 @@ export type $SessionPassPayload<ExtArgs extends runtime.Types.Extensions.Interna
     totalSessions: number
     price: runtime.Decimal
     validDays: number
+    isActivated: boolean
   }, ExtArgs["result"]["sessionPass"]>
   composites: {}
 }
@@ -1148,6 +1190,7 @@ export interface SessionPassFieldRefs {
   readonly totalSessions: Prisma.FieldRef<"SessionPass", 'Int'>
   readonly price: Prisma.FieldRef<"SessionPass", 'Decimal'>
   readonly validDays: Prisma.FieldRef<"SessionPass", 'Int'>
+  readonly isActivated: Prisma.FieldRef<"SessionPass", 'Boolean'>
 }
     
 

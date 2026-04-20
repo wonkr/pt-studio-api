@@ -649,10 +649,6 @@ export type EnumPaymentStatusFieldUpdateOperationsInput = {
   set?: $Enums.PaymentStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type MembershipCreateNestedOneWithoutSchedulesInput = {
   create?: Prisma.XOR<Prisma.MembershipCreateWithoutSchedulesInput, Prisma.MembershipUncheckedCreateWithoutSchedulesInput>
   connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutSchedulesInput

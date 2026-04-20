@@ -61,6 +61,7 @@ model Member {
   name                String
   phoneNumber         String               @map("phone_number")
   createdAt           DateTime             @default(now()) @map("created_at")
+  deletedAt           DateTime?            @map("deleted_at")
   memberships         Membership[]
   schedules           Schedule[]
   revenueRecognitions RevenueRecognition[]
@@ -77,6 +78,7 @@ model SessionPass {
   totalSessions Int          @map("total_sessions")
   price         Decimal
   validDays     Int          @map("valid_days")
+  isActivated   Boolean      @default(true) @map("is_activated")
   memberships   Membership[]
 
   @@unique([trainerId, name])

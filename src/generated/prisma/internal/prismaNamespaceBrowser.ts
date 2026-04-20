@@ -117,7 +117,8 @@ export const MemberScalarFieldEnum = {
   trainerId: 'trainerId',
   name: 'name',
   phoneNumber: 'phoneNumber',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
@@ -129,7 +130,8 @@ export const SessionPassScalarFieldEnum = {
   name: 'name',
   totalSessions: 'totalSessions',
   price: 'price',
-  validDays: 'validDays'
+  validDays: 'validDays',
+  isActivated: 'isActivated'
 } as const
 
 export type SessionPassScalarFieldEnum = (typeof SessionPassScalarFieldEnum)[keyof typeof SessionPassScalarFieldEnum]
