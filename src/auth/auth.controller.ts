@@ -29,7 +29,7 @@ export class AuthController {
             secure: true, // transfer only in HTTPS
             sameSite: 'strict', // prevent CSRF
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            path: '/auth'
+            path: '/api/auth'
         })
 
         return { accessToken }
@@ -45,7 +45,7 @@ export class AuthController {
             secure: true, // transfer only in HTTPS
             sameSite: 'strict', // prevent CSRF
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            path: '/auth'
+            path: '/api/auth'
         })
 
         return { newAccessToken }
@@ -70,7 +70,7 @@ export class AuthController {
             secure: true, // transfer only in HTTPS
             sameSite: 'strict', // prevent CSRF
             maxAge: 5 * 60 * 1000, // 5 mins
-            path: '/auth/password-change'
+            path: '/api/auth/password-change'
         })
 
         return
