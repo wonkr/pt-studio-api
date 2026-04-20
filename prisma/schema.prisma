@@ -61,7 +61,6 @@ model Member {
   name                String
   phoneNumber         String               @map("phone_number")
   createdAt           DateTime             @default(now()) @map("created_at")
-  deletedAt           DateTime?            @map("deleted_at")
   memberships         Membership[]
   schedules           Schedule[]
   revenueRecognitions RevenueRecognition[]
