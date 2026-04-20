@@ -6,7 +6,7 @@ export class CreateMemberDto {
     @IsString()
     name!: string;
 
-    @IsPhoneNumber('KR')
+    @IsPhoneNumber('KR', {message: "Not a valid phone number"})
     phone!: string;
 
     @IsOptional()
