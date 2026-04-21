@@ -72,6 +72,7 @@ export class MembersService {
                                 name: true
                             }
                         },
+                        id: true,
                         paymentStatus: true,
                         remainingSessions: true,
                         expiredAt: true
@@ -102,6 +103,7 @@ export class MembersService {
                                 
                             }
                         },
+                        id: true,
                         remainingSessions: true,
                         expiredAt: true,
                         paymentStatus: true,
@@ -118,9 +120,10 @@ export class MembersService {
         const activeMembership = await this.databaseService.membership.findFirst({
             where: {
                 trainerId: trainerId,
-                id: id,
+                memberId: id,
                 OR: [
                     { expiredAt: {gte: new Date()}},
+                    { expiredAt: null },
                     { remainingSessions: { gte: 0 } }
                 ]
             }
@@ -148,6 +151,7 @@ export class MembersService {
             name: member.name,
             phoneNumber: member.phoneNumber,
             sessionPassName: membership?.sessionPass?.name ?? null,
+            membershipId: membership?.id,
             paymentStatus: membership?.paymentStatus ?? null,
             remainingSessions: membership?.remainingSessions ?? null,
             expiredAt: membership?.expiredAt ?? null

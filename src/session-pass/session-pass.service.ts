@@ -56,14 +56,15 @@ export class SessionPassService {
         const activeMembership = await this.databaseService.membership.findFirst({
             where: {
                 trainerId: trainerId,
-                id: id,
+                sessionPassId: id,
                 OR: [
                     { expiredAt: {gte: new Date()}},
-                    { remainingSessions: { gte: 0 } }
+                    { expiredAt: null },
+                    { remainingSessions: { gte: 0 }}
                 ]
             }
         })
-        
+        console.log({message: activeMembership})
         if (activeMembership) {
             throw new ConflictException('Cannot delete: there is an active membership that references the session pass')
         }
