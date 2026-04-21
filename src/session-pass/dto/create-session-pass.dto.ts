@@ -7,21 +7,18 @@ export class CreateSessionPassDto {
 
     @IsNotEmpty()
     @IsInt()
-    @IsPositive()
     @Min(0)
     @Max(100)
     totalSessions!: number;
     
     @IsNotEmpty()
     @IsInt()
-    @IsPositive()
     @Min(0)
     @Max(10_000_000)
     price!: number;
     
     @IsNotEmpty()
     @IsInt()
-    @IsPositive()
     @Min(0)
     @Max(365)
     validDays!: number;
