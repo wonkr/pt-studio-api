@@ -7,6 +7,7 @@ import { loginTrainerDto } from './dto/login-trainer.dto'
 import { AuthGuard } from './auth.guard'
 import { VerifyPasswordDto } from './dto/verify-password.dto'
 import { ChangePasswordDto } from './dto/change-password.dto'
+import { Throttle } from '@nestjs/throttler'
 
 @Controller('auth')
 export class AuthController {
@@ -15,11 +16,13 @@ export class AuthController {
         private readonly trainersService: TrainersService
     ) {}
     
+    @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 5 } }) // Prevent massive account register
     @Post('/register')
     register(@Body(ValidationPipe) createTrainerDto: CreateTrainerDto){
         return this.trainersService.create(createTrainerDto)
     }
 
+    @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 5 } }) // Prevent Brute-force
     @Post('/login')
     async login(@Body(ValidationPipe) loginTrainerDto:loginTrainerDto, @Res({ passthrough: true }) res: Response){
         const { accessToken, refreshToken } = await this.authService.signIn(loginTrainerDto)
@@ -60,6 +63,7 @@ export class AuthController {
         return { message: 'Logged out successfully' }
     }
 
+    @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 5 } }) // Prevent Brute-force
     @UseGuards(AuthGuard)
     @Post('/verify-password')
     async verifyPassword(@Body(ValidationPipe) verifyPasswordDto: VerifyPasswordDto, @Request() req, @Res({ passthrough: true }) res: Response){
