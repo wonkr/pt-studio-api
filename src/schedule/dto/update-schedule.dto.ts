@@ -11,7 +11,7 @@ export class UpdateScheduleDto {
     @IsInt()
     @Min(0)
     @Max(120)
-    sessionDuration?: number = 60
+    sessionDuration?: number
 
     @IsOptional()
     @IsEnum(["SCHEDULED", "ATTENDED", "CANCELLED", "NOSHOW"], {

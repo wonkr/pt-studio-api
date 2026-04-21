@@ -8,7 +8,6 @@ export class CreateTrainerExpenseDto {
     })
     category!: "RENT"| "UTILITY"| "SUPPLY"| "OTHER";
 
-    @IsNotEmpty()
     @IsInt()
     @Min(0)
     @Max(100_000_000)

@@ -11,37 +11,32 @@ export class CreateMemberDto {
 
     @IsOptional()
     @IsString()
-    sessionPassId!: string;
+    sessionPassId?: string;
 
     @IsNotEmpty()
     @IsString()
     sessionPassName!: string;
 
-    @IsNotEmpty()
     @IsInt()
     @Min(0)
     @Max(100)
     sessionPassTotalSessions!: number;
     
-    @IsNotEmpty()
     @IsInt()
     @Min(0)
     @Max(10_000_000)
     sessionPassPrice!: number;
     
-    @IsNotEmpty()
     @IsInt()
     @Min(0)
     @Max(365)
     sessionPassValidDays!: number;
 
-    @IsNotEmpty()
     @IsEnum(["CARD", "CASH", "TRANSFER"], {
         message: 'valid payment method required'
     })
     paymentType!: "CARD"| "CASH"| "TRANSFER";
     
-    @IsNotEmpty()
     @IsEnum(["PAID", "PENDING", "REFUNDED"], {
         message: 'valid payment status required'
     })

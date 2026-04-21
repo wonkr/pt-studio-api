@@ -1,22 +1,22 @@
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsOptional,IsPositive, IsString, Max, Min } from "class-validator"
+import { IsDate, IsEnum, IsInt, IsOptional, IsUUID, Max, Min } from "class-validator"
 
 export class UpdateMembershipDto {
     @IsOptional()
-    @IsString()
-    sessionPassId!: string;
+    @IsUUID()
+    sessionPassId?: string;
 
     @IsOptional()
     @IsEnum(["CARD", "CASH", "TRANSFER"], {
         message: 'valid payment method required'
     })
-    paymentType!: "CARD"| "CASH"| "TRANSFER";
+    paymentType?: "CARD"| "CASH"| "TRANSFER";
     
     @IsOptional()
     @IsEnum(["PAID", "PENDING", "REFUNDED"], {
         message: 'valid payment status required'
     })
-    paymentStatus!: "PAID" | "PENDING" | "REFUNDED";
+    paymentStatus?: "PAID" | "PENDING" | "REFUNDED";
 
     @IsOptional()
     @IsDate()
