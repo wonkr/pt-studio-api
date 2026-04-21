@@ -5,19 +5,19 @@ export class UpdateScheduleDto {
     @IsOptional()
     @IsDate()
     @Type(() => Date)
-    scheduledAt!: Date
+    scheduledAt?: Date
 
     @IsOptional()
     @IsInt()
     @Min(0)
     @Max(120)
-    sessionDuration: number = 60
+    sessionDuration?: number = 60
 
     @IsOptional()
-     @IsEnum(["SCHEDULED", "ATTENDED", "CANCELLED", "NOSHOW"], {
+    @IsEnum(["SCHEDULED", "ATTENDED", "CANCELLED", "NOSHOW"], {
         message: 'valid attendance status required'
     })
-    status!: "SCHEDULED" | "ATTENDED" | "CANCELLED" | "NOSHOW";
+    status?: "SCHEDULED" | "ATTENDED" | "CANCELLED" | "NOSHOW";
 
     @IsOptional()
     @IsString()
