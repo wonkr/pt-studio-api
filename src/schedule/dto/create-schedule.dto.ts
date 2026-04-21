@@ -1,11 +1,11 @@
 import { Type } from "class-transformer"
-import { IsDate, IsEnum, IsInt, IsOptional, IsString, Max, Min } from "class-validator"
+import { IsDate, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from "class-validator"
 
 export class CreateScheduleDto {
-    @IsString()
+    @IsUUID()
     memberId!: string
 
-    @IsString()
+    @IsUUID()
     membershipId!: string
 
     @IsDate()
