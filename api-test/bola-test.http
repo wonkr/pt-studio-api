@@ -1,0 +1,256 @@
+### ===========================
+### BOLA (Broken Object Level Authorization) Tests
+###
+### Test flow:
+###   Step 1. Login as Trainer A → create resources → capture IDs
+###   Step 2. Login as Trainer B → attempt to access Trainer A's resources
+###   Expected: 404 for all cross-trainer access attempts
+### ===========================
+
+### -----------------------------------------------
+### 0. Register
+### -----------------------------------------------
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+ 
+{
+    "name": "Kyu Won",
+    "email": "kyuwon@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+}
+ 
+
+### ===============================================
+### STEP 1 — Trainer A: Login & Create Resources
+### ===============================================
+
+### [1-1] Trainer A Login
+# @name loginA
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "trainer-a@example.com",
+    "password": "Password123!"
+}
+
+###
+
+@tokenA = {{loginA.response.body.accessToken}}
+
+### [1-2] Trainer A: Create Member
+# @name createMemberA
+POST http://localhost:3000/api/members/register
+Authorization: Bearer {{tokenA}}
+Content-Type: application/json
+
+{
+    "name": "Member of A",
+    "phone": "01011112222",
+    "sessionPassName": "PT 10회권",
+    "sessionPassTotalSessions": 10,
+    "sessionPassPrice": 600000,
+    "sessionPassValidDays": 60,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID"
+}
+
+###
+
+@memberIdA = {{createMemberA.response.body.id}}
+
+### [1-3] Trainer A: Create Session Pass
+# @name createSessionPassA
+POST http://localhost:3000/api/session-pass
+Authorization: Bearer {{tokenA}}
+Content-Type: application/json
+
+{
+    "name": "PT 10회권",
+    "totalSessions": 10,
+    "price": 600000,
+    "validDays": 60
+}
+
+###
+
+@sessionPassIdA = {{createSessionPassA.response.body.id}}
+
+### [1-4] Trainer A: Create Membership
+# @name createMembershipA
+POST http://localhost:3000/api/membership
+Authorization: Bearer {{tokenA}}
+Content-Type: application/json
+
+{
+    "memberId": "{{memberIdA}}",
+    "sessionPassName": "PT 10회권",
+    "sessionPassTotalSessions": 10,
+    "sessionPassPrice": 600000,
+    "sessionPassValidDays": 60,
+    "paymentType": "CARD",
+    "paymentStatus": "PAID"
+}
+
+###
+
+@membershipIdA = {{createMembershipA.response.body.id}}
+
+### [1-5] Trainer A: Create Schedule
+# @name createScheduleA
+POST http://localhost:3000/api/schedule
+Authorization: Bearer {{tokenA}}
+Content-Type: application/json
+
+{
+    "memberId": "{{memberIdA}}",
+    "membershipId": "{{membershipIdA}}",
+    "scheduledAt": "2026-05-01T10:00:00.000Z",
+    "sessionDuration": 60,
+    "status": "SCHEDULED"
+}
+
+###
+
+@scheduleIdA = {{createScheduleA.response.body.id}}
+
+### [1-6] Trainer A: Create Expense
+# @name createExpenseA
+POST http://localhost:3000/api/trainer-expense
+Authorization: Bearer {{tokenA}}
+Content-Type: application/json
+
+{
+    "category": "RENT",
+    "amount": 1000000,
+    "memo": "Trainer A studio rent",
+    "paidAt": "2026-05-01T00:00:00.000Z"
+}
+
+###
+
+@expenseIdA = {{createExpenseA.response.body.id}}
+
+
+### ===============================================
+### STEP 2 — Trainer B: Login
+### ===============================================
+
+### [2-1] Trainer B Login
+# @name loginB
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "trainer-b@example.com",
+    "password": "Password123!"
+}
+
+###
+
+@tokenB = {{loginB.response.body.accessToken}}
+
+
+### ===============================================
+### STEP 3 — Trainer B: Access Trainer A's Resources
+### Expected: 404 for all
+### ===============================================
+
+### [3-1] Member — GET → 404
+GET http://localhost:3000/api/members/{{memberIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-2] Member — DELETE → 404
+DELETE http://localhost:3000/api/members/{{memberIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-3] Session Pass — GET → 404
+GET http://localhost:3000/api/session-pass/{{sessionPassIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-4] Session Pass — PATCH → 404
+PATCH http://localhost:3000/api/session-pass/{{sessionPassIdA}}
+Authorization: Bearer {{tokenB}}
+Content-Type: application/json
+
+{
+    "price": 1
+}
+
+### [3-5] Session Pass — DELETE → 404
+DELETE http://localhost:3000/api/session-pass/{{sessionPassIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-6] Membership — GET → 404
+GET http://localhost:3000/api/membership/{{membershipIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-7] Membership — PATCH → 404
+PATCH http://localhost:3000/api/membership/{{membershipIdA}}
+Authorization: Bearer {{tokenB}}
+Content-Type: application/json
+
+{
+    "paymentStatus": "REFUNDED"
+}
+
+### [3-8] Membership — DELETE → 404
+DELETE http://localhost:3000/api/membership/{{membershipIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-9] Schedule — GET → 404
+GET http://localhost:3000/api/schedule/{{scheduleIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-10] Schedule — PATCH → 404
+PATCH http://localhost:3000/api/schedule/{{scheduleIdA}}
+Authorization: Bearer {{tokenB}}
+Content-Type: application/json
+
+{
+    "status": "ATTENDED"
+}
+
+### [3-11] Schedule — DELETE → 404
+DELETE http://localhost:3000/api/schedule/{{scheduleIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-12] Trainer Expense — GET → 404
+GET http://localhost:3000/api/trainer-expense/{{expenseIdA}}
+Authorization: Bearer {{tokenB}}
+
+### [3-13] Trainer Expense — PATCH → 404
+PATCH http://localhost:3000/api/trainer-expense/{{expenseIdA}}
+Authorization: Bearer {{tokenB}}
+Content-Type: application/json
+
+{
+    "amount": 1
+}
+
+### [3-14] Trainer Expense — DELETE → 404
+DELETE http://localhost:3000/api/trainer-expense/{{expenseIdA}}
+Authorization: Bearer {{tokenB}}
+
+
+### ===============================================
+### STEP 4 — List Endpoints: Trainer B should see only own data
+### Expected: empty array [] or only Trainer B's own resources
+### ===============================================
+
+### [4-1] Members list → should NOT contain Trainer A's members
+GET http://localhost:3000/api/members
+Authorization: Bearer {{tokenB}}
+
+### [4-2] Session Pass list → should NOT contain Trainer A's session passes
+GET http://localhost:3000/api/session-pass
+Authorization: Bearer {{tokenB}}
+
+### [4-3] Schedule list → should NOT contain Trainer A's schedules
+GET http://localhost:3000/api/schedule
+Authorization: Bearer {{tokenB}}
+
+### [4-4] Trainer Expense list → should NOT contain Trainer A's expenses
+GET http://localhost:3000/api/trainer-expense
+Authorization: Bearer {{tokenB}}
