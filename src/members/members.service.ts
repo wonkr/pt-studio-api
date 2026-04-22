@@ -47,6 +47,8 @@ export class MembersService {
                 usedSessions: 0
             }
         })
+
+        return createdMember
     }
 
     async findAll(trainerId:string, name?: string){
