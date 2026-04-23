@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
     "memberId": "4bf78c65-1009-4f72-ba26-bd41a5c00234",
-    "sessionPassName": "PT 10회권",
+    "sessionPassName": "10-Session Pass",
     "sessionPassTotalSessions": 10,
     "sessionPassPrice": 1500000,
     "sessionPassValidDays": 90,

@@ -27,7 +27,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "name": "PT 30회권-할인",
+    "name": "30-Session Pass Discount",
     "totalSessions": 30,
     "price": 1300000,
     "validDays": 90
@@ -55,7 +55,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "name": "PT 30회권 (할인)",
+    "name": "30-Session Pass (Discounted)",
     "price": 1200000
 }
 

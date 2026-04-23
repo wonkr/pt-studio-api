@@ -209,7 +209,7 @@ Register a new member.
 {
     "name": "Jay Choi",
     "phone": "000-0000-0000",
-    "sessionPassName": "PT 30회권", 
+    "sessionPassName": "30-Session Pass", 
     "sessionPassTotalSessions": 30, 
     "sessionPassPrice": 1500000, 
     "sessionPassValidDays": 90, 
@@ -372,14 +372,14 @@ Authorization: Bearer <access_token>
 [
     {
         "id": "uuid-1",
-        "name": "PT 10회권",
+        "name": "10-Session Pass",
         "totalSessions": 10,
         "price": 600000,
         "validDays": 30
     },
     {
         "id": "uuid-2",
-        "name": "PT 30회권",
+        "name": "30-Session Pass",
         "totalSessions": 30,
         "price": 1500000,
         "validDays": 90
@@ -401,7 +401,7 @@ Authorization: Bearer <access_token>
 ```json
 {
     "id": "uuid",
-    "name": "PT 30회권",
+    "name": "30-Session Pass",
     "totalSessions": 30,
     "price": 1500000,
     "validDays": 90,
@@ -430,7 +430,7 @@ Authorization: Bearer <access_token>
 **Request Body** (all fields optional)
 ```json
 {
-    "name": "PT 30회권 (할인)",
+    "name": "30-Session Pass (Discounted)",
     "totalSessions": 30,
     "price": 1200000,
     "validDays": 120
@@ -441,7 +441,7 @@ Authorization: Bearer <access_token>
 ```json
 {
     "id": "uuid",
-    "name": "PT 30회권 (할인)",
+    "name": "30-Session Pass (Discounted)",
     "totalSessions": 30,
     "price": 1200000,
     "validDays": 120,
@@ -522,7 +522,7 @@ Authorization: Bearer <access_token>
 {
     "memberId": "member-uuid",
     "sessionPassId": "session-pass-uuid",
-    "sessionPassName": "PT 30회권",
+    "sessionPassName": "30-Session Pass",
     "sessionPassTotalSessions": 30,
     "sessionPassPrice": 1500000,
     "sessionPassValidDays": 90,
@@ -545,7 +545,7 @@ Authorization: Bearer <access_token>
     "id": "uuid",
     "memberId": "member-uuid",
     "sessionPassId": "session-pass-uuid",
-    "sessionPassName": "PT 30회권",
+    "sessionPassName": "30-Session Pass",
     "sessionPassTotalSessions": 30,
     "sessionPassPrice": 1500000,
     "sessionPassValidDays": 90,
@@ -577,7 +577,7 @@ Authorization: Bearer <access_token>
     "id": "uuid",
     "memberId": "member-uuid",
     "sessionPassId": "session-pass-uuid",
-    "sessionPassName": "PT 30회권",
+    "sessionPassName": "30-Session Pass",
     "sessionPassTotalSessions": 30,
     "sessionPassPrice": 1500000,
     "sessionPassValidDays": 90,
@@ -625,7 +625,7 @@ Authorization: Bearer <access_token>
     "id": "uuid",
     "memberId": "member-uuid",
     "sessionPassId": "session-pass-uuid",
-    "sessionPassName": "PT 30회권",
+    "sessionPassName": "30-Session Pass",
     "sessionPassTotalSessions": 30,
     "sessionPassPrice": 1500000,
     "sessionPassValidDays": 90,
@@ -691,7 +691,7 @@ Authorization: Bearer <access_token>
     "memberId": "member-uuid",
     "memberName": "member-name",
     "sessionPassId": "session-pass-uuid",
-    "sessionPassName": "PT 30회권",
+    "sessionPassName": "30-Session Pass",
     "sessionPassTotalSessions": 30,
     "remainingSessions": 25,
     "usedThisMonth": 3,
@@ -723,7 +723,7 @@ Authorization: Bearer <access_token>
     {
         "memberId": "member-uuid",
         "memberName": "member-name",
-        "sessionPassName": "PT 30회권",
+        "sessionPassName": "30-Session Pass",
         "sessionPassPrice": 1500000,
         "paymentType": "CARD",
         "paymentStatus": "PAID",
@@ -817,7 +817,7 @@ GET /api/schedule?member-id=member-uuid
         "id": "schedule-uuid-1",
         "member": {
             "id": "member-uuid",
-            "name": "김민수",
+            "name": "Alex Kim",
             "phoneNumber": "01012345678"
         },
         "membership": {
@@ -843,7 +843,7 @@ Get detailed information about a single schedule.
     "id": "schedule-uuid",
     "member": {
         "id": "member-uuid",
-        "name": "김민수",
+        "name": "Alex Kim",
         "phoneNumber": "01012345678"
     },
     "membership": {

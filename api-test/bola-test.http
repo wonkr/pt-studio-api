@@ -8,14 +8,27 @@
 ### ===========================
 
 ### -----------------------------------------------
-### 0. Register
+### 0. Register Trainer A
 ### -----------------------------------------------
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
  
 {
-    "name": "Kyu Won",
-    "email": "kyuwon@example.com",
+    "name": "Trainer A",
+    "email": "trainer-a@example.com",
+    "password": "Password123!",
+    "confirmPassword": "Password123!"
+}
+
+### -----------------------------------------------
+### 0. Register Trainer B
+### -----------------------------------------------
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+ 
+{
+    "name": "Trainer B",
+    "email": "trainer-b@example.com",
     "password": "Password123!",
     "confirmPassword": "Password123!"
 }
@@ -48,7 +61,7 @@ Content-Type: application/json
 {
     "name": "Member of A",
     "phone": "01011112222",
-    "sessionPassName": "PT 10회권",
+    "sessionPassName": "10-Session Pass",
     "sessionPassTotalSessions": 10,
     "sessionPassPrice": 600000,
     "sessionPassValidDays": 60,
@@ -67,10 +80,10 @@ Authorization: Bearer {{tokenA}}
 Content-Type: application/json
 
 {
-    "name": "PT 10회권",
-    "totalSessions": 10,
-    "price": 600000,
-    "validDays": 60
+    "name": "20-Session Pass",
+    "totalSessions": 20,
+    "price": 1100000,
+    "validDays": 120
 }
 
 ###
@@ -85,10 +98,10 @@ Content-Type: application/json
 
 {
     "memberId": "{{memberIdA}}",
-    "sessionPassName": "PT 10회권",
-    "sessionPassTotalSessions": 10,
-    "sessionPassPrice": 600000,
-    "sessionPassValidDays": 60,
+    "sessionPassName": "30-Session Pass",
+    "sessionPassTotalSessions": 30,
+    "sessionPassPrice": 1600000,
+    "sessionPassValidDays": 180,
     "paymentType": "CARD",
     "paymentStatus": "PAID"
 }
