@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { CreateMembershipDto } from './dto/create-membership.dto';
 import { UpdateMembershipDto } from './dto/update-membership.dto';
-import { start } from 'node:repl';
+import { crossOriginEmbedderPolicy } from 'helmet';
 
 @Injectable()
 export class MembershipService {
@@ -10,11 +10,11 @@ export class MembershipService {
         private readonly databaseService: DatabaseService
     ){}
 
-    async create(trainerId: string, createMembershipDto:CreateMembershipDto){
+    async create(trainerId: string, orgId: string, createMembershipDto:CreateMembershipDto){
         if (!createMembershipDto.sessionPassId){
             const createdSessionPass = await this.databaseService.sessionPass.create({
                 data: {
-                    trainerId: trainerId, 
+                    organizationId: orgId, 
                     name: createMembershipDto.sessionPassName,
                     totalSessions: createMembershipDto.sessionPassTotalSessions,
                     price: createMembershipDto.sessionPassPrice,
@@ -32,8 +32,13 @@ export class MembershipService {
         const membership =  await this.databaseService.membership.create({
             data:{
                 trainerId: trainerId,
+                organizationId: orgId,
                 memberId: createMembershipDto.memberId,
                 sessionPassId: createMembershipDto.sessionPassId,
+                sessionPassName: createMembershipDto.sessionPassName,
+                sessionPassPrice: createMembershipDto.sessionPassPrice,
+                sessionPassTotalSessions: createMembershipDto.sessionPassTotalSessions,
+                sessionPassValidDays: createMembershipDto.sessionPassValidDays,
                 paymentType: createMembershipDto.paymentType,
                 paymentStatus: createMembershipDto.paymentStatus,
                 ... (paidAt && { paidAt: paidAt }),
@@ -46,7 +51,7 @@ export class MembershipService {
 
         return await this.databaseService.membership.findUnique({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: membership.id
             },
             select: {
@@ -72,10 +77,10 @@ export class MembershipService {
         })
     }
 
-    async findOne(trainerId:string, id:string){
+    async findOne(orgId:string, id:string){
         return await this.databaseService.membership.findUnique({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id
             },
             select: {
@@ -101,10 +106,10 @@ export class MembershipService {
         })
     }
 
-    async update(trainerId: string, id: string, updateMembershipDto:UpdateMembershipDto){
+    async update(orgId: string, id: string, updateMembershipDto:UpdateMembershipDto){
         const updatedMembership = await this.databaseService.membership.update({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id
             },
             data: updateMembershipDto
@@ -112,7 +117,7 @@ export class MembershipService {
 
         return await this.databaseService.membership.findUnique({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: updatedMembership.id
             },
             select: {
@@ -138,10 +143,10 @@ export class MembershipService {
         })
     }
 
-    async remove(trainerId: string, id: string){
+    async remove(orgId: string, id: string){
         return await this.databaseService.membership.delete({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id
             }
         })
@@ -176,10 +181,10 @@ export class MembershipService {
         return totalSales
     }
 
-    async getTotalSalesOnValidMembership(trainerId: string){
+    async getTotalSalesOnValidMembership(orgId: string){
         const memberships = await this.databaseService.membership.findMany({
             where: {
-                trainerId: trainerId, 
+                organizationId: orgId, 
                 OR: [
                     { expiredAt: { lt: new Date() } },
                     { expiredAt: null }
@@ -202,13 +207,13 @@ export class MembershipService {
         return totalSales
     }
 
-    async getMembershipSummary(trainerId: string, year:number, month: number){
+    async getMembershipSummaryByOrg(orgId: string, year:number, month: number){
         const startDate = new Date(year, month? month-1:0, 1)
         const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
 
         const summary = await this.databaseService.membership.findMany({
             where: {
-                trainerId: trainerId
+                organizationId: orgId
             },
             select: {
                 id: true,
@@ -234,7 +239,7 @@ export class MembershipService {
         const flattenSummary = await Promise.all(summary.map(async (s) => {
             const usedThisMonthCount = await this.databaseService.revenueRecognition.count({
                 where: {
-                    trainerId: trainerId,
+                    organizationId: orgId,
                     memberId: s.member.id,
                     recognizedAt: {
                         gte: startDate,
@@ -260,13 +265,13 @@ export class MembershipService {
         return flattenSummary
     }
 
-    async getMembershipTransaction(trainerId: string, year: number, month: number){
+    async getMembershipTransaction(orgId: string, year: number, month: number){
         const startDate = new Date(year, month? month-1:0, 1)
         const endDate = month? new Date(year, month, 1): new Date(year+1, 0, 1)
 
         return await this.databaseService.membership.findMany({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 OR : [ 
                     {
                         paidAt: {
@@ -278,13 +283,14 @@ export class MembershipService {
                 ]
             },
             select: {
-                id: true, 
+                id: true,
                 member: {
                     select: {
                         id: true, 
                         name: true
                     }
                 },
+                trainerId: true,
                 sessionPass: {
                     select: {
                         name: true,

@@ -1,15 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { MembershipService } from './membership.service';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateMembershipDto } from './dto/create-membership.dto';
 import { UpdateMembershipDto } from './dto/update-membership.dto';
 import { MembershipSummaryQueryDto } from './dto/membership-summary-query.dto';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { OrgGuard } from '../auth/guards/org.guard';
+import { OrgId, RequiredOrgId, TrainerId } from '../auth/decorators/auth.decorator';
+import { OrgAdminGuard } from '../auth/guards/org-admin.guard';
 
 @ApiTags('Membership')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
-@Controller('membership')
+@UseGuards(AuthGuard, OrgGuard)
+@Controller('/organizations/:orgId/membership')
 export class MembershipController {
     constructor(
         private readonly membershipService: MembershipService
@@ -21,8 +24,8 @@ export class MembershipController {
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Member not found' })
     @Post()
-    async create(@Request() req, @Body(ValidationPipe) createMemberShipDto:CreateMembershipDto){
-        return this.membershipService.create(req.user.sub, createMemberShipDto)
+    async create(@TrainerId() trainerId: string, @RequiredOrgId() orgId: string, @Body(ValidationPipe) createMemberShipDto: CreateMembershipDto){
+        return this.membershipService.create(trainerId, orgId, createMemberShipDto)
     }
 
     @ApiOperation({ summary: 'Get membership summary aggregated by period' })
@@ -31,9 +34,10 @@ export class MembershipController {
     @ApiResponse({ status: 200, description: 'Membership summary' })
     @ApiResponse({ status: 400, description: 'year is required' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    @Get('/summary')
-    async getMembershipSummary(@Request() req, @Query(ValidationPipe) query: MembershipSummaryQueryDto){
-        return this.membershipService.getMembershipSummary(req.user.sub, query.year, query.month)
+    @UseGuards(OrgAdminGuard)
+    @Get('/admin/summary')
+    async getMembershipSummaryByOrg(@OrgId() orgId: string, @Query(ValidationPipe) query: MembershipSummaryQueryDto){
+        return this.membershipService.getMembershipSummaryByOrg( orgId, query.year, query.month)
     }
 
     @ApiOperation({ summary: 'Get membership payment transactions by period' })
@@ -42,9 +46,10 @@ export class MembershipController {
     @ApiResponse({ status: 200, description: 'Membership transactions' })
     @ApiResponse({ status: 400, description: 'year is required' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    @Get('/membership-transaction')
-    async getMembershipTransaction(@Request() req, @Query(ValidationPipe) query: MembershipSummaryQueryDto){
-        return this.membershipService.getMembershipTransaction(req.user.sub, query.year, query.month)
+    @UseGuards(OrgAdminGuard)
+    @Get('/admin/membership-transaction')
+    async getMembershipTransaction(@TrainerId() trainerId: string, @Query(ValidationPipe) query: MembershipSummaryQueryDto){
+        return this.membershipService.getMembershipTransaction(trainerId, query.year, query.month)
     }
 
     @ApiOperation({ summary: 'Get a membership by ID' })
@@ -52,8 +57,8 @@ export class MembershipController {
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Membership not found' })
     @Get(':id')
-    async findOne(@Request() req, @Param('id') id: string) {
-        return this.membershipService.findOne(req.user.sub, id)
+    async findOne(@RequiredOrgId() orgId: string, @Param('id') id: string) {
+        return this.membershipService.findOne(orgId, id)
     }
 
     @ApiOperation({ summary: 'Update a membership (partial update)' })
@@ -62,8 +67,8 @@ export class MembershipController {
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Membership not found' })
     @Patch(':id')
-    async update(@Request() req, @Param('id') id: string, @Body(ValidationPipe) updateMembershipDto:UpdateMembershipDto){
-        return this.membershipService.update(req.user.sub, id, updateMembershipDto)
+    async update(@RequiredOrgId() orgId: string, @Param('id') id: string, @Body(ValidationPipe) updateMembershipDto: UpdateMembershipDto){
+        return this.membershipService.update(orgId, id, updateMembershipDto)
     }
 
     @ApiOperation({ summary: 'Delete a membership' })
@@ -71,8 +76,7 @@ export class MembershipController {
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Membership not found' })
     @Delete(':id')
-    async remove(@Request() req, @Param('id') id: string){
-        return this.membershipService.remove(req.user.sub, id)
+    async remove(@RequiredOrgId() orgId: string, @Param('id') id: string){
+        return this.membershipService.remove(orgId, id)
     }
 }
-

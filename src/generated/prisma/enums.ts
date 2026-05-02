@@ -9,6 +9,24 @@
 * 🟢 You can import this file directly.
 */
 
+export const OrgTrainerRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  TRAINER: 'TRAINER'
+} as const
+
+export type OrgTrainerRole = (typeof OrgTrainerRole)[keyof typeof OrgTrainerRole]
+
+
+export const OrgTrainerStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type OrgTrainerStatus = (typeof OrgTrainerStatus)[keyof typeof OrgTrainerStatus]
+
+
 export const ScheduleStatus = {
   SCHEDULED: 'SCHEDULED',
   ATTENDED: 'ATTENDED',

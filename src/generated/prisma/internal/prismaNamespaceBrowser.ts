@@ -53,7 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Trainer: 'Trainer',
   RefreshToken: 'RefreshToken',
-  TrainerExpense: 'TrainerExpense',
+  Organization: 'Organization',
+  OrganizationTrainer: 'OrganizationTrainer',
+  Room: 'Room',
+  OrgExpense: 'OrgExpense',
   Member: 'Member',
   SessionPass: 'SessionPass',
   Membership: 'Membership',
@@ -81,6 +84,7 @@ export const TrainerScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phoneNumber: 'phoneNumber',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt'
 } as const
@@ -99,9 +103,45 @@ export const RefreshTokenScalarFieldEnum = {
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
-export const TrainerExpenseScalarFieldEnum = {
+export const OrganizationScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  address: 'address',
+  roomCount: 'roomCount',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationTrainerScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
   trainerId: 'trainerId',
+  role: 'role',
+  status: 'status',
+  payoutPerSession: 'payoutPerSession',
+  joinedAt: 'joinedAt'
+} as const
+
+export type OrganizationTrainerScalarFieldEnum = (typeof OrganizationTrainerScalarFieldEnum)[keyof typeof OrganizationTrainerScalarFieldEnum]
+
+
+export const RoomScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  capacity: 'capacity',
+  createdAt: 'createdAt'
+} as const
+
+export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
+
+
+export const OrgExpenseScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  createdByTrainerId: 'createdByTrainerId',
   category: 'category',
   amount: 'amount',
   memo: 'memo',
@@ -109,11 +149,12 @@ export const TrainerExpenseScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type TrainerExpenseScalarFieldEnum = (typeof TrainerExpenseScalarFieldEnum)[keyof typeof TrainerExpenseScalarFieldEnum]
+export type OrgExpenseScalarFieldEnum = (typeof OrgExpenseScalarFieldEnum)[keyof typeof OrgExpenseScalarFieldEnum]
 
 
 export const MemberScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   trainerId: 'trainerId',
   name: 'name',
   phoneNumber: 'phoneNumber',
@@ -126,7 +167,7 @@ export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof 
 
 export const SessionPassScalarFieldEnum = {
   id: 'id',
-  trainerId: 'trainerId',
+  organizationId: 'organizationId',
   name: 'name',
   totalSessions: 'totalSessions',
   price: 'price',
@@ -140,9 +181,14 @@ export type SessionPassScalarFieldEnum = (typeof SessionPassScalarFieldEnum)[key
 
 export const MembershipScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   trainerId: 'trainerId',
   memberId: 'memberId',
   sessionPassId: 'sessionPassId',
+  sessionPassName: 'sessionPassName',
+  sessionPassPrice: 'sessionPassPrice',
+  sessionPassTotalSessions: 'sessionPassTotalSessions',
+  sessionPassValidDays: 'sessionPassValidDays',
   paymentType: 'paymentType',
   paymentStatus: 'paymentStatus',
   paidAt: 'paidAt',
@@ -157,12 +203,15 @@ export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof
 
 export const ScheduleScalarFieldEnum = {
   id: 'id',
-  trainerId: 'trainerId',
+  organizationId: 'organizationId',
+  primaryTrainerId: 'primaryTrainerId',
+  conductedByTrainerId: 'conductedByTrainerId',
   memberId: 'memberId',
   membershipId: 'membershipId',
+  roomId: 'roomId',
   scheduledAt: 'scheduledAt',
-  sessionDuration: 'sessionDuration',
   endsAt: 'endsAt',
+  sessionDuration: 'sessionDuration',
   status: 'status',
   cancelReason: 'cancelReason',
   createdAt: 'createdAt',
@@ -174,7 +223,8 @@ export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typ
 
 export const RevenueRecognitionScalarFieldEnum = {
   id: 'id',
-  trainerId: 'trainerId',
+  organizationId: 'organizationId',
+  conductedByTrainerId: 'conductedByTrainerId',
   memberId: 'memberId',
   scheduleId: 'scheduleId',
   amount: 'amount',

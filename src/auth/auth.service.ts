@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt'
-import { loginTrainerDto } from './dto/login-trainer.dto';
+import { LoginTrainerDto } from './dto/login-trainer.dto';
 import { DatabaseService } from '../database/database.service';
 import * as bcrypt from 'bcrypt'
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { SwitchOrgDto } from './dto/switch-org.dto';
+import { LoginStatus } from './enum/login-status.enum';
 
 
 @Injectable()
@@ -13,7 +15,7 @@ export class AuthService {
         private readonly databaseService: DatabaseService
     ){}
 
-    async signIn(loginTrainerDto: loginTrainerDto): Promise<{ accessToken: string, refreshToken: string }> {
+    async signIn(loginTrainerDto: LoginTrainerDto): Promise<{ status: LoginStatus, accessToken: string, refreshToken: string }> {
         const trainer = await this.databaseService.trainer.findUnique({
             where: {email: loginTrainerDto.email},
             select: {
@@ -32,12 +34,74 @@ export class AuthService {
             throw new UnauthorizedException('password does not match.')
         } 
 
-        const accessToken = await this.createAccessToken(trainer.id, trainer.email)
-        const refreshToken = await this.createRefreshToken(trainer.id, trainer.email)
+        const orgTrainer = await this.databaseService.organizationTrainer.findMany({
+            where: {
+                trainerId: trainer.id
+            }
+        })
+
+        const orgId = (orgTrainer.length === 1 && orgTrainer[0].status === "APPROVED") ? orgTrainer[0].organizationId: undefined
+     
+        const status = 
+            orgTrainer.length === 0? LoginStatus.NoOrgMembership
+            :( orgTrainer.length === 1 && orgTrainer[0].status === "APPROVED" )? LoginStatus.Ready
+            : LoginStatus.OrgSelectionRequired
+    
+        const [accessToken, refreshToken] = await Promise.all([
+        this.createAccessToken(trainer.id, trainer.email, orgId),
+        this.createRefreshToken(trainer.id, trainer.email, orgId),
+        ])
 
         return {
+            status: status,
             accessToken: accessToken,
             refreshToken: refreshToken
+        }
+
+    }
+
+    async switchOrg(trainerId: string, refreshToken: string, switchOrgDto: SwitchOrgDto): Promise<{ status: LoginStatus, newAccessToken: string, newRefreshToken: string }> {
+        const dbToken = await this.databaseService.refreshToken.findUnique({
+            where: {
+                token: refreshToken,
+                trainerId: trainerId
+            },
+            include: {
+                trainer: {
+                    select: { email: true }
+                }
+            }
+        })
+        if (!dbToken){
+            throw new NotFoundException('refresh token is not valid')
+        }
+
+        const payload = await this.JwtService.verifyAsync(refreshToken)
+        if (payload.type !== 'refresh'){
+            throw new NotFoundException('refresh token is not valid')
+        } 
+        
+        if (payload.sub !== dbToken.trainerId) {
+            throw new NotFoundException('refresh token is not valid')
+        } 
+
+        const orgTrainer = await this.databaseService.organizationTrainer.findUnique({
+            where: {
+                id: switchOrgDto.orgTrainerId
+            }
+        })
+
+        if (!orgTrainer || orgTrainer.trainerId !== trainerId || orgTrainer.status !== "APPROVED"){
+            throw new UnauthorizedException('trainer has no permission to access to the organization')
+        }
+
+        const newAccessToken = await this.createAccessToken(dbToken.trainerId, dbToken.trainer.email, orgTrainer.organizationId)
+        const newRefreshToken = await this.createRefreshToken(dbToken.trainerId, dbToken.trainer.email, orgTrainer.organizationId)
+
+        return {
+            status: LoginStatus.Ready,
+            newAccessToken: newAccessToken,
+            newRefreshToken: newRefreshToken
         }
     }
 
@@ -62,8 +126,8 @@ export class AuthService {
             throw new NotFoundException('refresh token is not valid')
         } 
 
-        const newAccessToken = await this.createAccessToken(dbToken.trainerId, dbToken.trainer.email)
-        const newRefreshToken = await this.createRefreshToken(dbToken.trainerId, dbToken.trainer.email)
+        const newAccessToken = await this.createAccessToken(dbToken.trainerId, dbToken.trainer.email, payload.organizationId)
+        const newRefreshToken = await this.createRefreshToken(dbToken.trainerId, dbToken.trainer.email, payload.organizationId)
 
         return {
             newAccessToken: newAccessToken,
@@ -131,15 +195,23 @@ export class AuthService {
         return
     }
 
-    async createAccessToken(trainerId:string, trainerEmail:string): Promise<string> {
-        const accessPayload = { sub: trainerId, email: trainerEmail, type: "access" };
+    async createAccessToken(trainerId:string, trainerEmail:string, organizationId?: string): Promise<string> {
+        const accessPayload:any = { sub: trainerId, email: trainerEmail, type: "access" };
 
+        if (organizationId){
+            accessPayload.organizationId = organizationId
+        }
         return this.JwtService.signAsync(
                 accessPayload, { expiresIn: '15m' })
     }
 
-    async createRefreshToken(trainerId:string, trainerEmail:string): Promise<string> {
-        const refreshPayload = { sub: trainerId, email: trainerEmail, type: "refresh" };
+    async createRefreshToken(trainerId:string, trainerEmail:string, organizationId?: string
+    ): Promise<string> {
+        const refreshPayload:any = { sub: trainerId, email: trainerEmail, type: "refresh" };
+
+        if (organizationId){
+            refreshPayload.organizationId = organizationId
+        }
 
         const refreshToken = await this.JwtService.signAsync(
                 refreshPayload, { expiresIn: '7d' })
@@ -154,6 +226,7 @@ export class AuthService {
             data: {
                 token: refreshToken, 
                 trainerId: trainerId,
+                orgId: organizationId,
                 createdAt: new Date(decoded.iat * 1000),
                 expiresAt: new Date(decoded.exp * 1000)
             }

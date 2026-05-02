@@ -10,10 +10,10 @@ export class SessionPassService {
         private readonly databaseService: DatabaseService
     ){}
 
-    async create(trainerId: string, createSessionPassDto:CreateSessionPassDto){
+    async create(orgId: string, createSessionPassDto:CreateSessionPassDto){
         return await this.databaseService.sessionPass.create({
             data: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 name: createSessionPassDto.name,
                 price: createSessionPassDto.price,
                 totalSessions: createSessionPassDto.totalSessions,
@@ -22,29 +22,29 @@ export class SessionPassService {
         })
     }
 
-    async findAll(trainerId:string){
+    async findAll(orgId:string){
         return await this.databaseService.sessionPass.findMany({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 deletedAt: null
             }
         })
     }
 
-    async findOne(trainerId:string, id:string){
+    async findOne(orgId:string, id:string){
         return await this.databaseService.sessionPass.findUnique({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id,
                 deletedAt: null
             }
         })
     }
 
-    async update(trainerId: string, id:string, updateSessionPassDto:UpdateSessionPassDto){
+    async update(orgId: string, id:string, updateSessionPassDto:UpdateSessionPassDto){
         return await this.databaseService.sessionPass.update({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id,
                 deletedAt: null
             },
@@ -52,10 +52,10 @@ export class SessionPassService {
         })
     }
 
-    async remove(trainerId: string, id:string){
+    async remove(orgId: string, id:string){
         const activeMembership = await this.databaseService.membership.findFirst({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 sessionPassId: id,
                 OR: [
                     { expiredAt: {gte: new Date()}},
@@ -71,7 +71,7 @@ export class SessionPassService {
 
         await this.databaseService.sessionPass.update({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id,
                 deletedAt: null
             },
@@ -83,10 +83,10 @@ export class SessionPassService {
         return
     }
 
-    async activate(trainerId: string, id: string, activateSessionPassDto: ActivateSessionPassDto){
+    async activate(orgId: string, id: string, activateSessionPassDto: ActivateSessionPassDto){
         const result = await this.databaseService.sessionPass.update({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id: id,
                 deletedAt: null
             },

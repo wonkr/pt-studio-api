@@ -28,6 +28,7 @@ export type TrainerMinAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
+  phoneNumber: string | null
   passwordHash: string | null
   createdAt: Date | null
 }
@@ -36,6 +37,7 @@ export type TrainerMaxAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
+  phoneNumber: string | null
   passwordHash: string | null
   createdAt: Date | null
 }
@@ -44,6 +46,7 @@ export type TrainerCountAggregateOutputType = {
   id: number
   name: number
   email: number
+  phoneNumber: number
   passwordHash: number
   createdAt: number
   _all: number
@@ -54,6 +57,7 @@ export type TrainerMinAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  phoneNumber?: true
   passwordHash?: true
   createdAt?: true
 }
@@ -62,6 +66,7 @@ export type TrainerMaxAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  phoneNumber?: true
   passwordHash?: true
   createdAt?: true
 }
@@ -70,6 +75,7 @@ export type TrainerCountAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  phoneNumber?: true
   passwordHash?: true
   createdAt?: true
   _all?: true
@@ -151,6 +157,7 @@ export type TrainerGroupByOutputType = {
   id: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt: Date
   _count: TrainerCountAggregateOutputType | null
@@ -180,35 +187,40 @@ export type TrainerWhereInput = {
   id?: Prisma.StringFilter<"Trainer"> | string
   name?: Prisma.StringFilter<"Trainer"> | string
   email?: Prisma.StringFilter<"Trainer"> | string
+  phoneNumber?: Prisma.StringFilter<"Trainer"> | string
   passwordHash?: Prisma.StringFilter<"Trainer"> | string
   createdAt?: Prisma.DateTimeFilter<"Trainer"> | Date | string
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
-  trainerExpenses?: Prisma.TrainerExpenseListRelationFilter
+  orgTrainers?: Prisma.OrganizationTrainerListRelationFilter
   members?: Prisma.MemberListRelationFilter
-  sessionPasses?: Prisma.SessionPassListRelationFilter
   memberships?: Prisma.MembershipListRelationFilter
-  schedules?: Prisma.ScheduleListRelationFilter
+  primarySchedules?: Prisma.ScheduleListRelationFilter
+  conductedSchedules?: Prisma.ScheduleListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
+  orgExpenses?: Prisma.OrgExpenseListRelationFilter
 }
 
 export type TrainerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
-  trainerExpenses?: Prisma.TrainerExpenseOrderByRelationAggregateInput
+  orgTrainers?: Prisma.OrganizationTrainerOrderByRelationAggregateInput
   members?: Prisma.MemberOrderByRelationAggregateInput
-  sessionPasses?: Prisma.SessionPassOrderByRelationAggregateInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
-  schedules?: Prisma.ScheduleOrderByRelationAggregateInput
+  primarySchedules?: Prisma.ScheduleOrderByRelationAggregateInput
+  conductedSchedules?: Prisma.ScheduleOrderByRelationAggregateInput
   revenueRecognitions?: Prisma.RevenueRecognitionOrderByRelationAggregateInput
+  orgExpenses?: Prisma.OrgExpenseOrderByRelationAggregateInput
 }
 
 export type TrainerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  phoneNumber?: string
   AND?: Prisma.TrainerWhereInput | Prisma.TrainerWhereInput[]
   OR?: Prisma.TrainerWhereInput[]
   NOT?: Prisma.TrainerWhereInput | Prisma.TrainerWhereInput[]
@@ -216,18 +228,20 @@ export type TrainerWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"Trainer"> | string
   createdAt?: Prisma.DateTimeFilter<"Trainer"> | Date | string
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
-  trainerExpenses?: Prisma.TrainerExpenseListRelationFilter
+  orgTrainers?: Prisma.OrganizationTrainerListRelationFilter
   members?: Prisma.MemberListRelationFilter
-  sessionPasses?: Prisma.SessionPassListRelationFilter
   memberships?: Prisma.MembershipListRelationFilter
-  schedules?: Prisma.ScheduleListRelationFilter
+  primarySchedules?: Prisma.ScheduleListRelationFilter
+  conductedSchedules?: Prisma.ScheduleListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
-}, "id" | "email">
+  orgExpenses?: Prisma.OrgExpenseListRelationFilter
+}, "id" | "email" | "phoneNumber">
 
 export type TrainerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.TrainerCountOrderByAggregateInput
@@ -242,6 +256,7 @@ export type TrainerScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Trainer"> | string
   name?: Prisma.StringWithAggregatesFilter<"Trainer"> | string
   email?: Prisma.StringWithAggregatesFilter<"Trainer"> | string
+  phoneNumber?: Prisma.StringWithAggregatesFilter<"Trainer"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"Trainer"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Trainer"> | Date | string
 }
@@ -250,66 +265,75 @@ export type TrainerCreateInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerUncheckedCreateInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerCreateManyInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
 }
@@ -318,6 +342,7 @@ export type TrainerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -326,6 +351,7 @@ export type TrainerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -334,6 +360,7 @@ export type TrainerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -342,6 +369,7 @@ export type TrainerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -350,6 +378,7 @@ export type TrainerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -381,18 +410,32 @@ export type TrainerUpdateOneRequiredWithoutRefreshTokensNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.TrainerUpdateWithoutRefreshTokensInput>, Prisma.TrainerUncheckedUpdateWithoutRefreshTokensInput>
 }
 
-export type TrainerCreateNestedOneWithoutTrainerExpensesInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutTrainerExpensesInput, Prisma.TrainerUncheckedCreateWithoutTrainerExpensesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutTrainerExpensesInput
+export type TrainerCreateNestedOneWithoutOrgTrainersInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutOrgTrainersInput, Prisma.TrainerUncheckedCreateWithoutOrgTrainersInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutOrgTrainersInput
   connect?: Prisma.TrainerWhereUniqueInput
 }
 
-export type TrainerUpdateOneRequiredWithoutTrainerExpensesNestedInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutTrainerExpensesInput, Prisma.TrainerUncheckedCreateWithoutTrainerExpensesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutTrainerExpensesInput
-  upsert?: Prisma.TrainerUpsertWithoutTrainerExpensesInput
+export type TrainerUpdateOneRequiredWithoutOrgTrainersNestedInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutOrgTrainersInput, Prisma.TrainerUncheckedCreateWithoutOrgTrainersInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutOrgTrainersInput
+  upsert?: Prisma.TrainerUpsertWithoutOrgTrainersInput
   connect?: Prisma.TrainerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutTrainerExpensesInput, Prisma.TrainerUpdateWithoutTrainerExpensesInput>, Prisma.TrainerUncheckedUpdateWithoutTrainerExpensesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutOrgTrainersInput, Prisma.TrainerUpdateWithoutOrgTrainersInput>, Prisma.TrainerUncheckedUpdateWithoutOrgTrainersInput>
+}
+
+export type TrainerCreateNestedOneWithoutOrgExpensesInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutOrgExpensesInput, Prisma.TrainerUncheckedCreateWithoutOrgExpensesInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutOrgExpensesInput
+  connect?: Prisma.TrainerWhereUniqueInput
+}
+
+export type TrainerUpdateOneRequiredWithoutOrgExpensesNestedInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutOrgExpensesInput, Prisma.TrainerUncheckedCreateWithoutOrgExpensesInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutOrgExpensesInput
+  upsert?: Prisma.TrainerUpsertWithoutOrgExpensesInput
+  connect?: Prisma.TrainerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutOrgExpensesInput, Prisma.TrainerUpdateWithoutOrgExpensesInput>, Prisma.TrainerUncheckedUpdateWithoutOrgExpensesInput>
 }
 
 export type TrainerCreateNestedOneWithoutMembersInput = {
@@ -409,20 +452,6 @@ export type TrainerUpdateOneRequiredWithoutMembersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutMembersInput, Prisma.TrainerUpdateWithoutMembersInput>, Prisma.TrainerUncheckedUpdateWithoutMembersInput>
 }
 
-export type TrainerCreateNestedOneWithoutSessionPassesInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutSessionPassesInput, Prisma.TrainerUncheckedCreateWithoutSessionPassesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutSessionPassesInput
-  connect?: Prisma.TrainerWhereUniqueInput
-}
-
-export type TrainerUpdateOneRequiredWithoutSessionPassesNestedInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutSessionPassesInput, Prisma.TrainerUncheckedCreateWithoutSessionPassesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutSessionPassesInput
-  upsert?: Prisma.TrainerUpsertWithoutSessionPassesInput
-  connect?: Prisma.TrainerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutSessionPassesInput, Prisma.TrainerUpdateWithoutSessionPassesInput>, Prisma.TrainerUncheckedUpdateWithoutSessionPassesInput>
-}
-
 export type TrainerCreateNestedOneWithoutMembershipsInput = {
   create?: Prisma.XOR<Prisma.TrainerCreateWithoutMembershipsInput, Prisma.TrainerUncheckedCreateWithoutMembershipsInput>
   connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutMembershipsInput
@@ -437,18 +466,32 @@ export type TrainerUpdateOneRequiredWithoutMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutMembershipsInput, Prisma.TrainerUpdateWithoutMembershipsInput>, Prisma.TrainerUncheckedUpdateWithoutMembershipsInput>
 }
 
-export type TrainerCreateNestedOneWithoutSchedulesInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutSchedulesInput, Prisma.TrainerUncheckedCreateWithoutSchedulesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutSchedulesInput
+export type TrainerCreateNestedOneWithoutPrimarySchedulesInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutPrimarySchedulesInput, Prisma.TrainerUncheckedCreateWithoutPrimarySchedulesInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutPrimarySchedulesInput
   connect?: Prisma.TrainerWhereUniqueInput
 }
 
-export type TrainerUpdateOneRequiredWithoutSchedulesNestedInput = {
-  create?: Prisma.XOR<Prisma.TrainerCreateWithoutSchedulesInput, Prisma.TrainerUncheckedCreateWithoutSchedulesInput>
-  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutSchedulesInput
-  upsert?: Prisma.TrainerUpsertWithoutSchedulesInput
+export type TrainerCreateNestedOneWithoutConductedSchedulesInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutConductedSchedulesInput, Prisma.TrainerUncheckedCreateWithoutConductedSchedulesInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutConductedSchedulesInput
   connect?: Prisma.TrainerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutSchedulesInput, Prisma.TrainerUpdateWithoutSchedulesInput>, Prisma.TrainerUncheckedUpdateWithoutSchedulesInput>
+}
+
+export type TrainerUpdateOneRequiredWithoutPrimarySchedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutPrimarySchedulesInput, Prisma.TrainerUncheckedCreateWithoutPrimarySchedulesInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutPrimarySchedulesInput
+  upsert?: Prisma.TrainerUpsertWithoutPrimarySchedulesInput
+  connect?: Prisma.TrainerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutPrimarySchedulesInput, Prisma.TrainerUpdateWithoutPrimarySchedulesInput>, Prisma.TrainerUncheckedUpdateWithoutPrimarySchedulesInput>
+}
+
+export type TrainerUpdateOneRequiredWithoutConductedSchedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.TrainerCreateWithoutConductedSchedulesInput, Prisma.TrainerUncheckedCreateWithoutConductedSchedulesInput>
+  connectOrCreate?: Prisma.TrainerCreateOrConnectWithoutConductedSchedulesInput
+  upsert?: Prisma.TrainerUpsertWithoutConductedSchedulesInput
+  connect?: Prisma.TrainerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrainerUpdateToOneWithWhereWithoutConductedSchedulesInput, Prisma.TrainerUpdateWithoutConductedSchedulesInput>, Prisma.TrainerUncheckedUpdateWithoutConductedSchedulesInput>
 }
 
 export type TrainerCreateNestedOneWithoutRevenueRecognitionsInput = {
@@ -469,28 +512,32 @@ export type TrainerCreateWithoutRefreshTokensInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerUncheckedCreateWithoutRefreshTokensInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerCreateOrConnectWithoutRefreshTokensInput = {
@@ -513,128 +560,224 @@ export type TrainerUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerUncheckedUpdateWithoutRefreshTokensInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
-export type TrainerCreateWithoutTrainerExpensesInput = {
+export type TrainerCreateWithoutOrgTrainersInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
-export type TrainerUncheckedCreateWithoutTrainerExpensesInput = {
+export type TrainerUncheckedCreateWithoutOrgTrainersInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
-export type TrainerCreateOrConnectWithoutTrainerExpensesInput = {
+export type TrainerCreateOrConnectWithoutOrgTrainersInput = {
   where: Prisma.TrainerWhereUniqueInput
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutTrainerExpensesInput, Prisma.TrainerUncheckedCreateWithoutTrainerExpensesInput>
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutOrgTrainersInput, Prisma.TrainerUncheckedCreateWithoutOrgTrainersInput>
 }
 
-export type TrainerUpsertWithoutTrainerExpensesInput = {
-  update: Prisma.XOR<Prisma.TrainerUpdateWithoutTrainerExpensesInput, Prisma.TrainerUncheckedUpdateWithoutTrainerExpensesInput>
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutTrainerExpensesInput, Prisma.TrainerUncheckedCreateWithoutTrainerExpensesInput>
+export type TrainerUpsertWithoutOrgTrainersInput = {
+  update: Prisma.XOR<Prisma.TrainerUpdateWithoutOrgTrainersInput, Prisma.TrainerUncheckedUpdateWithoutOrgTrainersInput>
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutOrgTrainersInput, Prisma.TrainerUncheckedCreateWithoutOrgTrainersInput>
   where?: Prisma.TrainerWhereInput
 }
 
-export type TrainerUpdateToOneWithWhereWithoutTrainerExpensesInput = {
+export type TrainerUpdateToOneWithWhereWithoutOrgTrainersInput = {
   where?: Prisma.TrainerWhereInput
-  data: Prisma.XOR<Prisma.TrainerUpdateWithoutTrainerExpensesInput, Prisma.TrainerUncheckedUpdateWithoutTrainerExpensesInput>
+  data: Prisma.XOR<Prisma.TrainerUpdateWithoutOrgTrainersInput, Prisma.TrainerUncheckedUpdateWithoutOrgTrainersInput>
 }
 
-export type TrainerUpdateWithoutTrainerExpensesInput = {
+export type TrainerUpdateWithoutOrgTrainersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
-export type TrainerUncheckedUpdateWithoutTrainerExpensesInput = {
+export type TrainerUncheckedUpdateWithoutOrgTrainersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
+}
+
+export type TrainerCreateWithoutOrgExpensesInput = {
+  id?: string
+  name: string
+  email: string
+  phoneNumber: string
+  passwordHash: string
+  createdAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
+  members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+}
+
+export type TrainerUncheckedCreateWithoutOrgExpensesInput = {
+  id?: string
+  name: string
+  email: string
+  phoneNumber: string
+  passwordHash: string
+  createdAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+}
+
+export type TrainerCreateOrConnectWithoutOrgExpensesInput = {
+  where: Prisma.TrainerWhereUniqueInput
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutOrgExpensesInput, Prisma.TrainerUncheckedCreateWithoutOrgExpensesInput>
+}
+
+export type TrainerUpsertWithoutOrgExpensesInput = {
+  update: Prisma.XOR<Prisma.TrainerUpdateWithoutOrgExpensesInput, Prisma.TrainerUncheckedUpdateWithoutOrgExpensesInput>
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutOrgExpensesInput, Prisma.TrainerUncheckedCreateWithoutOrgExpensesInput>
+  where?: Prisma.TrainerWhereInput
+}
+
+export type TrainerUpdateToOneWithWhereWithoutOrgExpensesInput = {
+  where?: Prisma.TrainerWhereInput
+  data: Prisma.XOR<Prisma.TrainerUpdateWithoutOrgExpensesInput, Prisma.TrainerUncheckedUpdateWithoutOrgExpensesInput>
+}
+
+export type TrainerUpdateWithoutOrgExpensesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
+  members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+}
+
+export type TrainerUncheckedUpdateWithoutOrgExpensesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
+  members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
 }
 
 export type TrainerCreateWithoutMembersInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerUncheckedCreateWithoutMembersInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerCreateOrConnectWithoutMembersInput = {
@@ -657,128 +800,64 @@ export type TrainerUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerUncheckedUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
-}
-
-export type TrainerCreateWithoutSessionPassesInput = {
-  id?: string
-  name: string
-  email: string
-  passwordHash: string
-  createdAt?: Date | string
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
-  members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
-}
-
-export type TrainerUncheckedCreateWithoutSessionPassesInput = {
-  id?: string
-  name: string
-  email: string
-  passwordHash: string
-  createdAt?: Date | string
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
-}
-
-export type TrainerCreateOrConnectWithoutSessionPassesInput = {
-  where: Prisma.TrainerWhereUniqueInput
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutSessionPassesInput, Prisma.TrainerUncheckedCreateWithoutSessionPassesInput>
-}
-
-export type TrainerUpsertWithoutSessionPassesInput = {
-  update: Prisma.XOR<Prisma.TrainerUpdateWithoutSessionPassesInput, Prisma.TrainerUncheckedUpdateWithoutSessionPassesInput>
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutSessionPassesInput, Prisma.TrainerUncheckedCreateWithoutSessionPassesInput>
-  where?: Prisma.TrainerWhereInput
-}
-
-export type TrainerUpdateToOneWithWhereWithoutSessionPassesInput = {
-  where?: Prisma.TrainerWhereInput
-  data: Prisma.XOR<Prisma.TrainerUpdateWithoutSessionPassesInput, Prisma.TrainerUncheckedUpdateWithoutSessionPassesInput>
-}
-
-export type TrainerUpdateWithoutSessionPassesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
-  members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
-}
-
-export type TrainerUncheckedUpdateWithoutSessionPassesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
-  members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerCreateWithoutMembershipsInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerUncheckedCreateWithoutMembershipsInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerCreateOrConnectWithoutMembershipsInput = {
@@ -801,128 +880,224 @@ export type TrainerUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
-export type TrainerCreateWithoutSchedulesInput = {
+export type TrainerCreateWithoutPrimarySchedulesInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
-export type TrainerUncheckedCreateWithoutSchedulesInput = {
+export type TrainerUncheckedCreateWithoutPrimarySchedulesInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
-export type TrainerCreateOrConnectWithoutSchedulesInput = {
+export type TrainerCreateOrConnectWithoutPrimarySchedulesInput = {
   where: Prisma.TrainerWhereUniqueInput
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutSchedulesInput, Prisma.TrainerUncheckedCreateWithoutSchedulesInput>
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutPrimarySchedulesInput, Prisma.TrainerUncheckedCreateWithoutPrimarySchedulesInput>
 }
 
-export type TrainerUpsertWithoutSchedulesInput = {
-  update: Prisma.XOR<Prisma.TrainerUpdateWithoutSchedulesInput, Prisma.TrainerUncheckedUpdateWithoutSchedulesInput>
-  create: Prisma.XOR<Prisma.TrainerCreateWithoutSchedulesInput, Prisma.TrainerUncheckedCreateWithoutSchedulesInput>
+export type TrainerCreateWithoutConductedSchedulesInput = {
+  id?: string
+  name: string
+  email: string
+  phoneNumber: string
+  passwordHash: string
+  createdAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
+  members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
+}
+
+export type TrainerUncheckedCreateWithoutConductedSchedulesInput = {
+  id?: string
+  name: string
+  email: string
+  phoneNumber: string
+  passwordHash: string
+  createdAt?: Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
+}
+
+export type TrainerCreateOrConnectWithoutConductedSchedulesInput = {
+  where: Prisma.TrainerWhereUniqueInput
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutConductedSchedulesInput, Prisma.TrainerUncheckedCreateWithoutConductedSchedulesInput>
+}
+
+export type TrainerUpsertWithoutPrimarySchedulesInput = {
+  update: Prisma.XOR<Prisma.TrainerUpdateWithoutPrimarySchedulesInput, Prisma.TrainerUncheckedUpdateWithoutPrimarySchedulesInput>
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutPrimarySchedulesInput, Prisma.TrainerUncheckedCreateWithoutPrimarySchedulesInput>
   where?: Prisma.TrainerWhereInput
 }
 
-export type TrainerUpdateToOneWithWhereWithoutSchedulesInput = {
+export type TrainerUpdateToOneWithWhereWithoutPrimarySchedulesInput = {
   where?: Prisma.TrainerWhereInput
-  data: Prisma.XOR<Prisma.TrainerUpdateWithoutSchedulesInput, Prisma.TrainerUncheckedUpdateWithoutSchedulesInput>
+  data: Prisma.XOR<Prisma.TrainerUpdateWithoutPrimarySchedulesInput, Prisma.TrainerUncheckedUpdateWithoutPrimarySchedulesInput>
 }
 
-export type TrainerUpdateWithoutSchedulesInput = {
+export type TrainerUpdateWithoutPrimarySchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
-export type TrainerUncheckedUpdateWithoutSchedulesInput = {
+export type TrainerUncheckedUpdateWithoutPrimarySchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
+}
+
+export type TrainerUpsertWithoutConductedSchedulesInput = {
+  update: Prisma.XOR<Prisma.TrainerUpdateWithoutConductedSchedulesInput, Prisma.TrainerUncheckedUpdateWithoutConductedSchedulesInput>
+  create: Prisma.XOR<Prisma.TrainerCreateWithoutConductedSchedulesInput, Prisma.TrainerUncheckedCreateWithoutConductedSchedulesInput>
+  where?: Prisma.TrainerWhereInput
+}
+
+export type TrainerUpdateToOneWithWhereWithoutConductedSchedulesInput = {
+  where?: Prisma.TrainerWhereInput
+  data: Prisma.XOR<Prisma.TrainerUpdateWithoutConductedSchedulesInput, Prisma.TrainerUncheckedUpdateWithoutConductedSchedulesInput>
+}
+
+export type TrainerUpdateWithoutConductedSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
+  members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
+}
+
+export type TrainerUncheckedUpdateWithoutConductedSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
+  members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerCreateWithoutRevenueRecognitionsInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerUncheckedCreateWithoutRevenueRecognitionsInput = {
   id?: string
   name: string
   email: string
+  phoneNumber: string
   passwordHash: string
   createdAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutTrainerInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedCreateNestedManyWithoutTrainerInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedCreateNestedManyWithoutTrainerInput
   members?: Prisma.MemberUncheckedCreateNestedManyWithoutTrainerInput
-  sessionPasses?: Prisma.SessionPassUncheckedCreateNestedManyWithoutTrainerInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTrainerInput
-  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTrainerInput
+  primarySchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutPrimaryTrainerInput
+  conductedSchedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutConductedByTrainerInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedCreateNestedManyWithoutCreatedByTrainerInput
 }
 
 export type TrainerCreateOrConnectWithoutRevenueRecognitionsInput = {
@@ -945,28 +1120,32 @@ export type TrainerUpdateWithoutRevenueRecognitionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 export type TrainerUncheckedUpdateWithoutRevenueRecognitionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutTrainerNestedInput
-  trainerExpenses?: Prisma.TrainerExpenseUncheckedUpdateManyWithoutTrainerNestedInput
+  orgTrainers?: Prisma.OrganizationTrainerUncheckedUpdateManyWithoutTrainerNestedInput
   members?: Prisma.MemberUncheckedUpdateManyWithoutTrainerNestedInput
-  sessionPasses?: Prisma.SessionPassUncheckedUpdateManyWithoutTrainerNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTrainerNestedInput
-  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTrainerNestedInput
+  primarySchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutPrimaryTrainerNestedInput
+  conductedSchedules?: Prisma.ScheduleUncheckedUpdateManyWithoutConductedByTrainerNestedInput
+  orgExpenses?: Prisma.OrgExpenseUncheckedUpdateManyWithoutCreatedByTrainerNestedInput
 }
 
 
@@ -976,22 +1155,24 @@ export type TrainerUncheckedUpdateWithoutRevenueRecognitionsInput = {
 
 export type TrainerCountOutputType = {
   refreshTokens: number
-  trainerExpenses: number
+  orgTrainers: number
   members: number
-  sessionPasses: number
   memberships: number
-  schedules: number
+  primarySchedules: number
+  conductedSchedules: number
   revenueRecognitions: number
+  orgExpenses: number
 }
 
 export type TrainerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   refreshTokens?: boolean | TrainerCountOutputTypeCountRefreshTokensArgs
-  trainerExpenses?: boolean | TrainerCountOutputTypeCountTrainerExpensesArgs
+  orgTrainers?: boolean | TrainerCountOutputTypeCountOrgTrainersArgs
   members?: boolean | TrainerCountOutputTypeCountMembersArgs
-  sessionPasses?: boolean | TrainerCountOutputTypeCountSessionPassesArgs
   memberships?: boolean | TrainerCountOutputTypeCountMembershipsArgs
-  schedules?: boolean | TrainerCountOutputTypeCountSchedulesArgs
+  primarySchedules?: boolean | TrainerCountOutputTypeCountPrimarySchedulesArgs
+  conductedSchedules?: boolean | TrainerCountOutputTypeCountConductedSchedulesArgs
   revenueRecognitions?: boolean | TrainerCountOutputTypeCountRevenueRecognitionsArgs
+  orgExpenses?: boolean | TrainerCountOutputTypeCountOrgExpensesArgs
 }
 
 /**
@@ -1014,8 +1195,8 @@ export type TrainerCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime
 /**
  * TrainerCountOutputType without action
  */
-export type TrainerCountOutputTypeCountTrainerExpensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TrainerExpenseWhereInput
+export type TrainerCountOutputTypeCountOrgTrainersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrganizationTrainerWhereInput
 }
 
 /**
@@ -1028,13 +1209,6 @@ export type TrainerCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types
 /**
  * TrainerCountOutputType without action
  */
-export type TrainerCountOutputTypeCountSessionPassesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SessionPassWhereInput
-}
-
-/**
- * TrainerCountOutputType without action
- */
 export type TrainerCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MembershipWhereInput
 }
@@ -1042,7 +1216,14 @@ export type TrainerCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.T
 /**
  * TrainerCountOutputType without action
  */
-export type TrainerCountOutputTypeCountSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type TrainerCountOutputTypeCountPrimarySchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduleWhereInput
+}
+
+/**
+ * TrainerCountOutputType without action
+ */
+export type TrainerCountOutputTypeCountConductedSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ScheduleWhereInput
 }
 
@@ -1053,20 +1234,29 @@ export type TrainerCountOutputTypeCountRevenueRecognitionsArgs<ExtArgs extends r
   where?: Prisma.RevenueRecognitionWhereInput
 }
 
+/**
+ * TrainerCountOutputType without action
+ */
+export type TrainerCountOutputTypeCountOrgExpensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrgExpenseWhereInput
+}
+
 
 export type TrainerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   email?: boolean
+  phoneNumber?: boolean
   passwordHash?: boolean
   createdAt?: boolean
   refreshTokens?: boolean | Prisma.Trainer$refreshTokensArgs<ExtArgs>
-  trainerExpenses?: boolean | Prisma.Trainer$trainerExpensesArgs<ExtArgs>
+  orgTrainers?: boolean | Prisma.Trainer$orgTrainersArgs<ExtArgs>
   members?: boolean | Prisma.Trainer$membersArgs<ExtArgs>
-  sessionPasses?: boolean | Prisma.Trainer$sessionPassesArgs<ExtArgs>
   memberships?: boolean | Prisma.Trainer$membershipsArgs<ExtArgs>
-  schedules?: boolean | Prisma.Trainer$schedulesArgs<ExtArgs>
+  primarySchedules?: boolean | Prisma.Trainer$primarySchedulesArgs<ExtArgs>
+  conductedSchedules?: boolean | Prisma.Trainer$conductedSchedulesArgs<ExtArgs>
   revenueRecognitions?: boolean | Prisma.Trainer$revenueRecognitionsArgs<ExtArgs>
+  orgExpenses?: boolean | Prisma.Trainer$orgExpensesArgs<ExtArgs>
   _count?: boolean | Prisma.TrainerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trainer"]>
 
@@ -1074,6 +1264,7 @@ export type TrainerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   name?: boolean
   email?: boolean
+  phoneNumber?: boolean
   passwordHash?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["trainer"]>
@@ -1082,6 +1273,7 @@ export type TrainerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   name?: boolean
   email?: boolean
+  phoneNumber?: boolean
   passwordHash?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["trainer"]>
@@ -1090,19 +1282,21 @@ export type TrainerSelectScalar = {
   id?: boolean
   name?: boolean
   email?: boolean
+  phoneNumber?: boolean
   passwordHash?: boolean
   createdAt?: boolean
 }
 
-export type TrainerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "createdAt", ExtArgs["result"]["trainer"]>
+export type TrainerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phoneNumber" | "passwordHash" | "createdAt", ExtArgs["result"]["trainer"]>
 export type TrainerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   refreshTokens?: boolean | Prisma.Trainer$refreshTokensArgs<ExtArgs>
-  trainerExpenses?: boolean | Prisma.Trainer$trainerExpensesArgs<ExtArgs>
+  orgTrainers?: boolean | Prisma.Trainer$orgTrainersArgs<ExtArgs>
   members?: boolean | Prisma.Trainer$membersArgs<ExtArgs>
-  sessionPasses?: boolean | Prisma.Trainer$sessionPassesArgs<ExtArgs>
   memberships?: boolean | Prisma.Trainer$membershipsArgs<ExtArgs>
-  schedules?: boolean | Prisma.Trainer$schedulesArgs<ExtArgs>
+  primarySchedules?: boolean | Prisma.Trainer$primarySchedulesArgs<ExtArgs>
+  conductedSchedules?: boolean | Prisma.Trainer$conductedSchedulesArgs<ExtArgs>
   revenueRecognitions?: boolean | Prisma.Trainer$revenueRecognitionsArgs<ExtArgs>
+  orgExpenses?: boolean | Prisma.Trainer$orgExpensesArgs<ExtArgs>
   _count?: boolean | Prisma.TrainerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TrainerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1112,17 +1306,19 @@ export type $TrainerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Trainer"
   objects: {
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
-    trainerExpenses: Prisma.$TrainerExpensePayload<ExtArgs>[]
+    orgTrainers: Prisma.$OrganizationTrainerPayload<ExtArgs>[]
     members: Prisma.$MemberPayload<ExtArgs>[]
-    sessionPasses: Prisma.$SessionPassPayload<ExtArgs>[]
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
-    schedules: Prisma.$SchedulePayload<ExtArgs>[]
+    primarySchedules: Prisma.$SchedulePayload<ExtArgs>[]
+    conductedSchedules: Prisma.$SchedulePayload<ExtArgs>[]
     revenueRecognitions: Prisma.$RevenueRecognitionPayload<ExtArgs>[]
+    orgExpenses: Prisma.$OrgExpensePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     email: string
+    phoneNumber: string
     passwordHash: string
     createdAt: Date
   }, ExtArgs["result"]["trainer"]>
@@ -1520,12 +1716,13 @@ readonly fields: TrainerFieldRefs;
 export interface Prisma__TrainerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   refreshTokens<T extends Prisma.Trainer$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  trainerExpenses<T extends Prisma.Trainer$trainerExpensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$trainerExpensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrainerExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orgTrainers<T extends Prisma.Trainer$orgTrainersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$orgTrainersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationTrainerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   members<T extends Prisma.Trainer$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sessionPasses<T extends Prisma.Trainer$sessionPassesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$sessionPassesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memberships<T extends Prisma.Trainer$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  schedules<T extends Prisma.Trainer$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  primarySchedules<T extends Prisma.Trainer$primarySchedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$primarySchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  conductedSchedules<T extends Prisma.Trainer$conductedSchedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$conductedSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   revenueRecognitions<T extends Prisma.Trainer$revenueRecognitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$revenueRecognitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RevenueRecognitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orgExpenses<T extends Prisma.Trainer$orgExpensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Trainer$orgExpensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrgExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1558,6 +1755,7 @@ export interface TrainerFieldRefs {
   readonly id: Prisma.FieldRef<"Trainer", 'String'>
   readonly name: Prisma.FieldRef<"Trainer", 'String'>
   readonly email: Prisma.FieldRef<"Trainer", 'String'>
+  readonly phoneNumber: Prisma.FieldRef<"Trainer", 'String'>
   readonly passwordHash: Prisma.FieldRef<"Trainer", 'String'>
   readonly createdAt: Prisma.FieldRef<"Trainer", 'DateTime'>
 }
@@ -1977,27 +2175,27 @@ export type Trainer$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * Trainer.trainerExpenses
+ * Trainer.orgTrainers
  */
-export type Trainer$trainerExpensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Trainer$orgTrainersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the TrainerExpense
+   * Select specific fields to fetch from the OrganizationTrainer
    */
-  select?: Prisma.TrainerExpenseSelect<ExtArgs> | null
+  select?: Prisma.OrganizationTrainerSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the TrainerExpense
+   * Omit specific fields from the OrganizationTrainer
    */
-  omit?: Prisma.TrainerExpenseOmit<ExtArgs> | null
+  omit?: Prisma.OrganizationTrainerOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.TrainerExpenseInclude<ExtArgs> | null
-  where?: Prisma.TrainerExpenseWhereInput
-  orderBy?: Prisma.TrainerExpenseOrderByWithRelationInput | Prisma.TrainerExpenseOrderByWithRelationInput[]
-  cursor?: Prisma.TrainerExpenseWhereUniqueInput
+  include?: Prisma.OrganizationTrainerInclude<ExtArgs> | null
+  where?: Prisma.OrganizationTrainerWhereInput
+  orderBy?: Prisma.OrganizationTrainerOrderByWithRelationInput | Prisma.OrganizationTrainerOrderByWithRelationInput[]
+  cursor?: Prisma.OrganizationTrainerWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.TrainerExpenseScalarFieldEnum | Prisma.TrainerExpenseScalarFieldEnum[]
+  distinct?: Prisma.OrganizationTrainerScalarFieldEnum | Prisma.OrganizationTrainerScalarFieldEnum[]
 }
 
 /**
@@ -2025,30 +2223,6 @@ export type Trainer$membersArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Trainer.sessionPasses
- */
-export type Trainer$sessionPassesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the SessionPass
-   */
-  select?: Prisma.SessionPassSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the SessionPass
-   */
-  omit?: Prisma.SessionPassOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SessionPassInclude<ExtArgs> | null
-  where?: Prisma.SessionPassWhereInput
-  orderBy?: Prisma.SessionPassOrderByWithRelationInput | Prisma.SessionPassOrderByWithRelationInput[]
-  cursor?: Prisma.SessionPassWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.SessionPassScalarFieldEnum | Prisma.SessionPassScalarFieldEnum[]
-}
-
-/**
  * Trainer.memberships
  */
 export type Trainer$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2073,9 +2247,33 @@ export type Trainer$membershipsArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
- * Trainer.schedules
+ * Trainer.primarySchedules
  */
-export type Trainer$schedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Trainer$primarySchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Schedule
+   */
+  select?: Prisma.ScheduleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Schedule
+   */
+  omit?: Prisma.ScheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduleInclude<ExtArgs> | null
+  where?: Prisma.ScheduleWhereInput
+  orderBy?: Prisma.ScheduleOrderByWithRelationInput | Prisma.ScheduleOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduleScalarFieldEnum | Prisma.ScheduleScalarFieldEnum[]
+}
+
+/**
+ * Trainer.conductedSchedules
+ */
+export type Trainer$conductedSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Schedule
    */
@@ -2118,6 +2316,30 @@ export type Trainer$revenueRecognitionsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.RevenueRecognitionScalarFieldEnum | Prisma.RevenueRecognitionScalarFieldEnum[]
+}
+
+/**
+ * Trainer.orgExpenses
+ */
+export type Trainer$orgExpensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrgExpense
+   */
+  select?: Prisma.OrgExpenseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrgExpense
+   */
+  omit?: Prisma.OrgExpenseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrgExpenseInclude<ExtArgs> | null
+  where?: Prisma.OrgExpenseWhereInput
+  orderBy?: Prisma.OrgExpenseOrderByWithRelationInput | Prisma.OrgExpenseOrderByWithRelationInput[]
+  cursor?: Prisma.OrgExpenseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrgExpenseScalarFieldEnum | Prisma.OrgExpenseScalarFieldEnum[]
 }
 
 /**

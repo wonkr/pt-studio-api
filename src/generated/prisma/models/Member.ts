@@ -26,6 +26,7 @@ export type AggregateMember = {
 
 export type MemberMinAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   trainerId: string | null
   name: string | null
   phoneNumber: string | null
@@ -35,6 +36,7 @@ export type MemberMinAggregateOutputType = {
 
 export type MemberMaxAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   trainerId: string | null
   name: string | null
   phoneNumber: string | null
@@ -44,6 +46,7 @@ export type MemberMaxAggregateOutputType = {
 
 export type MemberCountAggregateOutputType = {
   id: number
+  organizationId: number
   trainerId: number
   name: number
   phoneNumber: number
@@ -55,6 +58,7 @@ export type MemberCountAggregateOutputType = {
 
 export type MemberMinAggregateInputType = {
   id?: true
+  organizationId?: true
   trainerId?: true
   name?: true
   phoneNumber?: true
@@ -64,6 +68,7 @@ export type MemberMinAggregateInputType = {
 
 export type MemberMaxAggregateInputType = {
   id?: true
+  organizationId?: true
   trainerId?: true
   name?: true
   phoneNumber?: true
@@ -73,6 +78,7 @@ export type MemberMaxAggregateInputType = {
 
 export type MemberCountAggregateInputType = {
   id?: true
+  organizationId?: true
   trainerId?: true
   name?: true
   phoneNumber?: true
@@ -155,6 +161,7 @@ export type MemberGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type MemberGroupByOutputType = {
   id: string
+  organizationId: string
   trainerId: string
   name: string
   phoneNumber: string
@@ -185,11 +192,13 @@ export type MemberWhereInput = {
   OR?: Prisma.MemberWhereInput[]
   NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[]
   id?: Prisma.StringFilter<"Member"> | string
+  organizationId?: Prisma.StringFilter<"Member"> | string
   trainerId?: Prisma.StringFilter<"Member"> | string
   name?: Prisma.StringFilter<"Member"> | string
   phoneNumber?: Prisma.StringFilter<"Member"> | string
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Member"> | Date | string | null
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
@@ -198,11 +207,13 @@ export type MemberWhereInput = {
 
 export type MemberOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   trainer?: Prisma.TrainerOrderByWithRelationInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
   schedules?: Prisma.ScheduleOrderByRelationAggregateInput
@@ -211,23 +222,26 @@ export type MemberOrderByWithRelationInput = {
 
 export type MemberWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  trainerId_name_phoneNumber_deletedAt?: Prisma.MemberTrainerIdNamePhoneNumberDeletedAtCompoundUniqueInput
+  organizationId_name_phoneNumber_deletedAt?: Prisma.MemberOrganizationIdNamePhoneNumberDeletedAtCompoundUniqueInput
   AND?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[]
   OR?: Prisma.MemberWhereInput[]
   NOT?: Prisma.MemberWhereInput | Prisma.MemberWhereInput[]
+  organizationId?: Prisma.StringFilter<"Member"> | string
   trainerId?: Prisma.StringFilter<"Member"> | string
   name?: Prisma.StringFilter<"Member"> | string
   phoneNumber?: Prisma.StringFilter<"Member"> | string
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Member"> | Date | string | null
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
   revenueRecognitions?: Prisma.RevenueRecognitionListRelationFilter
-}, "id" | "trainerId_name_phoneNumber_deletedAt">
+}, "id" | "organizationId_name_phoneNumber_deletedAt">
 
 export type MemberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
@@ -243,6 +257,7 @@ export type MemberScalarWhereWithAggregatesInput = {
   OR?: Prisma.MemberScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MemberScalarWhereWithAggregatesInput | Prisma.MemberScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Member"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"Member"> | string
   trainerId?: Prisma.StringWithAggregatesFilter<"Member"> | string
   name?: Prisma.StringWithAggregatesFilter<"Member"> | string
   phoneNumber?: Prisma.StringWithAggregatesFilter<"Member"> | string
@@ -256,6 +271,7 @@ export type MemberCreateInput = {
   phoneNumber: string
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
@@ -264,6 +280,7 @@ export type MemberCreateInput = {
 
 export type MemberUncheckedCreateInput = {
   id?: string
+  organizationId: string
   trainerId: string
   name: string
   phoneNumber: string
@@ -280,6 +297,7 @@ export type MemberUpdateInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
@@ -288,6 +306,7 @@ export type MemberUpdateInput = {
 
 export type MemberUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -300,6 +319,7 @@ export type MemberUncheckedUpdateInput = {
 
 export type MemberCreateManyInput = {
   id?: string
+  organizationId: string
   trainerId: string
   name: string
   phoneNumber: string
@@ -317,6 +337,7 @@ export type MemberUpdateManyMutationInput = {
 
 export type MemberUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -334,8 +355,8 @@ export type MemberOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type MemberTrainerIdNamePhoneNumberDeletedAtCompoundUniqueInput = {
-  trainerId: string
+export type MemberOrganizationIdNamePhoneNumberDeletedAtCompoundUniqueInput = {
+  organizationId: string
   name: string
   phoneNumber: string
   deletedAt: Date | string
@@ -343,6 +364,7 @@ export type MemberTrainerIdNamePhoneNumberDeletedAtCompoundUniqueInput = {
 
 export type MemberCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
@@ -352,6 +374,7 @@ export type MemberCountOrderByAggregateInput = {
 
 export type MemberMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
@@ -361,6 +384,7 @@ export type MemberMaxOrderByAggregateInput = {
 
 export type MemberMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
@@ -412,6 +436,48 @@ export type MemberUncheckedUpdateManyWithoutTrainerNestedInput = {
   connect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
   update?: Prisma.MemberUpdateWithWhereUniqueWithoutTrainerInput | Prisma.MemberUpdateWithWhereUniqueWithoutTrainerInput[]
   updateMany?: Prisma.MemberUpdateManyWithWhereWithoutTrainerInput | Prisma.MemberUpdateManyWithWhereWithoutTrainerInput[]
+  deleteMany?: Prisma.MemberScalarWhereInput | Prisma.MemberScalarWhereInput[]
+}
+
+export type MemberCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutOrganizationInput, Prisma.MemberUncheckedCreateWithoutOrganizationInput> | Prisma.MemberCreateWithoutOrganizationInput[] | Prisma.MemberUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutOrganizationInput | Prisma.MemberCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.MemberCreateManyOrganizationInputEnvelope
+  connect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+}
+
+export type MemberUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutOrganizationInput, Prisma.MemberUncheckedCreateWithoutOrganizationInput> | Prisma.MemberCreateWithoutOrganizationInput[] | Prisma.MemberUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutOrganizationInput | Prisma.MemberCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.MemberCreateManyOrganizationInputEnvelope
+  connect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+}
+
+export type MemberUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutOrganizationInput, Prisma.MemberUncheckedCreateWithoutOrganizationInput> | Prisma.MemberCreateWithoutOrganizationInput[] | Prisma.MemberUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutOrganizationInput | Prisma.MemberCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.MemberUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.MemberCreateManyOrganizationInputEnvelope
+  set?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  disconnect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  delete?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  connect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  update?: Prisma.MemberUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.MemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.MemberUpdateManyWithWhereWithoutOrganizationInput | Prisma.MemberUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.MemberScalarWhereInput | Prisma.MemberScalarWhereInput[]
+}
+
+export type MemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.MemberCreateWithoutOrganizationInput, Prisma.MemberUncheckedCreateWithoutOrganizationInput> | Prisma.MemberCreateWithoutOrganizationInput[] | Prisma.MemberUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MemberCreateOrConnectWithoutOrganizationInput | Prisma.MemberCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.MemberUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.MemberCreateManyOrganizationInputEnvelope
+  set?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  disconnect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  delete?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  connect?: Prisma.MemberWhereUniqueInput | Prisma.MemberWhereUniqueInput[]
+  update?: Prisma.MemberUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.MemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.MemberUpdateManyWithWhereWithoutOrganizationInput | Prisma.MemberUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.MemberScalarWhereInput | Prisma.MemberScalarWhereInput[]
 }
 
@@ -467,6 +533,7 @@ export type MemberCreateWithoutTrainerInput = {
   phoneNumber: string
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
@@ -474,6 +541,7 @@ export type MemberCreateWithoutTrainerInput = {
 
 export type MemberUncheckedCreateWithoutTrainerInput = {
   id?: string
+  organizationId: string
   name: string
   phoneNumber: string
   createdAt?: Date | string
@@ -514,11 +582,62 @@ export type MemberScalarWhereInput = {
   OR?: Prisma.MemberScalarWhereInput[]
   NOT?: Prisma.MemberScalarWhereInput | Prisma.MemberScalarWhereInput[]
   id?: Prisma.StringFilter<"Member"> | string
+  organizationId?: Prisma.StringFilter<"Member"> | string
   trainerId?: Prisma.StringFilter<"Member"> | string
   name?: Prisma.StringFilter<"Member"> | string
   phoneNumber?: Prisma.StringFilter<"Member"> | string
   createdAt?: Prisma.DateTimeFilter<"Member"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Member"> | Date | string | null
+}
+
+export type MemberCreateWithoutOrganizationInput = {
+  id?: string
+  name: string
+  phoneNumber: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
+  trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
+  revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
+}
+
+export type MemberUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  trainerId: string
+  name: string
+  phoneNumber: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutMemberInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMemberInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedCreateNestedManyWithoutMemberInput
+}
+
+export type MemberCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.MemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.MemberCreateWithoutOrganizationInput, Prisma.MemberUncheckedCreateWithoutOrganizationInput>
+}
+
+export type MemberCreateManyOrganizationInputEnvelope = {
+  data: Prisma.MemberCreateManyOrganizationInput | Prisma.MemberCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type MemberUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.MemberWhereUniqueInput
+  update: Prisma.XOR<Prisma.MemberUpdateWithoutOrganizationInput, Prisma.MemberUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.MemberCreateWithoutOrganizationInput, Prisma.MemberUncheckedCreateWithoutOrganizationInput>
+}
+
+export type MemberUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.MemberWhereUniqueInput
+  data: Prisma.XOR<Prisma.MemberUpdateWithoutOrganizationInput, Prisma.MemberUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type MemberUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.MemberScalarWhereInput
+  data: Prisma.XOR<Prisma.MemberUpdateManyMutationInput, Prisma.MemberUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type MemberCreateWithoutMembershipsInput = {
@@ -527,6 +646,7 @@ export type MemberCreateWithoutMembershipsInput = {
   phoneNumber: string
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
@@ -534,6 +654,7 @@ export type MemberCreateWithoutMembershipsInput = {
 
 export type MemberUncheckedCreateWithoutMembershipsInput = {
   id?: string
+  organizationId: string
   trainerId: string
   name: string
   phoneNumber: string
@@ -565,6 +686,7 @@ export type MemberUpdateWithoutMembershipsInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
@@ -572,6 +694,7 @@ export type MemberUpdateWithoutMembershipsInput = {
 
 export type MemberUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -587,6 +710,7 @@ export type MemberCreateWithoutSchedulesInput = {
   phoneNumber: string
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
   revenueRecognitions?: Prisma.RevenueRecognitionCreateNestedManyWithoutMemberInput
@@ -594,6 +718,7 @@ export type MemberCreateWithoutSchedulesInput = {
 
 export type MemberUncheckedCreateWithoutSchedulesInput = {
   id?: string
+  organizationId: string
   trainerId: string
   name: string
   phoneNumber: string
@@ -625,6 +750,7 @@ export type MemberUpdateWithoutSchedulesInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
@@ -632,6 +758,7 @@ export type MemberUpdateWithoutSchedulesInput = {
 
 export type MemberUncheckedUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -647,6 +774,7 @@ export type MemberCreateWithoutRevenueRecognitionsInput = {
   phoneNumber: string
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembersInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutMemberInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMemberInput
@@ -654,6 +782,7 @@ export type MemberCreateWithoutRevenueRecognitionsInput = {
 
 export type MemberUncheckedCreateWithoutRevenueRecognitionsInput = {
   id?: string
+  organizationId: string
   trainerId: string
   name: string
   phoneNumber: string
@@ -685,6 +814,7 @@ export type MemberUpdateWithoutRevenueRecognitionsInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
@@ -692,6 +822,7 @@ export type MemberUpdateWithoutRevenueRecognitionsInput = {
 
 export type MemberUncheckedUpdateWithoutRevenueRecognitionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -703,6 +834,7 @@ export type MemberUncheckedUpdateWithoutRevenueRecognitionsInput = {
 
 export type MemberCreateManyTrainerInput = {
   id?: string
+  organizationId: string
   name: string
   phoneNumber: string
   createdAt?: Date | string
@@ -715,6 +847,7 @@ export type MemberUpdateWithoutTrainerInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
   revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
@@ -722,6 +855,7 @@ export type MemberUpdateWithoutTrainerInput = {
 
 export type MemberUncheckedUpdateWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -733,6 +867,49 @@ export type MemberUncheckedUpdateWithoutTrainerInput = {
 
 export type MemberUncheckedUpdateManyWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MemberCreateManyOrganizationInput = {
+  id?: string
+  trainerId: string
+  name: string
+  phoneNumber: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type MemberUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembersNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutMemberNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutMemberNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutMemberNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMemberNestedInput
+  revenueRecognitions?: Prisma.RevenueRecognitionUncheckedUpdateManyWithoutMemberNestedInput
+}
+
+export type MemberUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -790,11 +967,13 @@ export type MemberCountOutputTypeCountRevenueRecognitionsArgs<ExtArgs extends ru
 
 export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   name?: boolean
   phoneNumber?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.Member$membershipsArgs<ExtArgs>
   schedules?: boolean | Prisma.Member$schedulesArgs<ExtArgs>
@@ -804,26 +983,31 @@ export type MemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 
 export type MemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   name?: boolean
   phoneNumber?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
 export type MemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   name?: boolean
   phoneNumber?: boolean
   createdAt?: boolean
   deletedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["member"]>
 
 export type MemberSelectScalar = {
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   name?: boolean
   phoneNumber?: boolean
@@ -831,8 +1015,9 @@ export type MemberSelectScalar = {
   deletedAt?: boolean
 }
 
-export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "name" | "phoneNumber" | "createdAt" | "deletedAt", ExtArgs["result"]["member"]>
+export type MemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "trainerId" | "name" | "phoneNumber" | "createdAt" | "deletedAt", ExtArgs["result"]["member"]>
 export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.Member$membershipsArgs<ExtArgs>
   schedules?: boolean | Prisma.Member$schedulesArgs<ExtArgs>
@@ -840,15 +1025,18 @@ export type MemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   _count?: boolean | Prisma.MemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
 }
 export type MemberIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
 }
 
 export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Member"
   objects: {
+    organization: Prisma.$OrganizationPayload<ExtArgs>
     trainer: Prisma.$TrainerPayload<ExtArgs>
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
     schedules: Prisma.$SchedulePayload<ExtArgs>[]
@@ -856,6 +1044,7 @@ export type $MemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    organizationId: string
     trainerId: string
     name: string
     phoneNumber: string
@@ -1255,6 +1444,7 @@ readonly fields: MemberFieldRefs;
  */
 export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   trainer<T extends Prisma.TrainerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainerDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainerClient<runtime.Types.Result.GetResult<Prisma.$TrainerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   memberships<T extends Prisma.Member$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   schedules<T extends Prisma.Member$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Member$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1289,6 +1479,7 @@ export interface Prisma__MemberClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface MemberFieldRefs {
   readonly id: Prisma.FieldRef<"Member", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Member", 'String'>
   readonly trainerId: Prisma.FieldRef<"Member", 'String'>
   readonly name: Prisma.FieldRef<"Member", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"Member", 'String'>

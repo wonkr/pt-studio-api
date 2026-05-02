@@ -9,16 +9,19 @@ import { MembersModule } from './members/members.module';
 import { SessionPassModule } from './session-pass/session-pass.module';
 import { MembershipModule } from './membership/membership.module';
 import { ScheduleModule } from './schedule/schedule.module';
-import { TrainerExpenseModule } from './trainer-expense/trainer-expense.module';
+import { OrgExpenseModule } from './org-expense/org-expense.module';
 import { RevenueSummaryModule } from './revenue-summary/revenue-summary.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
 import { APP_GUARD } from '@nestjs/core';
+import { OrganizationModule } from './organization/organization.module';
+import { OrganizationTrainerService } from './organization-trainer/organization-trainer.service';
+import { OrganizationTrainerModule } from './organization-trainer/organization-trainer.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule, 
-    AuthModule, TrainersModule, MembersModule, SessionPassModule, MembershipModule, ScheduleModule, TrainerExpenseModule, RevenueSummaryModule,
+    AuthModule, TrainersModule, MembersModule, SessionPassModule, MembershipModule, ScheduleModule, OrgExpenseModule, RevenueSummaryModule,
     ThrottlerModule.forRoot([
       {
         name: 'short',
@@ -35,7 +38,9 @@ import { APP_GUARD } from '@nestjs/core';
         ttl: 60000, // 1sec
         limit: 100,
       }
-    ])
+    ]),
+    OrganizationModule,
+    OrganizationTrainerModule
   
   ],
   controllers: [AppController],
@@ -44,7 +49,8 @@ import { APP_GUARD } from '@nestjs/core';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard, // global
-    }
+    },
+    OrganizationTrainerService
   ],
 })
 export class AppModule {}

@@ -28,10 +28,25 @@ export type Trainer = Prisma.TrainerModel
  */
 export type RefreshToken = Prisma.RefreshTokenModel
 /**
- * Model TrainerExpense
+ * Model Organization
  * 
  */
-export type TrainerExpense = Prisma.TrainerExpenseModel
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model OrganizationTrainer
+ * 
+ */
+export type OrganizationTrainer = Prisma.OrganizationTrainerModel
+/**
+ * Model Room
+ * 
+ */
+export type Room = Prisma.RoomModel
+/**
+ * Model OrgExpense
+ * 
+ */
+export type OrgExpense = Prisma.OrgExpenseModel
 /**
  * Model Member
  * 

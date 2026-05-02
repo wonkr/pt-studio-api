@@ -14,18 +14,20 @@ datasource db {
 }
 
 model Trainer {
-  id                  String               @id @default(uuid())
+  id                  String                @id @default(uuid())
   name                String
-  email               String               @unique
-  passwordHash        String               @map("password_hash")
-  createdAt           DateTime             @default(now()) @map("created_at")
+  email               String                @unique
+  phoneNumber         String                @unique @map("phone_number")
+  passwordHash        String                @map("password_hash")
+  createdAt           DateTime              @default(now()) @map("created_at") @db.Timestamptz
   refreshTokens       RefreshToken[]
-  trainerExpenses     TrainerExpense[]
+  orgTrainers         OrganizationTrainer[]
   members             Member[]
-  sessionPasses       SessionPass[]
-  memberships         Membership[]
-  schedules           Schedule[]
+  memberships         Membership[]          @relation("AssignedTrainer")
+  primarySchedules    Schedule[]            @relation("PrimaryTrainer")
+  conductedSchedules  Schedule[]            @relation("ConductedByTrainer")
   revenueRecognitions RevenueRecognition[]
+  orgExpenses         OrgExpense[]
 
   @@map("trainers")
 }
@@ -35,109 +37,190 @@ model RefreshToken {
   token     String   @unique
   trainer   Trainer  @relation(fields: [trainerId], references: [id])
   trainerId String   @map("trainer_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  expiresAt DateTime @map("expires_at") @db.Timestamptz
 
-  @@map("refresh_token")
+  @@map("refresh_tokens")
 }
 
-model TrainerExpense {
-  id        String          @id @default(uuid())
-  trainer   Trainer         @relation(fields: [trainerId], references: [id])
-  trainerId String          @map("trainer_id")
-  category  ExpenseCategory
-  amount    Decimal
-  memo      String?
-  paidAt    DateTime        @map("paid_at")
-  createdAt DateTime        @default(now()) @map("created_at")
+model Organization {
+  id                  String                @id @default(uuid())
+  name                String
+  address             String
+  roomCount           Int                   @map("room_count")
+  createdAt           DateTime              @default(now()) @map("created_at") @db.Timestamptz
+  orgTrainers         OrganizationTrainer[]
+  rooms               Room[]
+  members             Member[]
+  sessionPasses       SessionPass[]
+  memberships         Membership[]
+  schedules           Schedule[]
+  revenueRecognitions RevenueRecognition[]
+  orgExpenses         OrgExpense[]
 
-  @@map("trainer_expenses")
+  @@unique([name, address])
+  @@map("organizations")
+}
+
+model OrganizationTrainer {
+  id               String           @id @default(uuid())
+  organization     Organization     @relation(fields: [organizationId], references: [id])
+  organizationId   String           @map("organization_id")
+  trainer          Trainer          @relation(fields: [trainerId], references: [id])
+  trainerId        String           @map("trainer_id")
+  role             OrgTrainerRole
+  status           OrgTrainerStatus
+  payoutPerSession Decimal?         @map("payout_per_session")
+  joinedAt         DateTime         @default(now()) @map("joined_at") @db.Timestamptz
+
+  @@unique([organizationId, trainerId])
+  @@map("organization_trainers")
+}
+
+model Room {
+  id             String       @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String       @map("organization_id")
+  name           String
+  capacity       Int
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  schedules      Schedule[]
+
+  @@unique([organizationId, name])
+  @@map("rooms")
+}
+
+model OrgExpense {
+  id                 String          @id @default(uuid())
+  organization       Organization    @relation(fields: [organizationId], references: [id])
+  organizationId     String          @map("organization_id")
+  createdByTrainer   Trainer         @relation(fields: [createdByTrainerId], references: [id])
+  createdByTrainerId String          @map("created_by_trainer_id")
+  category           ExpenseCategory
+  amount             Decimal
+  memo               String?
+  paidAt             DateTime        @map("paid_at") @db.Timestamptz
+  createdAt          DateTime        @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("org_expenses")
 }
 
 model Member {
   id                  String               @id @default(uuid())
+  organization        Organization         @relation(fields: [organizationId], references: [id])
+  organizationId      String               @map("organization_id")
   trainer             Trainer              @relation(fields: [trainerId], references: [id])
   trainerId           String               @map("trainer_id")
   name                String
   phoneNumber         String               @map("phone_number")
-  createdAt           DateTime             @default(now()) @map("created_at")
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz
+  deletedAt           DateTime?            @map("deleted_at") @db.Timestamptz
   memberships         Membership[]
   schedules           Schedule[]
   revenueRecognitions RevenueRecognition[]
-  deletedAt           DateTime?            @map("deleted_at")
 
-  @@unique([trainerId, name, phoneNumber, deletedAt])
+  @@unique([organizationId, name, phoneNumber, deletedAt])
   @@map("members")
 }
 
 model SessionPass {
-  id            String       @id @default(uuid())
-  trainer       Trainer      @relation(fields: [trainerId], references: [id])
-  trainerId     String       @map("trainer_id")
-  name          String
-  totalSessions Int          @map("total_sessions")
-  price         Decimal
-  validDays     Int          @map("valid_days")
-  isActivated   Boolean      @default(true) @map("is_activated")
-  deletedAt     DateTime?    @map("deleted_at")
-  memberships   Membership[]
+  id             String       @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String       @map("organization_id")
+  name           String
+  totalSessions  Int          @map("total_sessions")
+  price          Decimal
+  validDays      Int          @map("valid_days")
+  isActivated    Boolean      @default(true) @map("is_activated")
+  deletedAt      DateTime?    @map("deleted_at") @db.Timestamptz
+  memberships    Membership[]
 
-  @@unique([trainerId, name])
+  @@unique([organizationId, name])
   @@map("session_passes")
 }
 
 model Membership {
-  id                String        @id @default(uuid())
-  trainer           Trainer       @relation(fields: [trainerId], references: [id])
-  trainerId         String        @map("trainer_id")
-  member            Member        @relation(fields: [memberId], references: [id])
-  memberId          String        @map("member_id")
-  sessionPass       SessionPass   @relation(fields: [sessionPassId], references: [id])
-  sessionPassId     String        @map("session_pass_id")
-  paymentType       PaymentType   @map("payment_type")
-  paymentStatus     PaymentStatus @map("payment_status")
-  paidAt            DateTime?     @map("paid_at")
-  startedAt         DateTime?     @map("started_at")
-  expiredAt         DateTime?     @map("expired_at")
-  remainingSessions Int           @map("remaining_sessions")
-  usedSessions      Int           @map("used_sessions")
-  schedules         Schedule[]
+  id                       String        @id @default(uuid())
+  organization             Organization  @relation(fields: [organizationId], references: [id])
+  organizationId           String        @map("organization_id")
+  trainer                  Trainer       @relation("AssignedTrainer", fields: [trainerId], references: [id])
+  trainerId                String        @map("trainer_id")
+  member                   Member        @relation(fields: [memberId], references: [id])
+  memberId                 String        @map("member_id")
+  sessionPass              SessionPass   @relation(fields: [sessionPassId], references: [id])
+  sessionPassId            String        @map("session_pass_id")
+  // Snapshot of session pass at time of purchase
+  sessionPassName          String        @map("session_pass_name")
+  sessionPassPrice         Decimal       @map("session_pass_price")
+  sessionPassTotalSessions Int           @map("session_pass_total_sessions")
+  sessionPassValidDays     Int           @map("session_pass_valid_days")
+  paymentType              PaymentType   @map("payment_type")
+  paymentStatus            PaymentStatus @map("payment_status")
+  paidAt                   DateTime?     @map("paid_at") @db.Timestamptz
+  startedAt                DateTime?     @map("started_at") @db.Timestamptz
+  expiredAt                DateTime?     @map("expired_at") @db.Timestamptz
+  remainingSessions        Int           @map("remaining_sessions")
+  usedSessions             Int           @map("used_sessions")
+  schedules                Schedule[]
 
   @@map("memberships")
 }
 
 model Schedule {
-  id                 String              @id @default(uuid())
-  trainer            Trainer             @relation(fields: [trainerId], references: [id])
-  trainerId          String              @map("trainer_id")
-  member             Member              @relation(fields: [memberId], references: [id])
-  memberId           String              @map("member_id")
-  membership         Membership          @relation(fields: [membershipId], references: [id])
-  membershipId       String              @map("membership_id")
-  scheduledAt        DateTime            @map("scheduled_at")
-  sessionDuration    Decimal             @map("session_duration")
-  endsAt             DateTime            @map("ends_at")
-  status             ScheduleStatus
-  cancelReason       String?             @map("cancel_reason")
-  createdAt          DateTime            @default(now()) @map("created_at")
-  updatedAt          DateTime            @updatedAt @map("updated_at")
-  revenueRecognition RevenueRecognition?
+  // NOTE: PostgreSQL exclusion constraints for overlap prevention must be added
+  // via raw SQL migration — Prisma does not support EXCLUDE USING GIST natively.
+  // See docs/erdesign.md > Schedule Exclusion Constraint.
+  id                   String              @id @default(uuid())
+  organization         Organization        @relation(fields: [organizationId], references: [id])
+  organizationId       String              @map("organization_id")
+  primaryTrainer       Trainer             @relation("PrimaryTrainer", fields: [primaryTrainerId], references: [id])
+  primaryTrainerId     String              @map("primary_trainer_id")
+  conductedByTrainer   Trainer             @relation("ConductedByTrainer", fields: [conductedByTrainerId], references: [id])
+  conductedByTrainerId String              @map("conducted_by_trainer_id")
+  member               Member              @relation(fields: [memberId], references: [id])
+  memberId             String              @map("member_id")
+  membership           Membership          @relation(fields: [membershipId], references: [id])
+  membershipId         String              @map("membership_id")
+  room                 Room                @relation(fields: [roomId], references: [id])
+  roomId               String              @map("room_id")
+  scheduledAt          DateTime            @map("scheduled_at") @db.Timestamptz
+  endsAt               DateTime            @map("ends_at") @db.Timestamptz
+  sessionDuration      Int                 @map("session_duration")
+  status               ScheduleStatus
+  cancelReason         String?             @map("cancel_reason")
+  createdAt            DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime            @updatedAt @map("updated_at") @db.Timestamptz
+  revenueRecognition   RevenueRecognition?
 
   @@map("schedules")
 }
 
 model RevenueRecognition {
-  id           String   @id @default(uuid())
-  trainer      Trainer  @relation(fields: [trainerId], references: [id])
-  trainerId    String   @map("trainer_id")
-  member       Member   @relation(fields: [memberId], references: [id])
-  memberId     String   @map("member_id")
-  schedule     Schedule @relation(fields: [scheduleId], references: [id])
-  scheduleId   String   @unique @map("schedule_id")
-  amount       Decimal
-  recognizedAt DateTime @default(now()) @map("recognized_at")
+  id                   String       @id @default(uuid())
+  organization         Organization @relation(fields: [organizationId], references: [id])
+  organizationId       String       @map("organization_id")
+  conductedByTrainer   Trainer      @relation(fields: [conductedByTrainerId], references: [id])
+  conductedByTrainerId String       @map("conducted_by_trainer_id")
+  member               Member       @relation(fields: [memberId], references: [id])
+  memberId             String       @map("member_id")
+  schedule             Schedule     @relation(fields: [scheduleId], references: [id])
+  scheduleId           String       @unique @map("schedule_id")
+  amount               Decimal
+  recognizedAt         DateTime     @default(now()) @map("recognized_at") @db.Timestamptz
 
   @@map("revenue_recognitions")
+}
+
+enum OrgTrainerRole {
+  OWNER
+  ADMIN
+  TRAINER
+}
+
+enum OrgTrainerStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum ScheduleStatus {

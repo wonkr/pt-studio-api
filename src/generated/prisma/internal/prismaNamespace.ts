@@ -386,7 +386,10 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Trainer: 'Trainer',
   RefreshToken: 'RefreshToken',
-  TrainerExpense: 'TrainerExpense',
+  Organization: 'Organization',
+  OrganizationTrainer: 'OrganizationTrainer',
+  Room: 'Room',
+  OrgExpense: 'OrgExpense',
   Member: 'Member',
   SessionPass: 'SessionPass',
   Membership: 'Membership',
@@ -407,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trainer" | "refreshToken" | "trainerExpense" | "member" | "sessionPass" | "membership" | "schedule" | "revenueRecognition"
+    modelProps: "trainer" | "refreshToken" | "organization" | "organizationTrainer" | "room" | "orgExpense" | "member" | "sessionPass" | "membership" | "schedule" | "revenueRecognition"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -559,77 +562,299 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    TrainerExpense: {
-      payload: Prisma.$TrainerExpensePayload<ExtArgs>
-      fields: Prisma.TrainerExpenseFieldRefs
+    Organization: {
+      payload: Prisma.$OrganizationPayload<ExtArgs>
+      fields: Prisma.OrganizationFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.TrainerExpenseFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload> | null
+          args: Prisma.OrganizationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.TrainerExpenseFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>
+          args: Prisma.OrganizationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
         }
         findFirst: {
-          args: Prisma.TrainerExpenseFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload> | null
+          args: Prisma.OrganizationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.TrainerExpenseFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>
+          args: Prisma.OrganizationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
         }
         findMany: {
-          args: Prisma.TrainerExpenseFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>[]
+          args: Prisma.OrganizationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
         }
         create: {
-          args: Prisma.TrainerExpenseCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>
+          args: Prisma.OrganizationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
         }
         createMany: {
-          args: Prisma.TrainerExpenseCreateManyArgs<ExtArgs>
+          args: Prisma.OrganizationCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.TrainerExpenseCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>[]
+          args: Prisma.OrganizationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
         }
         delete: {
-          args: Prisma.TrainerExpenseDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>
+          args: Prisma.OrganizationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
         }
         update: {
-          args: Prisma.TrainerExpenseUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>
+          args: Prisma.OrganizationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
         }
         deleteMany: {
-          args: Prisma.TrainerExpenseDeleteManyArgs<ExtArgs>
+          args: Prisma.OrganizationDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.TrainerExpenseUpdateManyArgs<ExtArgs>
+          args: Prisma.OrganizationUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.TrainerExpenseUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>[]
+          args: Prisma.OrganizationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
         }
         upsert: {
-          args: Prisma.TrainerExpenseUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrainerExpensePayload>
+          args: Prisma.OrganizationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationPayload>
         }
         aggregate: {
-          args: Prisma.TrainerExpenseAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrainerExpense>
+          args: Prisma.OrganizationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganization>
         }
         groupBy: {
-          args: Prisma.TrainerExpenseGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrainerExpenseGroupByOutputType>[]
+          args: Prisma.OrganizationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationGroupByOutputType>[]
         }
         count: {
-          args: Prisma.TrainerExpenseCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrainerExpenseCountAggregateOutputType> | number
+          args: Prisma.OrganizationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrganizationTrainer: {
+      payload: Prisma.$OrganizationTrainerPayload<ExtArgs>
+      fields: Prisma.OrganizationTrainerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationTrainerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationTrainerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationTrainerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationTrainerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationTrainerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationTrainerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationTrainerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OrganizationTrainerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>[]
+        }
+        delete: {
+          args: Prisma.OrganizationTrainerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>
+        }
+        update: {
+          args: Prisma.OrganizationTrainerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationTrainerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationTrainerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OrganizationTrainerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>[]
+        }
+        upsert: {
+          args: Prisma.OrganizationTrainerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTrainerPayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationTrainerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationTrainer>
+        }
+        groupBy: {
+          args: Prisma.OrganizationTrainerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationTrainerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationTrainerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationTrainerCountAggregateOutputType> | number
+        }
+      }
+    }
+    Room: {
+      payload: Prisma.$RoomPayload<ExtArgs>
+      fields: Prisma.RoomFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RoomFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RoomFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>
+        }
+        findFirst: {
+          args: Prisma.RoomFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RoomFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>
+        }
+        findMany: {
+          args: Prisma.RoomFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>[]
+        }
+        create: {
+          args: Prisma.RoomCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>
+        }
+        createMany: {
+          args: Prisma.RoomCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RoomCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>[]
+        }
+        delete: {
+          args: Prisma.RoomDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>
+        }
+        update: {
+          args: Prisma.RoomUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>
+        }
+        deleteMany: {
+          args: Prisma.RoomDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RoomUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RoomUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>[]
+        }
+        upsert: {
+          args: Prisma.RoomUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoomPayload>
+        }
+        aggregate: {
+          args: Prisma.RoomAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRoom>
+        }
+        groupBy: {
+          args: Prisma.RoomGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RoomGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RoomCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RoomCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrgExpense: {
+      payload: Prisma.$OrgExpensePayload<ExtArgs>
+      fields: Prisma.OrgExpenseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrgExpenseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrgExpenseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>
+        }
+        findFirst: {
+          args: Prisma.OrgExpenseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrgExpenseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>
+        }
+        findMany: {
+          args: Prisma.OrgExpenseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>[]
+        }
+        create: {
+          args: Prisma.OrgExpenseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>
+        }
+        createMany: {
+          args: Prisma.OrgExpenseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OrgExpenseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>[]
+        }
+        delete: {
+          args: Prisma.OrgExpenseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>
+        }
+        update: {
+          args: Prisma.OrgExpenseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>
+        }
+        deleteMany: {
+          args: Prisma.OrgExpenseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrgExpenseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OrgExpenseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>[]
+        }
+        upsert: {
+          args: Prisma.OrgExpenseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrgExpensePayload>
+        }
+        aggregate: {
+          args: Prisma.OrgExpenseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrgExpense>
+        }
+        groupBy: {
+          args: Prisma.OrgExpenseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrgExpenseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrgExpenseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrgExpenseCountAggregateOutputType> | number
         }
       }
     }
@@ -1046,6 +1271,7 @@ export const TrainerScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phoneNumber: 'phoneNumber',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt'
 } as const
@@ -1064,9 +1290,45 @@ export const RefreshTokenScalarFieldEnum = {
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
-export const TrainerExpenseScalarFieldEnum = {
+export const OrganizationScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  address: 'address',
+  roomCount: 'roomCount',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationTrainerScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
   trainerId: 'trainerId',
+  role: 'role',
+  status: 'status',
+  payoutPerSession: 'payoutPerSession',
+  joinedAt: 'joinedAt'
+} as const
+
+export type OrganizationTrainerScalarFieldEnum = (typeof OrganizationTrainerScalarFieldEnum)[keyof typeof OrganizationTrainerScalarFieldEnum]
+
+
+export const RoomScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  capacity: 'capacity',
+  createdAt: 'createdAt'
+} as const
+
+export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
+
+
+export const OrgExpenseScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  createdByTrainerId: 'createdByTrainerId',
   category: 'category',
   amount: 'amount',
   memo: 'memo',
@@ -1074,11 +1336,12 @@ export const TrainerExpenseScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type TrainerExpenseScalarFieldEnum = (typeof TrainerExpenseScalarFieldEnum)[keyof typeof TrainerExpenseScalarFieldEnum]
+export type OrgExpenseScalarFieldEnum = (typeof OrgExpenseScalarFieldEnum)[keyof typeof OrgExpenseScalarFieldEnum]
 
 
 export const MemberScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   trainerId: 'trainerId',
   name: 'name',
   phoneNumber: 'phoneNumber',
@@ -1091,7 +1354,7 @@ export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof 
 
 export const SessionPassScalarFieldEnum = {
   id: 'id',
-  trainerId: 'trainerId',
+  organizationId: 'organizationId',
   name: 'name',
   totalSessions: 'totalSessions',
   price: 'price',
@@ -1105,9 +1368,14 @@ export type SessionPassScalarFieldEnum = (typeof SessionPassScalarFieldEnum)[key
 
 export const MembershipScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   trainerId: 'trainerId',
   memberId: 'memberId',
   sessionPassId: 'sessionPassId',
+  sessionPassName: 'sessionPassName',
+  sessionPassPrice: 'sessionPassPrice',
+  sessionPassTotalSessions: 'sessionPassTotalSessions',
+  sessionPassValidDays: 'sessionPassValidDays',
   paymentType: 'paymentType',
   paymentStatus: 'paymentStatus',
   paidAt: 'paidAt',
@@ -1122,12 +1390,15 @@ export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof
 
 export const ScheduleScalarFieldEnum = {
   id: 'id',
-  trainerId: 'trainerId',
+  organizationId: 'organizationId',
+  primaryTrainerId: 'primaryTrainerId',
+  conductedByTrainerId: 'conductedByTrainerId',
   memberId: 'memberId',
   membershipId: 'membershipId',
+  roomId: 'roomId',
   scheduledAt: 'scheduledAt',
-  sessionDuration: 'sessionDuration',
   endsAt: 'endsAt',
+  sessionDuration: 'sessionDuration',
   status: 'status',
   cancelReason: 'cancelReason',
   createdAt: 'createdAt',
@@ -1139,7 +1410,8 @@ export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typ
 
 export const RevenueRecognitionScalarFieldEnum = {
   id: 'id',
-  trainerId: 'trainerId',
+  organizationId: 'organizationId',
+  conductedByTrainerId: 'conductedByTrainerId',
   memberId: 'memberId',
   scheduleId: 'scheduleId',
   amount: 'amount',
@@ -1208,16 +1480,44 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'ExpenseCategory'
+ * Reference to a field of type 'Int'
  */
-export type EnumExpenseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseCategory'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'ExpenseCategory[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListEnumExpenseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseCategory[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OrgTrainerRole'
+ */
+export type EnumOrgTrainerRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrgTrainerRole'>
+    
+
+
+/**
+ * Reference to a field of type 'OrgTrainerRole[]'
+ */
+export type ListEnumOrgTrainerRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrgTrainerRole[]'>
+    
+
+
+/**
+ * Reference to a field of type 'OrgTrainerStatus'
+ */
+export type EnumOrgTrainerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrgTrainerStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'OrgTrainerStatus[]'
+ */
+export type ListEnumOrgTrainerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrgTrainerStatus[]'>
     
 
 
@@ -1236,16 +1536,16 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
- * Reference to a field of type 'Int'
+ * Reference to a field of type 'ExpenseCategory'
  */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+export type EnumExpenseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseCategory'>
     
 
 
 /**
- * Reference to a field of type 'Int[]'
+ * Reference to a field of type 'ExpenseCategory[]'
  */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+export type ListEnumExpenseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpenseCategory[]'>
     
 
 
@@ -1408,7 +1708,10 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   trainer?: Prisma.TrainerOmit
   refreshToken?: Prisma.RefreshTokenOmit
-  trainerExpense?: Prisma.TrainerExpenseOmit
+  organization?: Prisma.OrganizationOmit
+  organizationTrainer?: Prisma.OrganizationTrainerOmit
+  room?: Prisma.RoomOmit
+  orgExpense?: Prisma.OrgExpenseOmit
   member?: Prisma.MemberOmit
   sessionPass?: Prisma.SessionPassOmit
   membership?: Prisma.MembershipOmit

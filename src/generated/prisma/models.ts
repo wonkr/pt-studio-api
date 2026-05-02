@@ -10,7 +10,10 @@
  */
 export type * from './models/Trainer.js'
 export type * from './models/RefreshToken.js'
-export type * from './models/TrainerExpense.js'
+export type * from './models/Organization.js'
+export type * from './models/OrganizationTrainer.js'
+export type * from './models/Room.js'
+export type * from './models/OrgExpense.js'
 export type * from './models/Member.js'
 export type * from './models/SessionPass.js'
 export type * from './models/Membership.js'

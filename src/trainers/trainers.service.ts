@@ -26,6 +26,7 @@ export class TrainersService {
         const registerTrainerDto: Prisma.TrainerCreateInput = {
             name: createTrainerDto.name,
             email: createTrainerDto.email,
+            phoneNumber: createTrainerDto.phone,
             passwordHash: hash
         }
         await this.databaseService.trainer.create({

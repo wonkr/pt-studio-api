@@ -1,14 +1,17 @@
-import { Controller, Post, UseGuards, ValidationPipe, Request, Body, Get, Patch, Delete, Param, Query } from '@nestjs/common';
+import { Controller, Post, UseGuards, ValidationPipe, Body, Get, Patch, Delete, Param, Query } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { OrgGuard } from '../auth/guards/org.guard';
+import { RequiredOrgId, TrainerId } from '../auth/decorators/auth.decorator';
+import { OrgRole } from '../auth/decorators/org.decorator';
 
 @ApiTags('Schedule')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
-@Controller('schedule')
+@Controller('/schedule')
 export class ScheduleController {
     constructor(
         private readonly scheduleService: ScheduleService
@@ -20,27 +23,39 @@ export class ScheduleController {
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 403, description: 'Invalid or depleted membership' })
     @ApiResponse({ status: 409, description: 'Schedule conflicts with existing session' })
-    @Post()
-    async create(@Request() req, @Body(ValidationPipe) createScheduleDto: CreateScheduleDto){
-        return this.scheduleService.create(req.user.sub, createScheduleDto)
+    @UseGuards(OrgGuard)
+    @Post('/organizations/:orgId')
+    async create(@TrainerId() trainerId: string, @RequiredOrgId() orgId: string, @OrgRole() orgRole:string, @Body(ValidationPipe) createScheduleDto: CreateScheduleDto){
+        return this.scheduleService.create(trainerId, orgId, orgRole, createScheduleDto)
     }
 
-    @ApiOperation({ summary: 'Get all schedules. Optionally filter by member.' })
+    @ApiOperation({ summary: 'Get all schedules by orgs. Optionally filter by member.' })
     @ApiQuery({ name: 'member-id', required: false, description: 'Filter schedules for a specific member' })
     @ApiResponse({ status: 200, description: 'List of schedules' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    @Get()
-    async findAll(@Request() req, @Query('member-id') memberId?: string){
-        return this.scheduleService.findAll(req.user.sub, memberId)
+    @UseGuards(OrgGuard)
+    @Get('/organizations/:orgId')
+    async findAllByOrg(@TrainerId() trainerId: string, @RequiredOrgId() orgId: string, @OrgRole() orgRole:string, @Query('member-id') memberId?: string){
+        return this.scheduleService.findAllByOrg(trainerId, orgId, orgRole, memberId)
+    }
+
+    @ApiOperation({ summary: 'Get all schedules by trainers. Optionally filter by member.' })
+    @ApiQuery({ name: 'member-id', required: false, description: 'Filter schedules for a specific member' })
+    @ApiResponse({ status: 200, description: 'List of schedules' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
+    @Get('/my')
+    async findAllByTrainer(@TrainerId() trainerId: string, @Query('member-id') memberId?: string){
+        return this.scheduleService.findAll(trainerId, memberId)
     }
 
     @ApiOperation({ summary: 'Get a schedule by ID' })
     @ApiResponse({ status: 200, description: 'Schedule details' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Schedule not found' })
-    @Get(':id')
-    async findOne(@Request() req, @Param('id') id: string){
-        return this.scheduleService.findOne(req.user.sub, id)
+    @UseGuards(OrgGuard)
+    @Get('/organizations/:orgId/:scheduleId')
+    async findOne(@TrainerId() trainerId: string, @RequiredOrgId() orgId: string, @OrgRole() orgRole:string, @Param('scheduleId') scheduleId: string){
+        return this.scheduleService.findOne(trainerId, orgId, orgRole, scheduleId)
     }
 
     @ApiOperation({ summary: 'Update a schedule — reschedule, check-in, cancel, no-show' })
@@ -49,17 +64,19 @@ export class ScheduleController {
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Schedule not found' })
     @ApiResponse({ status: 409, description: 'Schedule conflicts with existing session' })
-    @Patch(':id')
-    async update(@Request() req, @Param('id') id: string, @Body(ValidationPipe) updateScheduleDto: UpdateScheduleDto){
-        return this.scheduleService.update(req.user.sub, id, updateScheduleDto)
+    @UseGuards(OrgGuard)
+    @Patch('/organizations/:orgId/:scheduleId')
+    async update(@TrainerId() trainerId: string, @RequiredOrgId() orgId: string, @OrgRole() orgRole:string, @Param('scheduleId') scheduleId: string, @Body(ValidationPipe) updateScheduleDto: UpdateScheduleDto){
+        return this.scheduleService.update(trainerId, orgId, orgRole, scheduleId, updateScheduleDto)
     }
 
     @ApiOperation({ summary: 'Delete a schedule' })
     @ApiResponse({ status: 204, description: 'Schedule deleted successfully' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'Schedule not found' })
-    @Delete(':id')
-    async remove(@Request() req, @Param('id') id: string){
-        return this.scheduleService.remove(req.user.sub, id)
+    @UseGuards(OrgGuard)
+    @Delete('/organizations/:orgId/:scheduleId')
+    async remove(@TrainerId() trainerId: string, @RequiredOrgId() orgId: string, @OrgRole() orgRole:string, @Param('scheduleId') scheduleId: string){
+        return this.scheduleService.remove(trainerId, orgId, orgRole, scheduleId)
     }
 }

@@ -1,8 +1,14 @@
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsInt, IsOptional, IsString, Max, Min } from "class-validator"
+import { IsDate, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from "class-validator"
 import { ApiPropertyOptional } from "@nestjs/swagger"
 
 export class UpdateScheduleDto {
+    @IsUUID()
+    conductedByTrainerId?: string
+    
+    @IsUUID()
+    roomId?: string
+
     @ApiPropertyOptional({ example: '2026-05-01T14:00:00.000Z', description: 'Rescheduled start time (ISO 8601)' })
     @IsOptional()
     @IsDate()

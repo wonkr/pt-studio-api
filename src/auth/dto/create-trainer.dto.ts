@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsStrongPassword } from "class-validator"
+import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, IsStrongPassword } from "class-validator"
 import { ApiProperty } from "@nestjs/swagger"
 
 export class CreateTrainerDto {
@@ -10,6 +10,10 @@ export class CreateTrainerDto {
     @ApiProperty({ example: 'user@example.com', description: 'Trainer email address (unique)' })
     @IsEmail()
     email!: string;
+
+    @ApiProperty({ example: '01012345678', description: 'Korean phone number' })
+    @IsPhoneNumber('KR', {message: "Not a valid phone number"})
+    phone!: string;
 
     @ApiProperty({ example: 'Password123!', description: 'Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 symbol' })
     @IsStrongPassword({

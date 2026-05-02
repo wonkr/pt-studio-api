@@ -11,6 +11,12 @@ export class CreateScheduleDto {
     @IsUUID()
     membershipId!: string
 
+    @IsUUID()
+    conductedByTrainerId!: string
+
+    @IsUUID()
+    roomId!: string
+
     @ApiProperty({ example: '2026-05-01T10:00:00.000Z', description: 'Scheduled session start time (ISO 8601)' })
     @IsDate()
     @Type(() => Date)

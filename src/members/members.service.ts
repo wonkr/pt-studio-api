@@ -8,10 +8,11 @@ export class MembersService {
         private readonly databaseService: DatabaseService
     ){}
 
-    async create(trainerId:string, createMemberDto:CreateMemberDto){
+    async create(trainerId:string, orgId:string, createMemberDto:CreateMemberDto){
         const createdMember = await this.databaseService.member.create({
             data: {
                 trainerId: trainerId,
+                organizationId: orgId,
                 name: createMemberDto.name,
                 phoneNumber: createMemberDto.phone
             }
@@ -19,7 +20,7 @@ export class MembersService {
         if (!createMemberDto.sessionPassId) {
             const createdSessionPass = await this.databaseService.sessionPass.create({
                 data: {
-                    trainerId: trainerId,
+                    organizationId: orgId,
                     name: createMemberDto.sessionPassName,
                     totalSessions: createMemberDto.sessionPassTotalSessions,
                     price: createMemberDto.sessionPassPrice,
@@ -36,8 +37,13 @@ export class MembersService {
         await this.databaseService.membership.create({
             data: {
                 trainerId: trainerId,
+                organizationId: orgId,
                 memberId: createdMember.id,
                 sessionPassId: createMemberDto.sessionPassId,
+                sessionPassName: createMemberDto.sessionPassName,
+                sessionPassPrice: createMemberDto.sessionPassPrice,
+                sessionPassTotalSessions: createMemberDto.sessionPassTotalSessions,
+                sessionPassValidDays: createMemberDto.sessionPassValidDays,
                 paymentType: createMemberDto.paymentType,
                 paymentStatus: createMemberDto.paymentStatus,
                 ... (paidAt && { paidAt: paidAt }),
@@ -51,10 +57,10 @@ export class MembersService {
         return createdMember
     }
 
-    async findAll(trainerId:string, name?: string){
+    async findAll(orgId:string, name?: string){
         const members =  await this.databaseService.member.findMany({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 ...( name && {
                         name: {
                         contains: name,
@@ -69,12 +75,8 @@ export class MembersService {
                 phoneNumber: true,
                 memberships: {
                     select: {
-                        sessionPass: {
-                            select: {
-                                name: true
-                            }
-                        },
                         id: true,
+                        sessionPassName:true,
                         paymentStatus: true,
                         remainingSessions: true,
                         expiredAt: true
@@ -86,10 +88,10 @@ export class MembersService {
         return members.map(m => this.flattenMember(m))
     }
 
-    async getMemberDetails(trainerId: string, memberId: string){
+    async getMemberDetails(orgId: string, memberId: string){
         const member =  await this.databaseService.member.findUnique({
             where: {
-                trainerId: trainerId,
+                organizationId: orgId,
                 id:memberId,
                 deletedAt: null
             },
@@ -118,9 +120,10 @@ export class MembersService {
         return member
     }
 
-    async remove(trainerId:string, id:string){
+    async remove(trainerId:string, orgId:string, id:string){
         const activeMembership = await this.databaseService.membership.findFirst({
             where: {
+                organizationId: orgId,
                 trainerId: trainerId,
                 memberId: id,
                 OR: [
@@ -138,6 +141,7 @@ export class MembersService {
         await this.databaseService.member.update({
             where: {
                 trainerId:trainerId,
+                organizationId: orgId,
                 id: id
             },
             data: {

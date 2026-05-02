@@ -918,14 +918,14 @@ Delete a schedule.
 | `NOSHOW` | Member did not attend |
 | `CANCELLED` | Cancelled before session time |
 
-### TrainerExpense
+### OrgExpenses
 
 All endpoints require a valid JWT access token and operate only on the
 authenticated trainer's expenses (BOLA defense enforced via `trainerId` filter).
 
 ---
 
-#### POST /api/trainer-expense
+#### POST /api/org-expense
 Create a new expense record.
 
 **Headers**

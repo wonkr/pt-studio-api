@@ -27,20 +27,31 @@ export type AggregateMembership = {
 }
 
 export type MembershipAvgAggregateOutputType = {
+  sessionPassPrice: runtime.Decimal | null
+  sessionPassTotalSessions: number | null
+  sessionPassValidDays: number | null
   remainingSessions: number | null
   usedSessions: number | null
 }
 
 export type MembershipSumAggregateOutputType = {
+  sessionPassPrice: runtime.Decimal | null
+  sessionPassTotalSessions: number | null
+  sessionPassValidDays: number | null
   remainingSessions: number | null
   usedSessions: number | null
 }
 
 export type MembershipMinAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   trainerId: string | null
   memberId: string | null
   sessionPassId: string | null
+  sessionPassName: string | null
+  sessionPassPrice: runtime.Decimal | null
+  sessionPassTotalSessions: number | null
+  sessionPassValidDays: number | null
   paymentType: $Enums.PaymentType | null
   paymentStatus: $Enums.PaymentStatus | null
   paidAt: Date | null
@@ -52,9 +63,14 @@ export type MembershipMinAggregateOutputType = {
 
 export type MembershipMaxAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   trainerId: string | null
   memberId: string | null
   sessionPassId: string | null
+  sessionPassName: string | null
+  sessionPassPrice: runtime.Decimal | null
+  sessionPassTotalSessions: number | null
+  sessionPassValidDays: number | null
   paymentType: $Enums.PaymentType | null
   paymentStatus: $Enums.PaymentStatus | null
   paidAt: Date | null
@@ -66,9 +82,14 @@ export type MembershipMaxAggregateOutputType = {
 
 export type MembershipCountAggregateOutputType = {
   id: number
+  organizationId: number
   trainerId: number
   memberId: number
   sessionPassId: number
+  sessionPassName: number
+  sessionPassPrice: number
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: number
   paymentStatus: number
   paidAt: number
@@ -81,20 +102,31 @@ export type MembershipCountAggregateOutputType = {
 
 
 export type MembershipAvgAggregateInputType = {
+  sessionPassPrice?: true
+  sessionPassTotalSessions?: true
+  sessionPassValidDays?: true
   remainingSessions?: true
   usedSessions?: true
 }
 
 export type MembershipSumAggregateInputType = {
+  sessionPassPrice?: true
+  sessionPassTotalSessions?: true
+  sessionPassValidDays?: true
   remainingSessions?: true
   usedSessions?: true
 }
 
 export type MembershipMinAggregateInputType = {
   id?: true
+  organizationId?: true
   trainerId?: true
   memberId?: true
   sessionPassId?: true
+  sessionPassName?: true
+  sessionPassPrice?: true
+  sessionPassTotalSessions?: true
+  sessionPassValidDays?: true
   paymentType?: true
   paymentStatus?: true
   paidAt?: true
@@ -106,9 +138,14 @@ export type MembershipMinAggregateInputType = {
 
 export type MembershipMaxAggregateInputType = {
   id?: true
+  organizationId?: true
   trainerId?: true
   memberId?: true
   sessionPassId?: true
+  sessionPassName?: true
+  sessionPassPrice?: true
+  sessionPassTotalSessions?: true
+  sessionPassValidDays?: true
   paymentType?: true
   paymentStatus?: true
   paidAt?: true
@@ -120,9 +157,14 @@ export type MembershipMaxAggregateInputType = {
 
 export type MembershipCountAggregateInputType = {
   id?: true
+  organizationId?: true
   trainerId?: true
   memberId?: true
   sessionPassId?: true
+  sessionPassName?: true
+  sessionPassPrice?: true
+  sessionPassTotalSessions?: true
+  sessionPassValidDays?: true
   paymentType?: true
   paymentStatus?: true
   paidAt?: true
@@ -221,9 +263,14 @@ export type MembershipGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type MembershipGroupByOutputType = {
   id: string
+  organizationId: string
   trainerId: string
   memberId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt: Date | null
@@ -258,9 +305,14 @@ export type MembershipWhereInput = {
   OR?: Prisma.MembershipWhereInput[]
   NOT?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
   id?: Prisma.StringFilter<"Membership"> | string
+  organizationId?: Prisma.StringFilter<"Membership"> | string
   trainerId?: Prisma.StringFilter<"Membership"> | string
   memberId?: Prisma.StringFilter<"Membership"> | string
   sessionPassId?: Prisma.StringFilter<"Membership"> | string
+  sessionPassName?: Prisma.StringFilter<"Membership"> | string
+  sessionPassPrice?: Prisma.DecimalFilter<"Membership"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFilter<"Membership"> | number
+  sessionPassValidDays?: Prisma.IntFilter<"Membership"> | number
   paymentType?: Prisma.EnumPaymentTypeFilter<"Membership"> | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Membership"> | $Enums.PaymentStatus
   paidAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
@@ -268,6 +320,7 @@ export type MembershipWhereInput = {
   expiredAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
   remainingSessions?: Prisma.IntFilter<"Membership"> | number
   usedSessions?: Prisma.IntFilter<"Membership"> | number
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
   sessionPass?: Prisma.XOR<Prisma.SessionPassScalarRelationFilter, Prisma.SessionPassWhereInput>
@@ -276,9 +329,14 @@ export type MembershipWhereInput = {
 
 export type MembershipOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
   sessionPassId?: Prisma.SortOrder
+  sessionPassName?: Prisma.SortOrder
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -286,6 +344,7 @@ export type MembershipOrderByWithRelationInput = {
   expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   remainingSessions?: Prisma.SortOrder
   usedSessions?: Prisma.SortOrder
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   trainer?: Prisma.TrainerOrderByWithRelationInput
   member?: Prisma.MemberOrderByWithRelationInput
   sessionPass?: Prisma.SessionPassOrderByWithRelationInput
@@ -297,9 +356,14 @@ export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
   OR?: Prisma.MembershipWhereInput[]
   NOT?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
+  organizationId?: Prisma.StringFilter<"Membership"> | string
   trainerId?: Prisma.StringFilter<"Membership"> | string
   memberId?: Prisma.StringFilter<"Membership"> | string
   sessionPassId?: Prisma.StringFilter<"Membership"> | string
+  sessionPassName?: Prisma.StringFilter<"Membership"> | string
+  sessionPassPrice?: Prisma.DecimalFilter<"Membership"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFilter<"Membership"> | number
+  sessionPassValidDays?: Prisma.IntFilter<"Membership"> | number
   paymentType?: Prisma.EnumPaymentTypeFilter<"Membership"> | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Membership"> | $Enums.PaymentStatus
   paidAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
@@ -307,6 +371,7 @@ export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   expiredAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
   remainingSessions?: Prisma.IntFilter<"Membership"> | number
   usedSessions?: Prisma.IntFilter<"Membership"> | number
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
   member?: Prisma.XOR<Prisma.MemberScalarRelationFilter, Prisma.MemberWhereInput>
   sessionPass?: Prisma.XOR<Prisma.SessionPassScalarRelationFilter, Prisma.SessionPassWhereInput>
@@ -315,9 +380,14 @@ export type MembershipWhereUniqueInput = Prisma.AtLeast<{
 
 export type MembershipOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
   sessionPassId?: Prisma.SortOrder
+  sessionPassName?: Prisma.SortOrder
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -337,9 +407,14 @@ export type MembershipScalarWhereWithAggregatesInput = {
   OR?: Prisma.MembershipScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MembershipScalarWhereWithAggregatesInput | Prisma.MembershipScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Membership"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
   trainerId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
   memberId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
   sessionPassId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
+  sessionPassName?: Prisma.StringWithAggregatesFilter<"Membership"> | string
+  sessionPassPrice?: Prisma.DecimalWithAggregatesFilter<"Membership"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntWithAggregatesFilter<"Membership"> | number
+  sessionPassValidDays?: Prisma.IntWithAggregatesFilter<"Membership"> | number
   paymentType?: Prisma.EnumPaymentTypeWithAggregatesFilter<"Membership"> | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Membership"> | $Enums.PaymentStatus
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Membership"> | Date | string | null
@@ -351,6 +426,10 @@ export type MembershipScalarWhereWithAggregatesInput = {
 
 export type MembershipCreateInput = {
   id?: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -358,6 +437,7 @@ export type MembershipCreateInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
@@ -366,9 +446,14 @@ export type MembershipCreateInput = {
 
 export type MembershipUncheckedCreateInput = {
   id?: string
+  organizationId: string
   trainerId: string
   memberId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -381,6 +466,10 @@ export type MembershipUncheckedCreateInput = {
 
 export type MembershipUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -388,6 +477,7 @@ export type MembershipUpdateInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
@@ -396,9 +486,14 @@ export type MembershipUpdateInput = {
 
 export type MembershipUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -411,9 +506,14 @@ export type MembershipUncheckedUpdateInput = {
 
 export type MembershipCreateManyInput = {
   id?: string
+  organizationId: string
   trainerId: string
   memberId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -425,6 +525,10 @@ export type MembershipCreateManyInput = {
 
 export type MembershipUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -436,9 +540,14 @@ export type MembershipUpdateManyMutationInput = {
 
 export type MembershipUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -460,9 +569,14 @@ export type MembershipOrderByRelationAggregateInput = {
 
 export type MembershipCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
   sessionPassId?: Prisma.SortOrder
+  sessionPassName?: Prisma.SortOrder
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -473,15 +587,23 @@ export type MembershipCountOrderByAggregateInput = {
 }
 
 export type MembershipAvgOrderByAggregateInput = {
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   remainingSessions?: Prisma.SortOrder
   usedSessions?: Prisma.SortOrder
 }
 
 export type MembershipMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
   sessionPassId?: Prisma.SortOrder
+  sessionPassName?: Prisma.SortOrder
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -493,9 +615,14 @@ export type MembershipMaxOrderByAggregateInput = {
 
 export type MembershipMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   trainerId?: Prisma.SortOrder
   memberId?: Prisma.SortOrder
   sessionPassId?: Prisma.SortOrder
+  sessionPassName?: Prisma.SortOrder
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   paymentType?: Prisma.SortOrder
   paymentStatus?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
@@ -506,6 +633,9 @@ export type MembershipMinOrderByAggregateInput = {
 }
 
 export type MembershipSumOrderByAggregateInput = {
+  sessionPassPrice?: Prisma.SortOrder
+  sessionPassTotalSessions?: Prisma.SortOrder
+  sessionPassValidDays?: Prisma.SortOrder
   remainingSessions?: Prisma.SortOrder
   usedSessions?: Prisma.SortOrder
 }
@@ -554,6 +684,48 @@ export type MembershipUncheckedUpdateManyWithoutTrainerNestedInput = {
   connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   update?: Prisma.MembershipUpdateWithWhereUniqueWithoutTrainerInput | Prisma.MembershipUpdateWithWhereUniqueWithoutTrainerInput[]
   updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutTrainerInput | Prisma.MembershipUpdateManyWithWhereWithoutTrainerInput[]
+  deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
+}
+
+export type MembershipCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutOrganizationInput, Prisma.MembershipUncheckedCreateWithoutOrganizationInput> | Prisma.MembershipCreateWithoutOrganizationInput[] | Prisma.MembershipUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutOrganizationInput | Prisma.MembershipCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.MembershipCreateManyOrganizationInputEnvelope
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+}
+
+export type MembershipUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutOrganizationInput, Prisma.MembershipUncheckedCreateWithoutOrganizationInput> | Prisma.MembershipCreateWithoutOrganizationInput[] | Prisma.MembershipUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutOrganizationInput | Prisma.MembershipCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.MembershipCreateManyOrganizationInputEnvelope
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+}
+
+export type MembershipUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutOrganizationInput, Prisma.MembershipUncheckedCreateWithoutOrganizationInput> | Prisma.MembershipCreateWithoutOrganizationInput[] | Prisma.MembershipUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutOrganizationInput | Prisma.MembershipCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.MembershipUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.MembershipCreateManyOrganizationInputEnvelope
+  set?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  disconnect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  delete?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.MembershipUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutOrganizationInput | Prisma.MembershipUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
+}
+
+export type MembershipUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutOrganizationInput, Prisma.MembershipUncheckedCreateWithoutOrganizationInput> | Prisma.MembershipCreateWithoutOrganizationInput[] | Prisma.MembershipUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutOrganizationInput | Prisma.MembershipCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.MembershipUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.MembershipCreateManyOrganizationInputEnvelope
+  set?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  disconnect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  delete?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.MembershipUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutOrganizationInput | Prisma.MembershipUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
 }
 
@@ -665,6 +837,10 @@ export type MembershipUpdateOneRequiredWithoutSchedulesNestedInput = {
 
 export type MembershipCreateWithoutTrainerInput = {
   id?: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -672,6 +848,7 @@ export type MembershipCreateWithoutTrainerInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
@@ -679,8 +856,13 @@ export type MembershipCreateWithoutTrainerInput = {
 
 export type MembershipUncheckedCreateWithoutTrainerInput = {
   id?: string
+  organizationId: string
   memberId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -722,9 +904,14 @@ export type MembershipScalarWhereInput = {
   OR?: Prisma.MembershipScalarWhereInput[]
   NOT?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
   id?: Prisma.StringFilter<"Membership"> | string
+  organizationId?: Prisma.StringFilter<"Membership"> | string
   trainerId?: Prisma.StringFilter<"Membership"> | string
   memberId?: Prisma.StringFilter<"Membership"> | string
   sessionPassId?: Prisma.StringFilter<"Membership"> | string
+  sessionPassName?: Prisma.StringFilter<"Membership"> | string
+  sessionPassPrice?: Prisma.DecimalFilter<"Membership"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFilter<"Membership"> | number
+  sessionPassValidDays?: Prisma.IntFilter<"Membership"> | number
   paymentType?: Prisma.EnumPaymentTypeFilter<"Membership"> | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Membership"> | $Enums.PaymentStatus
   paidAt?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
@@ -734,8 +921,12 @@ export type MembershipScalarWhereInput = {
   usedSessions?: Prisma.IntFilter<"Membership"> | number
 }
 
-export type MembershipCreateWithoutMemberInput = {
+export type MembershipCreateWithoutOrganizationInput = {
   id?: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -744,14 +935,84 @@ export type MembershipCreateWithoutMemberInput = {
   remainingSessions: number
   usedSessions: number
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
+  member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
+  sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
+}
+
+export type MembershipUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  trainerId: string
+  memberId: string
+  sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
+  paymentType: $Enums.PaymentType
+  paymentStatus: $Enums.PaymentStatus
+  paidAt?: Date | string | null
+  startedAt?: Date | string | null
+  expiredAt?: Date | string | null
+  remainingSessions: number
+  usedSessions: number
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutMembershipInput
+}
+
+export type MembershipCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutOrganizationInput, Prisma.MembershipUncheckedCreateWithoutOrganizationInput>
+}
+
+export type MembershipCreateManyOrganizationInputEnvelope = {
+  data: Prisma.MembershipCreateManyOrganizationInput | Prisma.MembershipCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type MembershipUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutOrganizationInput, Prisma.MembershipUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutOrganizationInput, Prisma.MembershipUncheckedCreateWithoutOrganizationInput>
+}
+
+export type MembershipUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutOrganizationInput, Prisma.MembershipUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type MembershipUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.MembershipScalarWhereInput
+  data: Prisma.XOR<Prisma.MembershipUpdateManyMutationInput, Prisma.MembershipUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type MembershipCreateWithoutMemberInput = {
+  id?: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
+  paymentType: $Enums.PaymentType
+  paymentStatus: $Enums.PaymentStatus
+  paidAt?: Date | string | null
+  startedAt?: Date | string | null
+  expiredAt?: Date | string | null
+  remainingSessions: number
+  usedSessions: number
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
+  trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
 }
 
 export type MembershipUncheckedCreateWithoutMemberInput = {
   id?: string
+  organizationId: string
   trainerId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -790,6 +1051,10 @@ export type MembershipUpdateManyWithWhereWithoutMemberInput = {
 
 export type MembershipCreateWithoutSessionPassInput = {
   id?: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -797,6 +1062,7 @@ export type MembershipCreateWithoutSessionPassInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutMembershipInput
@@ -804,8 +1070,13 @@ export type MembershipCreateWithoutSessionPassInput = {
 
 export type MembershipUncheckedCreateWithoutSessionPassInput = {
   id?: string
+  organizationId: string
   trainerId: string
   memberId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -844,6 +1115,10 @@ export type MembershipUpdateManyWithWhereWithoutSessionPassInput = {
 
 export type MembershipCreateWithoutSchedulesInput = {
   id?: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -851,6 +1126,7 @@ export type MembershipCreateWithoutSchedulesInput = {
   expiredAt?: Date | string | null
   remainingSessions: number
   usedSessions: number
+  organization: Prisma.OrganizationCreateNestedOneWithoutMembershipsInput
   trainer: Prisma.TrainerCreateNestedOneWithoutMembershipsInput
   member: Prisma.MemberCreateNestedOneWithoutMembershipsInput
   sessionPass: Prisma.SessionPassCreateNestedOneWithoutMembershipsInput
@@ -858,9 +1134,14 @@ export type MembershipCreateWithoutSchedulesInput = {
 
 export type MembershipUncheckedCreateWithoutSchedulesInput = {
   id?: string
+  organizationId: string
   trainerId: string
   memberId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -888,6 +1169,10 @@ export type MembershipUpdateToOneWithWhereWithoutSchedulesInput = {
 
 export type MembershipUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -895,6 +1180,7 @@ export type MembershipUpdateWithoutSchedulesInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
@@ -902,9 +1188,14 @@ export type MembershipUpdateWithoutSchedulesInput = {
 
 export type MembershipUncheckedUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -916,8 +1207,13 @@ export type MembershipUncheckedUpdateWithoutSchedulesInput = {
 
 export type MembershipCreateManyTrainerInput = {
   id?: string
+  organizationId: string
   memberId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -929,6 +1225,10 @@ export type MembershipCreateManyTrainerInput = {
 
 export type MembershipUpdateWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -936,6 +1236,7 @@ export type MembershipUpdateWithoutTrainerInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
@@ -943,8 +1244,13 @@ export type MembershipUpdateWithoutTrainerInput = {
 
 export type MembershipUncheckedUpdateWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -957,8 +1263,87 @@ export type MembershipUncheckedUpdateWithoutTrainerInput = {
 
 export type MembershipUncheckedUpdateManyWithoutTrainerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MembershipCreateManyOrganizationInput = {
+  id?: string
+  trainerId: string
+  memberId: string
+  sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
+  paymentType: $Enums.PaymentType
+  paymentStatus: $Enums.PaymentStatus
+  paidAt?: Date | string | null
+  startedAt?: Date | string | null
+  expiredAt?: Date | string | null
+  remainingSessions: number
+  usedSessions: number
+}
+
+export type MembershipUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
+  member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
+  sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
+}
+
+export type MembershipUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
+  paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutMembershipNestedInput
+}
+
+export type MembershipUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -970,8 +1355,13 @@ export type MembershipUncheckedUpdateManyWithoutTrainerInput = {
 
 export type MembershipCreateManyMemberInput = {
   id?: string
+  organizationId: string
   trainerId: string
   sessionPassId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -983,6 +1373,10 @@ export type MembershipCreateManyMemberInput = {
 
 export type MembershipUpdateWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -990,6 +1384,7 @@ export type MembershipUpdateWithoutMemberInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   sessionPass?: Prisma.SessionPassUpdateOneRequiredWithoutMembershipsNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
@@ -997,8 +1392,13 @@ export type MembershipUpdateWithoutMemberInput = {
 
 export type MembershipUncheckedUpdateWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1011,8 +1411,13 @@ export type MembershipUncheckedUpdateWithoutMemberInput = {
 
 export type MembershipUncheckedUpdateManyWithoutMemberInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   sessionPassId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1024,8 +1429,13 @@ export type MembershipUncheckedUpdateManyWithoutMemberInput = {
 
 export type MembershipCreateManySessionPassInput = {
   id?: string
+  organizationId: string
   trainerId: string
   memberId: string
+  sessionPassName: string
+  sessionPassPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions: number
+  sessionPassValidDays: number
   paymentType: $Enums.PaymentType
   paymentStatus: $Enums.PaymentStatus
   paidAt?: Date | string | null
@@ -1037,6 +1447,10 @@ export type MembershipCreateManySessionPassInput = {
 
 export type MembershipUpdateWithoutSessionPassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1044,6 +1458,7 @@ export type MembershipUpdateWithoutSessionPassInput = {
   expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   remainingSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
   trainer?: Prisma.TrainerUpdateOneRequiredWithoutMembershipsNestedInput
   member?: Prisma.MemberUpdateOneRequiredWithoutMembershipsNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutMembershipNestedInput
@@ -1051,8 +1466,13 @@ export type MembershipUpdateWithoutSessionPassInput = {
 
 export type MembershipUncheckedUpdateWithoutSessionPassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1065,8 +1485,13 @@ export type MembershipUncheckedUpdateWithoutSessionPassInput = {
 
 export type MembershipUncheckedUpdateManyWithoutSessionPassInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   trainerId?: Prisma.StringFieldUpdateOperationsInput | string
   memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassName?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionPassPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sessionPassTotalSessions?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionPassValidDays?: Prisma.IntFieldUpdateOperationsInput | number
   paymentType?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
   paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1109,9 +1534,14 @@ export type MembershipCountOutputTypeCountSchedulesArgs<ExtArgs extends runtime.
 
 export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   memberId?: boolean
   sessionPassId?: boolean
+  sessionPassName?: boolean
+  sessionPassPrice?: boolean
+  sessionPassTotalSessions?: boolean
+  sessionPassValidDays?: boolean
   paymentType?: boolean
   paymentStatus?: boolean
   paidAt?: boolean
@@ -1119,6 +1549,7 @@ export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   expiredAt?: boolean
   remainingSessions?: boolean
   usedSessions?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
@@ -1128,9 +1559,14 @@ export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type MembershipSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   memberId?: boolean
   sessionPassId?: boolean
+  sessionPassName?: boolean
+  sessionPassPrice?: boolean
+  sessionPassTotalSessions?: boolean
+  sessionPassValidDays?: boolean
   paymentType?: boolean
   paymentStatus?: boolean
   paidAt?: boolean
@@ -1138,6 +1574,7 @@ export type MembershipSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   expiredAt?: boolean
   remainingSessions?: boolean
   usedSessions?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
@@ -1145,9 +1582,14 @@ export type MembershipSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type MembershipSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   memberId?: boolean
   sessionPassId?: boolean
+  sessionPassName?: boolean
+  sessionPassPrice?: boolean
+  sessionPassTotalSessions?: boolean
+  sessionPassValidDays?: boolean
   paymentType?: boolean
   paymentStatus?: boolean
   paidAt?: boolean
@@ -1155,6 +1597,7 @@ export type MembershipSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   expiredAt?: boolean
   remainingSessions?: boolean
   usedSessions?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
@@ -1162,9 +1605,14 @@ export type MembershipSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type MembershipSelectScalar = {
   id?: boolean
+  organizationId?: boolean
   trainerId?: boolean
   memberId?: boolean
   sessionPassId?: boolean
+  sessionPassName?: boolean
+  sessionPassPrice?: boolean
+  sessionPassTotalSessions?: boolean
+  sessionPassValidDays?: boolean
   paymentType?: boolean
   paymentStatus?: boolean
   paidAt?: boolean
@@ -1174,8 +1622,9 @@ export type MembershipSelectScalar = {
   usedSessions?: boolean
 }
 
-export type MembershipOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "memberId" | "sessionPassId" | "paymentType" | "paymentStatus" | "paidAt" | "startedAt" | "expiredAt" | "remainingSessions" | "usedSessions", ExtArgs["result"]["membership"]>
+export type MembershipOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "trainerId" | "memberId" | "sessionPassId" | "sessionPassName" | "sessionPassPrice" | "sessionPassTotalSessions" | "sessionPassValidDays" | "paymentType" | "paymentStatus" | "paidAt" | "startedAt" | "expiredAt" | "remainingSessions" | "usedSessions", ExtArgs["result"]["membership"]>
 export type MembershipInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
@@ -1183,11 +1632,13 @@ export type MembershipInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   _count?: boolean | Prisma.MembershipCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MembershipIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
 }
 export type MembershipIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
   member?: boolean | Prisma.MemberDefaultArgs<ExtArgs>
   sessionPass?: boolean | Prisma.SessionPassDefaultArgs<ExtArgs>
@@ -1196,6 +1647,7 @@ export type MembershipIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type $MembershipPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Membership"
   objects: {
+    organization: Prisma.$OrganizationPayload<ExtArgs>
     trainer: Prisma.$TrainerPayload<ExtArgs>
     member: Prisma.$MemberPayload<ExtArgs>
     sessionPass: Prisma.$SessionPassPayload<ExtArgs>
@@ -1203,9 +1655,14 @@ export type $MembershipPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    organizationId: string
     trainerId: string
     memberId: string
     sessionPassId: string
+    sessionPassName: string
+    sessionPassPrice: runtime.Decimal
+    sessionPassTotalSessions: number
+    sessionPassValidDays: number
     paymentType: $Enums.PaymentType
     paymentStatus: $Enums.PaymentStatus
     paidAt: Date | null
@@ -1607,6 +2064,7 @@ readonly fields: MembershipFieldRefs;
  */
 export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   trainer<T extends Prisma.TrainerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainerDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainerClient<runtime.Types.Result.GetResult<Prisma.$TrainerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   member<T extends Prisma.MemberDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MemberDefaultArgs<ExtArgs>>): Prisma.Prisma__MemberClient<runtime.Types.Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sessionPass<T extends Prisma.SessionPassDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SessionPassDefaultArgs<ExtArgs>>): Prisma.Prisma__SessionPassClient<runtime.Types.Result.GetResult<Prisma.$SessionPassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -1641,9 +2099,14 @@ export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends runti
  */
 export interface MembershipFieldRefs {
   readonly id: Prisma.FieldRef<"Membership", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Membership", 'String'>
   readonly trainerId: Prisma.FieldRef<"Membership", 'String'>
   readonly memberId: Prisma.FieldRef<"Membership", 'String'>
   readonly sessionPassId: Prisma.FieldRef<"Membership", 'String'>
+  readonly sessionPassName: Prisma.FieldRef<"Membership", 'String'>
+  readonly sessionPassPrice: Prisma.FieldRef<"Membership", 'Decimal'>
+  readonly sessionPassTotalSessions: Prisma.FieldRef<"Membership", 'Int'>
+  readonly sessionPassValidDays: Prisma.FieldRef<"Membership", 'Int'>
   readonly paymentType: Prisma.FieldRef<"Membership", 'PaymentType'>
   readonly paymentStatus: Prisma.FieldRef<"Membership", 'PaymentStatus'>
   readonly paidAt: Prisma.FieldRef<"Membership", 'DateTime'>

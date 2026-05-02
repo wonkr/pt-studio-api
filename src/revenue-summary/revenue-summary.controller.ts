@@ -1,13 +1,16 @@
-import { Controller, Get, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { RevenueSummaryService } from './revenue-summary.service';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { RevenueSummaryQueryDto } from './dto/revenue-summary-query.dto';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { OrgGuard } from '../auth/guards/org.guard';
+import { RequiredOrgId, TrainerId } from '../auth/decorators/auth.decorator';
+import { OrgAdminGuard } from '../auth/guards/org-admin.guard';
 
 @ApiTags('Revenue Summary')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
-@Controller('revenue-summary')
+@UseGuards(AuthGuard, OrgGuard)
+@Controller('/organizations/:orgId/revenue-summary')
 export class RevenueSummaryController {
     constructor(
         private readonly revenueSummaryService: RevenueSummaryService
@@ -19,8 +22,9 @@ export class RevenueSummaryController {
     @ApiResponse({ status: 200, description: 'Financial summary including totalSales, earnedRevenue, unearnedRevenue, totalExpenses, netProfit' })
     @ApiResponse({ status: 400, description: 'year is required' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    @Get()
-    async getRevenueSummary(@Request() req, @Query(ValidationPipe) query: RevenueSummaryQueryDto){
-        return this.revenueSummaryService.getRevenueSummary(req.user.sub, query.year, query.month)
+    @UseGuards(OrgAdminGuard)
+    @Get('/admin')
+    async getRevenueSummary(@RequiredOrgId() orgId: string, @Query(ValidationPipe) query: RevenueSummaryQueryDto){
+        return this.revenueSummaryService.getRevenueSummary(orgId, query.year, query.month)
     }
 }

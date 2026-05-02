@@ -40,7 +40,7 @@ export type SessionPassSumAggregateOutputType = {
 
 export type SessionPassMinAggregateOutputType = {
   id: string | null
-  trainerId: string | null
+  organizationId: string | null
   name: string | null
   totalSessions: number | null
   price: runtime.Decimal | null
@@ -51,7 +51,7 @@ export type SessionPassMinAggregateOutputType = {
 
 export type SessionPassMaxAggregateOutputType = {
   id: string | null
-  trainerId: string | null
+  organizationId: string | null
   name: string | null
   totalSessions: number | null
   price: runtime.Decimal | null
@@ -62,7 +62,7 @@ export type SessionPassMaxAggregateOutputType = {
 
 export type SessionPassCountAggregateOutputType = {
   id: number
-  trainerId: number
+  organizationId: number
   name: number
   totalSessions: number
   price: number
@@ -87,7 +87,7 @@ export type SessionPassSumAggregateInputType = {
 
 export type SessionPassMinAggregateInputType = {
   id?: true
-  trainerId?: true
+  organizationId?: true
   name?: true
   totalSessions?: true
   price?: true
@@ -98,7 +98,7 @@ export type SessionPassMinAggregateInputType = {
 
 export type SessionPassMaxAggregateInputType = {
   id?: true
-  trainerId?: true
+  organizationId?: true
   name?: true
   totalSessions?: true
   price?: true
@@ -109,7 +109,7 @@ export type SessionPassMaxAggregateInputType = {
 
 export type SessionPassCountAggregateInputType = {
   id?: true
-  trainerId?: true
+  organizationId?: true
   name?: true
   totalSessions?: true
   price?: true
@@ -207,7 +207,7 @@ export type SessionPassGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type SessionPassGroupByOutputType = {
   id: string
-  trainerId: string
+  organizationId: string
   name: string
   totalSessions: number
   price: runtime.Decimal
@@ -241,50 +241,50 @@ export type SessionPassWhereInput = {
   OR?: Prisma.SessionPassWhereInput[]
   NOT?: Prisma.SessionPassWhereInput | Prisma.SessionPassWhereInput[]
   id?: Prisma.StringFilter<"SessionPass"> | string
-  trainerId?: Prisma.StringFilter<"SessionPass"> | string
+  organizationId?: Prisma.StringFilter<"SessionPass"> | string
   name?: Prisma.StringFilter<"SessionPass"> | string
   totalSessions?: Prisma.IntFilter<"SessionPass"> | number
   price?: Prisma.DecimalFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFilter<"SessionPass"> | number
   isActivated?: Prisma.BoolFilter<"SessionPass"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"SessionPass"> | Date | string | null
-  trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
 }
 
 export type SessionPassOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  trainerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
   validDays?: Prisma.SortOrder
   isActivated?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  trainer?: Prisma.TrainerOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
 }
 
 export type SessionPassWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  trainerId_name?: Prisma.SessionPassTrainerIdNameCompoundUniqueInput
+  organizationId_name?: Prisma.SessionPassOrganizationIdNameCompoundUniqueInput
   AND?: Prisma.SessionPassWhereInput | Prisma.SessionPassWhereInput[]
   OR?: Prisma.SessionPassWhereInput[]
   NOT?: Prisma.SessionPassWhereInput | Prisma.SessionPassWhereInput[]
-  trainerId?: Prisma.StringFilter<"SessionPass"> | string
+  organizationId?: Prisma.StringFilter<"SessionPass"> | string
   name?: Prisma.StringFilter<"SessionPass"> | string
   totalSessions?: Prisma.IntFilter<"SessionPass"> | number
   price?: Prisma.DecimalFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   validDays?: Prisma.IntFilter<"SessionPass"> | number
   isActivated?: Prisma.BoolFilter<"SessionPass"> | boolean
   deletedAt?: Prisma.DateTimeNullableFilter<"SessionPass"> | Date | string | null
-  trainer?: Prisma.XOR<Prisma.TrainerScalarRelationFilter, Prisma.TrainerWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   memberships?: Prisma.MembershipListRelationFilter
-}, "id" | "trainerId_name">
+}, "id" | "organizationId_name">
 
 export type SessionPassOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  trainerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
@@ -303,7 +303,7 @@ export type SessionPassScalarWhereWithAggregatesInput = {
   OR?: Prisma.SessionPassScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SessionPassScalarWhereWithAggregatesInput | Prisma.SessionPassScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SessionPass"> | string
-  trainerId?: Prisma.StringWithAggregatesFilter<"SessionPass"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"SessionPass"> | string
   name?: Prisma.StringWithAggregatesFilter<"SessionPass"> | string
   totalSessions?: Prisma.IntWithAggregatesFilter<"SessionPass"> | number
   price?: Prisma.DecimalWithAggregatesFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -320,13 +320,13 @@ export type SessionPassCreateInput = {
   validDays: number
   isActivated?: boolean
   deletedAt?: Date | string | null
-  trainer: Prisma.TrainerCreateNestedOneWithoutSessionPassesInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutSessionPassesInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutSessionPassInput
 }
 
 export type SessionPassUncheckedCreateInput = {
   id?: string
-  trainerId: string
+  organizationId: string
   name: string
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -344,13 +344,13 @@ export type SessionPassUpdateInput = {
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
   isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trainer?: Prisma.TrainerUpdateOneRequiredWithoutSessionPassesNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionPassesNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutSessionPassNestedInput
 }
 
 export type SessionPassUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -362,7 +362,7 @@ export type SessionPassUncheckedUpdateInput = {
 
 export type SessionPassCreateManyInput = {
   id?: string
-  trainerId: string
+  organizationId: string
   name: string
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -383,7 +383,7 @@ export type SessionPassUpdateManyMutationInput = {
 
 export type SessionPassUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -402,14 +402,14 @@ export type SessionPassOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type SessionPassTrainerIdNameCompoundUniqueInput = {
-  trainerId: string
+export type SessionPassOrganizationIdNameCompoundUniqueInput = {
+  organizationId: string
   name: string
 }
 
 export type SessionPassCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  trainerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
@@ -426,7 +426,7 @@ export type SessionPassAvgOrderByAggregateInput = {
 
 export type SessionPassMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  trainerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
@@ -437,7 +437,7 @@ export type SessionPassMaxOrderByAggregateInput = {
 
 export type SessionPassMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  trainerId?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   price?: Prisma.SortOrder
@@ -457,54 +457,46 @@ export type SessionPassScalarRelationFilter = {
   isNot?: Prisma.SessionPassWhereInput
 }
 
-export type SessionPassCreateNestedManyWithoutTrainerInput = {
-  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutTrainerInput, Prisma.SessionPassUncheckedCreateWithoutTrainerInput> | Prisma.SessionPassCreateWithoutTrainerInput[] | Prisma.SessionPassUncheckedCreateWithoutTrainerInput[]
-  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutTrainerInput | Prisma.SessionPassCreateOrConnectWithoutTrainerInput[]
-  createMany?: Prisma.SessionPassCreateManyTrainerInputEnvelope
+export type SessionPassCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutOrganizationInput, Prisma.SessionPassUncheckedCreateWithoutOrganizationInput> | Prisma.SessionPassCreateWithoutOrganizationInput[] | Prisma.SessionPassUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutOrganizationInput | Prisma.SessionPassCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.SessionPassCreateManyOrganizationInputEnvelope
   connect?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
 }
 
-export type SessionPassUncheckedCreateNestedManyWithoutTrainerInput = {
-  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutTrainerInput, Prisma.SessionPassUncheckedCreateWithoutTrainerInput> | Prisma.SessionPassCreateWithoutTrainerInput[] | Prisma.SessionPassUncheckedCreateWithoutTrainerInput[]
-  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutTrainerInput | Prisma.SessionPassCreateOrConnectWithoutTrainerInput[]
-  createMany?: Prisma.SessionPassCreateManyTrainerInputEnvelope
+export type SessionPassUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutOrganizationInput, Prisma.SessionPassUncheckedCreateWithoutOrganizationInput> | Prisma.SessionPassCreateWithoutOrganizationInput[] | Prisma.SessionPassUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutOrganizationInput | Prisma.SessionPassCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.SessionPassCreateManyOrganizationInputEnvelope
   connect?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
 }
 
-export type SessionPassUpdateManyWithoutTrainerNestedInput = {
-  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutTrainerInput, Prisma.SessionPassUncheckedCreateWithoutTrainerInput> | Prisma.SessionPassCreateWithoutTrainerInput[] | Prisma.SessionPassUncheckedCreateWithoutTrainerInput[]
-  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutTrainerInput | Prisma.SessionPassCreateOrConnectWithoutTrainerInput[]
-  upsert?: Prisma.SessionPassUpsertWithWhereUniqueWithoutTrainerInput | Prisma.SessionPassUpsertWithWhereUniqueWithoutTrainerInput[]
-  createMany?: Prisma.SessionPassCreateManyTrainerInputEnvelope
+export type SessionPassUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutOrganizationInput, Prisma.SessionPassUncheckedCreateWithoutOrganizationInput> | Prisma.SessionPassCreateWithoutOrganizationInput[] | Prisma.SessionPassUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutOrganizationInput | Prisma.SessionPassCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.SessionPassUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.SessionPassUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.SessionPassCreateManyOrganizationInputEnvelope
   set?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
   disconnect?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
   delete?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
   connect?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
-  update?: Prisma.SessionPassUpdateWithWhereUniqueWithoutTrainerInput | Prisma.SessionPassUpdateWithWhereUniqueWithoutTrainerInput[]
-  updateMany?: Prisma.SessionPassUpdateManyWithWhereWithoutTrainerInput | Prisma.SessionPassUpdateManyWithWhereWithoutTrainerInput[]
+  update?: Prisma.SessionPassUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.SessionPassUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.SessionPassUpdateManyWithWhereWithoutOrganizationInput | Prisma.SessionPassUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.SessionPassScalarWhereInput | Prisma.SessionPassScalarWhereInput[]
 }
 
-export type SessionPassUncheckedUpdateManyWithoutTrainerNestedInput = {
-  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutTrainerInput, Prisma.SessionPassUncheckedCreateWithoutTrainerInput> | Prisma.SessionPassCreateWithoutTrainerInput[] | Prisma.SessionPassUncheckedCreateWithoutTrainerInput[]
-  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutTrainerInput | Prisma.SessionPassCreateOrConnectWithoutTrainerInput[]
-  upsert?: Prisma.SessionPassUpsertWithWhereUniqueWithoutTrainerInput | Prisma.SessionPassUpsertWithWhereUniqueWithoutTrainerInput[]
-  createMany?: Prisma.SessionPassCreateManyTrainerInputEnvelope
+export type SessionPassUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.SessionPassCreateWithoutOrganizationInput, Prisma.SessionPassUncheckedCreateWithoutOrganizationInput> | Prisma.SessionPassCreateWithoutOrganizationInput[] | Prisma.SessionPassUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SessionPassCreateOrConnectWithoutOrganizationInput | Prisma.SessionPassCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.SessionPassUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.SessionPassUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.SessionPassCreateManyOrganizationInputEnvelope
   set?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
   disconnect?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
   delete?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
   connect?: Prisma.SessionPassWhereUniqueInput | Prisma.SessionPassWhereUniqueInput[]
-  update?: Prisma.SessionPassUpdateWithWhereUniqueWithoutTrainerInput | Prisma.SessionPassUpdateWithWhereUniqueWithoutTrainerInput[]
-  updateMany?: Prisma.SessionPassUpdateManyWithWhereWithoutTrainerInput | Prisma.SessionPassUpdateManyWithWhereWithoutTrainerInput[]
+  update?: Prisma.SessionPassUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.SessionPassUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.SessionPassUpdateManyWithWhereWithoutOrganizationInput | Prisma.SessionPassUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.SessionPassScalarWhereInput | Prisma.SessionPassScalarWhereInput[]
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -525,7 +517,7 @@ export type SessionPassUpdateOneRequiredWithoutMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SessionPassUpdateToOneWithWhereWithoutMembershipsInput, Prisma.SessionPassUpdateWithoutMembershipsInput>, Prisma.SessionPassUncheckedUpdateWithoutMembershipsInput>
 }
 
-export type SessionPassCreateWithoutTrainerInput = {
+export type SessionPassCreateWithoutOrganizationInput = {
   id?: string
   name: string
   totalSessions: number
@@ -536,7 +528,7 @@ export type SessionPassCreateWithoutTrainerInput = {
   memberships?: Prisma.MembershipCreateNestedManyWithoutSessionPassInput
 }
 
-export type SessionPassUncheckedCreateWithoutTrainerInput = {
+export type SessionPassUncheckedCreateWithoutOrganizationInput = {
   id?: string
   name: string
   totalSessions: number
@@ -547,30 +539,30 @@ export type SessionPassUncheckedCreateWithoutTrainerInput = {
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutSessionPassInput
 }
 
-export type SessionPassCreateOrConnectWithoutTrainerInput = {
+export type SessionPassCreateOrConnectWithoutOrganizationInput = {
   where: Prisma.SessionPassWhereUniqueInput
-  create: Prisma.XOR<Prisma.SessionPassCreateWithoutTrainerInput, Prisma.SessionPassUncheckedCreateWithoutTrainerInput>
+  create: Prisma.XOR<Prisma.SessionPassCreateWithoutOrganizationInput, Prisma.SessionPassUncheckedCreateWithoutOrganizationInput>
 }
 
-export type SessionPassCreateManyTrainerInputEnvelope = {
-  data: Prisma.SessionPassCreateManyTrainerInput | Prisma.SessionPassCreateManyTrainerInput[]
+export type SessionPassCreateManyOrganizationInputEnvelope = {
+  data: Prisma.SessionPassCreateManyOrganizationInput | Prisma.SessionPassCreateManyOrganizationInput[]
   skipDuplicates?: boolean
 }
 
-export type SessionPassUpsertWithWhereUniqueWithoutTrainerInput = {
+export type SessionPassUpsertWithWhereUniqueWithoutOrganizationInput = {
   where: Prisma.SessionPassWhereUniqueInput
-  update: Prisma.XOR<Prisma.SessionPassUpdateWithoutTrainerInput, Prisma.SessionPassUncheckedUpdateWithoutTrainerInput>
-  create: Prisma.XOR<Prisma.SessionPassCreateWithoutTrainerInput, Prisma.SessionPassUncheckedCreateWithoutTrainerInput>
+  update: Prisma.XOR<Prisma.SessionPassUpdateWithoutOrganizationInput, Prisma.SessionPassUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.SessionPassCreateWithoutOrganizationInput, Prisma.SessionPassUncheckedCreateWithoutOrganizationInput>
 }
 
-export type SessionPassUpdateWithWhereUniqueWithoutTrainerInput = {
+export type SessionPassUpdateWithWhereUniqueWithoutOrganizationInput = {
   where: Prisma.SessionPassWhereUniqueInput
-  data: Prisma.XOR<Prisma.SessionPassUpdateWithoutTrainerInput, Prisma.SessionPassUncheckedUpdateWithoutTrainerInput>
+  data: Prisma.XOR<Prisma.SessionPassUpdateWithoutOrganizationInput, Prisma.SessionPassUncheckedUpdateWithoutOrganizationInput>
 }
 
-export type SessionPassUpdateManyWithWhereWithoutTrainerInput = {
+export type SessionPassUpdateManyWithWhereWithoutOrganizationInput = {
   where: Prisma.SessionPassScalarWhereInput
-  data: Prisma.XOR<Prisma.SessionPassUpdateManyMutationInput, Prisma.SessionPassUncheckedUpdateManyWithoutTrainerInput>
+  data: Prisma.XOR<Prisma.SessionPassUpdateManyMutationInput, Prisma.SessionPassUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type SessionPassScalarWhereInput = {
@@ -578,7 +570,7 @@ export type SessionPassScalarWhereInput = {
   OR?: Prisma.SessionPassScalarWhereInput[]
   NOT?: Prisma.SessionPassScalarWhereInput | Prisma.SessionPassScalarWhereInput[]
   id?: Prisma.StringFilter<"SessionPass"> | string
-  trainerId?: Prisma.StringFilter<"SessionPass"> | string
+  organizationId?: Prisma.StringFilter<"SessionPass"> | string
   name?: Prisma.StringFilter<"SessionPass"> | string
   totalSessions?: Prisma.IntFilter<"SessionPass"> | number
   price?: Prisma.DecimalFilter<"SessionPass"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -595,12 +587,12 @@ export type SessionPassCreateWithoutMembershipsInput = {
   validDays: number
   isActivated?: boolean
   deletedAt?: Date | string | null
-  trainer: Prisma.TrainerCreateNestedOneWithoutSessionPassesInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutSessionPassesInput
 }
 
 export type SessionPassUncheckedCreateWithoutMembershipsInput = {
   id?: string
-  trainerId: string
+  organizationId: string
   name: string
   totalSessions: number
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -633,12 +625,12 @@ export type SessionPassUpdateWithoutMembershipsInput = {
   validDays?: Prisma.IntFieldUpdateOperationsInput | number
   isActivated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trainer?: Prisma.TrainerUpdateOneRequiredWithoutSessionPassesNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSessionPassesNestedInput
 }
 
 export type SessionPassUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  trainerId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -647,7 +639,7 @@ export type SessionPassUncheckedUpdateWithoutMembershipsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type SessionPassCreateManyTrainerInput = {
+export type SessionPassCreateManyOrganizationInput = {
   id?: string
   name: string
   totalSessions: number
@@ -657,7 +649,7 @@ export type SessionPassCreateManyTrainerInput = {
   deletedAt?: Date | string | null
 }
 
-export type SessionPassUpdateWithoutTrainerInput = {
+export type SessionPassUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -668,7 +660,7 @@ export type SessionPassUpdateWithoutTrainerInput = {
   memberships?: Prisma.MembershipUpdateManyWithoutSessionPassNestedInput
 }
 
-export type SessionPassUncheckedUpdateWithoutTrainerInput = {
+export type SessionPassUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -679,7 +671,7 @@ export type SessionPassUncheckedUpdateWithoutTrainerInput = {
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutSessionPassNestedInput
 }
 
-export type SessionPassUncheckedUpdateManyWithoutTrainerInput = {
+export type SessionPassUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -722,45 +714,45 @@ export type SessionPassCountOutputTypeCountMembershipsArgs<ExtArgs extends runti
 
 export type SessionPassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  trainerId?: boolean
+  organizationId?: boolean
   name?: boolean
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
   isActivated?: boolean
   deletedAt?: boolean
-  trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.SessionPass$membershipsArgs<ExtArgs>
   _count?: boolean | Prisma.SessionPassCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionPass"]>
 
 export type SessionPassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  trainerId?: boolean
+  organizationId?: boolean
   name?: boolean
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
   isActivated?: boolean
   deletedAt?: boolean
-  trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionPass"]>
 
 export type SessionPassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  trainerId?: boolean
+  organizationId?: boolean
   name?: boolean
   totalSessions?: boolean
   price?: boolean
   validDays?: boolean
   isActivated?: boolean
   deletedAt?: boolean
-  trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionPass"]>
 
 export type SessionPassSelectScalar = {
   id?: boolean
-  trainerId?: boolean
+  organizationId?: boolean
   name?: boolean
   totalSessions?: boolean
   price?: boolean
@@ -769,28 +761,28 @@ export type SessionPassSelectScalar = {
   deletedAt?: boolean
 }
 
-export type SessionPassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "trainerId" | "name" | "totalSessions" | "price" | "validDays" | "isActivated" | "deletedAt", ExtArgs["result"]["sessionPass"]>
+export type SessionPassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "totalSessions" | "price" | "validDays" | "isActivated" | "deletedAt", ExtArgs["result"]["sessionPass"]>
 export type SessionPassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   memberships?: boolean | Prisma.SessionPass$membershipsArgs<ExtArgs>
   _count?: boolean | Prisma.SessionPassCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SessionPassIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }
 export type SessionPassIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trainer?: boolean | Prisma.TrainerDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }
 
 export type $SessionPassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SessionPass"
   objects: {
-    trainer: Prisma.$TrainerPayload<ExtArgs>
+    organization: Prisma.$OrganizationPayload<ExtArgs>
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    trainerId: string
+    organizationId: string
     name: string
     totalSessions: number
     price: runtime.Decimal
@@ -1191,7 +1183,7 @@ readonly fields: SessionPassFieldRefs;
  */
 export interface Prisma__SessionPassClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  trainer<T extends Prisma.TrainerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrainerDefaultArgs<ExtArgs>>): Prisma.Prisma__TrainerClient<runtime.Types.Result.GetResult<Prisma.$TrainerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   memberships<T extends Prisma.SessionPass$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SessionPass$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1223,7 +1215,7 @@ export interface Prisma__SessionPassClient<T, Null = never, ExtArgs extends runt
  */
 export interface SessionPassFieldRefs {
   readonly id: Prisma.FieldRef<"SessionPass", 'String'>
-  readonly trainerId: Prisma.FieldRef<"SessionPass", 'String'>
+  readonly organizationId: Prisma.FieldRef<"SessionPass", 'String'>
   readonly name: Prisma.FieldRef<"SessionPass", 'String'>
   readonly totalSessions: Prisma.FieldRef<"SessionPass", 'Int'>
   readonly price: Prisma.FieldRef<"SessionPass", 'Decimal'>

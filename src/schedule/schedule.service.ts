@@ -11,19 +11,24 @@ export class ScheduleService {
         private readonly databaseService: DatabaseService
     ) {}
 
-    async create(trainerId: string, createScheduleDto:CreateScheduleDto){
+    async create(trainerId: string, orgId: string, orgRole: string, createScheduleDto:CreateScheduleDto){
         const membership = await this.databaseService.membership.findFirst({
             where:{
-                trainerId: trainerId, 
+                organizationId: orgId,
                 id: createScheduleDto.membershipId,
             },
             select: {
+                trainerId: true,
                 remainingSessions: true
             }
         })
 
         if (!membership || membership.remainingSessions <= 0){
             throw new ForbiddenException('membership is not valid')
+        }
+
+        if (trainerId !== membership.trainerId || ['ADMIN', 'OWNER'].includes(orgRole)){
+            throw new UnauthorizedException('Have no permission to create a schedule for this member.')
         }
 
         const newStart = new Date(createScheduleDto.scheduledAt)
@@ -33,9 +38,12 @@ export class ScheduleService {
             const result = await this.databaseService.$transaction(async (tx) => {
                 const schedule = await tx.schedule.create({
                     data:{
-                        trainerId:trainerId,
+                        organizationId: orgId,
+                        primaryTrainerId:membership.trainerId,
+                        conductedByTrainerId: createScheduleDto.conductedByTrainerId,
                         memberId:createScheduleDto.memberId,
                         membershipId: createScheduleDto.membershipId,
+                        roomId: createScheduleDto.roomId,
                         scheduledAt: createScheduleDto.scheduledAt,
                         sessionDuration: createScheduleDto.sessionDuration,
                         endsAt: newEnd,
@@ -44,16 +52,19 @@ export class ScheduleService {
                     }
                 })
 
-                await this.updateStatusToAttended(tx, trainerId, createScheduleDto.membershipId, schedule.id)
+                await this.updateStatusToAttended(tx, schedule.conductedByTrainerId, orgId, schedule.membershipId, schedule.id)
             })
 
             return result
         } else {
             return await this.databaseService.schedule.create({
                 data:{
-                    trainerId:trainerId,
+                    organizationId: orgId,
+                    primaryTrainerId:membership.trainerId,
+                    conductedByTrainerId: createScheduleDto.conductedByTrainerId,
                     memberId:createScheduleDto.memberId,
                     membershipId: createScheduleDto.membershipId,
+                    roomId: createScheduleDto.roomId,
                     scheduledAt: createScheduleDto.scheduledAt,
                     sessionDuration: createScheduleDto.sessionDuration,
                     endsAt: newEnd,
@@ -67,13 +78,27 @@ export class ScheduleService {
     async findAll(trainerId: string, memberId?:string){
         return await this.databaseService.schedule.findMany({
             where: {
-                trainerId: trainerId,
+                conductedByTrainerId: trainerId,
                 ...( memberId && {
                     memberId: memberId
                 })
             },
             select: {
                 id: true,
+                primaryTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
+                conductedByTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
                 member:{
                     select:{
                         id: true,
@@ -87,6 +112,13 @@ export class ScheduleService {
                         remainingSessions: true,
                     }
                 },
+                room: {
+                    select: {
+                        id: true,
+                        name: true, 
+                        capacity: true,
+                    }
+                },
                 scheduledAt: true,
                 sessionDuration: true,
                 status: true,
@@ -95,14 +127,93 @@ export class ScheduleService {
         })
     }
 
-    async findOne(trainerId:string, id:string){
-        return await this.databaseService.schedule.findFirst({
+    async findAllByOrg(trainerId: string, orgId: string, orgRole: string, memberId?:string){
+        const select:any = {
+                id: true,
+                primaryTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
+                conductedByTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
+                room: {
+                    select: {
+                        id: true,
+                        name: true, 
+                        capacity: true,
+                    }
+                },
+                scheduledAt: true,
+                sessionDuration: true,
+                status: true,
+                cancelReason: true
+            }
+
+        if (['ADMIN', 'OWNER'].includes(orgRole)){
+            select.member = {
+                    select:{
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+            }
+            select.membership = {
+                    select:{
+                        id: true,
+                        remainingSessions: true,
+                    }
+                }
+        }
+
+        return await this.databaseService.schedule.findMany({
             where: {
-                trainerId: trainerId,
-                id: id
+                organizationId: orgId,
+                ...( memberId && {
+                    memberId: memberId
+                })
             },
+            select: select
+        })
+    }
+
+    async findOne(trainerId:string, orgId: string, orgRole: string, id:string){
+        const where: any = {id: id}
+
+        if (['ADMIN', 'OWNER'].includes(orgRole)){
+            where.organizationId = orgId
+        } else {
+            where.OR = [
+                { primaryTrainerId: trainerId },
+                { conductedByTrainerId: trainerId }
+            ]
+        }
+
+        return await this.databaseService.schedule.findFirst({
+            where: where,
             select: {
                 id: true,
+                primaryTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
+                conductedByTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
                 member:{
                     select:{
                         id: true,
@@ -114,8 +225,13 @@ export class ScheduleService {
                     select:{
                         id: true,
                         remainingSessions: true,
-                        usedSessions: true,
-                        expiredAt: true
+                    }
+                },
+                room: {
+                    select: {
+                        id: true,
+                        name: true, 
+                        capacity: true,
                     }
                 },
                 scheduledAt: true,
@@ -126,12 +242,20 @@ export class ScheduleService {
         })
     }
 
-    async update(trainerId:string, id:string, updateScheduleDto:UpdateScheduleDto){
+    async update(trainerId:string, orgId:string, orgRole:string, id:string, updateScheduleDto:UpdateScheduleDto){
+        const where: any = {id: id}
+
+        if (['ADMIN', 'OWNER'].includes(orgRole)){
+            where.organizationId = orgId
+        } else {
+            where.OR = [
+                { primaryTrainerId: trainerId },
+                { conductedByTrainerId: trainerId }
+            ]
+        }
+
         const existingSchedule = await this.databaseService.schedule.findFirst({
-            where: {
-                trainerId: trainerId,
-                id: id
-            }
+            where: where
         })
 
         if (!existingSchedule){
@@ -139,7 +263,7 @@ export class ScheduleService {
         }
 
         const newScheduledAt = updateScheduleDto.scheduledAt ?? existingSchedule.scheduledAt
-        const newDuration = updateScheduleDto.sessionDuration ?? existingSchedule.sessionDuration.toNumber()
+        const newDuration = updateScheduleDto.sessionDuration ?? existingSchedule.sessionDuration
         const newEndsAt = new Date(
             new Date(newScheduledAt).getTime() + newDuration * 60 * 1000
         )
@@ -148,10 +272,7 @@ export class ScheduleService {
         
         await this.databaseService.$transaction(async (tx) => {
             const schedule = await tx.schedule.update({
-                where: {
-                    trainerId: trainerId,
-                    id: id
-                },
+                where: where,
                 data:{
                     scheduledAt: newScheduledAt,
                     sessionDuration: newDuration,
@@ -161,21 +282,32 @@ export class ScheduleService {
                 }
             })
             if (existingSchedule.status !== "ATTENDED" && newStatus === "ATTENDED") {
-                await this.updateStatusToAttended(tx, trainerId, existingSchedule.membershipId, schedule.id)
+                await this.updateStatusToAttended(tx, schedule.conductedByTrainerId, orgId, schedule.membershipId, schedule.id)
             }
             if (existingSchedule.status === "ATTENDED" && newStatus !== "ATTENDED") {
-                await this.updateStatusFromAttended(tx, trainerId, existingSchedule.membershipId, schedule.id)
+                await this.updateStatusFromAttended(tx, schedule.conductedByTrainerId, orgId, existingSchedule.membershipId, schedule.id)
             }
         })
 
 
         return await this.databaseService.schedule.findFirst({
-            where: {
-                trainerId: trainerId,
-                id: id
-            },
+            where: where,
             select: {
                 id: true,
+                primaryTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
+                conductedByTrainer: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phoneNumber: true
+                    }
+                },
                 member:{
                     select:{
                         id: true,
@@ -187,8 +319,13 @@ export class ScheduleService {
                     select:{
                         id: true,
                         remainingSessions: true,
-                        usedSessions: true,
-                        expiredAt: true
+                    }
+                },
+                room: {
+                    select: {
+                        id: true,
+                        name: true, 
+                        capacity: true,
                     }
                 },
                 scheduledAt: true,
@@ -200,12 +337,20 @@ export class ScheduleService {
         
     }
 
-    async remove(trainerId:string, id:string){
+    async remove(trainerId:string, orgId:string, orgRole:string, id:string){
+        const where: any = {id: id}
+
+       if (['ADMIN', 'OWNER'].includes(orgRole)){
+            where.organizationId = orgId
+        } else {
+            where.OR = [
+                { primaryTrainerId: trainerId },
+                { conductedByTrainerId: trainerId }
+            ]
+        }
+
         const existingSchedule = await this.databaseService.schedule.findFirst({
-            where: {
-                trainerId: trainerId,
-                id: id
-            }
+            where: where
         })
 
         if (!existingSchedule){
@@ -215,7 +360,7 @@ export class ScheduleService {
 
         await this.databaseService.$transaction(async (tx) => {
             if (existingSchedule.status === "ATTENDED"){
-                await this.updateStatusFromAttended(tx, trainerId, existingSchedule.membershipId, existingSchedule.id)
+                await this.updateStatusFromAttended(tx, existingSchedule.conductedByTrainerId, orgId, existingSchedule.membershipId, existingSchedule.id)
             }
 
             await tx.schedule.delete({
@@ -229,11 +374,11 @@ export class ScheduleService {
         return
     }
 
-    private async updateStatusToAttended(tx: Omit<PrismaClient<never, undefined, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$use" | "$extends">, trainerId: string, membershipId: string, scheduleId: string){
+    private async updateStatusToAttended(tx: Omit<PrismaClient<never, undefined, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$use" | "$extends">, conductedByTrainerId: string, orgId: string, membershipId: string, scheduleId: string){
         await tx.membership.update({
             where: { 
                 id: membershipId,
-                trainerId: trainerId
+                organizationId: orgId
             },
             data: {
                 remainingSessions: { decrement: 1 }
@@ -241,8 +386,8 @@ export class ScheduleService {
         })
         const membership = await tx.membership.findFirst({
             where: {
-                trainerId:trainerId,
-                id: membershipId
+                id: membershipId,
+                organizationId: orgId
             },
             select: {
                 memberId: true,
@@ -264,7 +409,8 @@ export class ScheduleService {
 
         await tx.revenueRecognition.create({
             data: {
-                trainerId: trainerId,
+                organizationId: orgId,
+                conductedByTrainerId: conductedByTrainerId,
                 scheduleId: scheduleId,
                 memberId: membership.memberId,
                 amount: revenue
@@ -272,11 +418,11 @@ export class ScheduleService {
         })
     }
 
-    private async updateStatusFromAttended(tx: Omit<PrismaClient<never, undefined, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$use" | "$extends">, trainerId: string, membershipId: string, scheduleId: string){
+    private async updateStatusFromAttended(tx: Omit<PrismaClient<never, undefined, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$use" | "$extends">, conductedByTrainerId: string, orgId: string, membershipId: string, scheduleId: string){
         await tx.membership.update({
             where: { 
                 id: membershipId,
-                trainerId: trainerId
+                organizationId: orgId
             },
             data: {
                 remainingSessions: { increment: 1 }
@@ -285,7 +431,7 @@ export class ScheduleService {
 
         await tx.revenueRecognition.delete({
             where: {
-                trainerId: trainerId,
+                conductedByTrainerId: conductedByTrainerId,
                 scheduleId: scheduleId
             }
         })
