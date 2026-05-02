@@ -364,10 +364,7 @@ export class ScheduleService {
             }
 
             await tx.schedule.delete({
-            where: {
-                trainerId: trainerId,
-                id: id
-            }
+            where: where
             })
         })
 

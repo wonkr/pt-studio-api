@@ -20,7 +20,7 @@ export class OrganizationService {
                             capacity: room.capacity
                         }))
                     },
-                    trainers: {
+                    orgTrainers: {
                         create: {
                             trainerId: trainerId,
                             role: 'OWNER',

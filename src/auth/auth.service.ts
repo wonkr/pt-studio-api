@@ -226,7 +226,7 @@ export class AuthService {
             data: {
                 token: refreshToken, 
                 trainerId: trainerId,
-                orgId: organizationId,
+                organizationId: organizationId,
                 createdAt: new Date(decoded.iat * 1000),
                 expiresAt: new Date(decoded.exp * 1000)
             }

@@ -1283,6 +1283,7 @@ export const RefreshTokenScalarFieldEnum = {
   id: 'id',
   token: 'token',
   trainerId: 'trainerId',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
 } as const

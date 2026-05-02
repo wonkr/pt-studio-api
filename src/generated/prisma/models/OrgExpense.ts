@@ -525,10 +525,6 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type OrgExpenseCreateWithoutCreatedByTrainerInput = {
   id?: string
   category: $Enums.ExpenseCategory

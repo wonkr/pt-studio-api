@@ -33,12 +33,13 @@ model Trainer {
 }
 
 model RefreshToken {
-  id        String   @id @default(uuid())
-  token     String   @unique
-  trainer   Trainer  @relation(fields: [trainerId], references: [id])
-  trainerId String   @map("trainer_id")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
-  expiresAt DateTime @map("expires_at") @db.Timestamptz
+  id             String   @id @default(uuid())
+  token          String   @unique
+  trainer        Trainer  @relation(fields: [trainerId], references: [id])
+  trainerId      String   @map("trainer_id")
+  organizationId String?  @map("organization_id")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  expiresAt      DateTime @map("expires_at") @db.Timestamptz
 
   @@map("refresh_tokens")
 }
